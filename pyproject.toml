@@ -1,0 +1,100 @@
+[tool.ruff]
+target-version = "py312"
+line-length = 79
+
+[tool.ruff.lint]
+extend-select = ["I", "TRY", "UP", "D", "B", "SIM", "ASYNC"]
+ignore = ["TRY003"]
+
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+known-first-party = [
+    "habiticalib",
+]
+combine-as-imports = true
+split-on-trailing-comma = false
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+addopts = "--cov=habiticalib/ --cov-report=term-missing"
+asyncio_mode = "strict"
+
+[tool.hatch]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+source = "regex_commit"
+commit_extra_args = ["-e"]
+path = "habiticalib/__init__.py"
+
+[tool.hatch.envs.default]
+python = "3.12"
+dependencies = [
+    "aiohttp",
+    "mashumaro",
+    "orjson",
+    "mypy",
+    "ruff",
+    "pytest",
+    "pytest-cov",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "pytest-asyncio",
+]
+installer = "uv"
+
+[tool.hatch.envs.default.scripts]
+test = "pytest"
+test-cov-xml = "pytest --cov-report=xml"
+lint = [
+  "ruff format .",
+  "ruff --fix .",
+  "mypy habiticalib/",
+]
+lint-check = [
+  "ruff format --check .",
+  "ruff .",
+  "mypy habiticalib/",
+]
+docs-serve = "mkdocs serve"
+docs-build = "mkdocs build"
+
+[build-system]
+requires = ["hatchling", "hatch-regex-commit"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/habiticalib"]
+
+[project]
+name = "Habiticalib"
+authors = [
+  { name = "Manfred Dennerlein Rodelo", email = "manfred@dennerlein.name" }
+]
+description = "Asynchronous Python client library for the Habitica API"
+readme = "README.md"
+dynamic = ["version"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+license = {text = "MIT License"}
+requires-python = ">=3.12"
+dependencies = [
+    "aiohttp",
+    "mashumaro",
+    "orjson"
+]
+
+[project.urls]
+Documentation = "https://tr4nt0r.github.io/habiticalib/"
+Source = "https://github.com/tr4nt0r/habiticalib"

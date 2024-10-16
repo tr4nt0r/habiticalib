@@ -1,0 +1,27 @@
+{
+  "template": "https://github.com/tr4nt0r/cookiecutter-hatch",
+  "commit": "8d08540791a735c0668f08b8025719728c7677f9",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Manfred Dennerlein Rodelo",
+      "email": "manfred@dennerlein.name",
+      "github_username": "tr4nt0r",
+      "project_name": "Habiticalib",
+      "dist_name": "habiticalib",
+      "package_name": "habiticalib",
+      "project_short_description": "Modern asynchronous Python client library for the Habitica API",
+      "repository_name": "tr4nt0r/habiticalib",
+      "repository_url": "https://github.com/tr4nt0r/habiticalib",
+      "docs_url": "https://tr4nt0r.github.io/habiticalib/",
+      "open_source_license": "MIT license",
+      "python_version": "3.12",
+      "asyncio": "Y",
+      "docs_icon": "material/library",
+      "docs_color_primary": "deep purple",
+      "docs_color_accent": "purple",
+      "_template": "https://github.com/tr4nt0r/cookiecutter-hatch"
+    }
+  },
+  "directory": null
+}
