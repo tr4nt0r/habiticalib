@@ -56,7 +56,7 @@ test = "pytest"
 test-cov-xml = "pytest --cov-report=xml"
 lint = [
   "ruff format .",
-  "ruff --fix .",
+  "ruff check --fix .",
   "mypy habiticalib/",
 ]
 lint-check = [

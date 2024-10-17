@@ -779,12 +779,16 @@ class HabiticaUserResponse(HabiticaResponse):
 
 @dataclass
 class CompletedBy:
+    """Task group completedby data."""
+
     userId: UUID | None = None
     date: datetime | None = None
 
 
 @dataclass
 class GroupTask:
+    """Task group data."""
+
     assignedUsers: list[UUID]
     id: UUID | None = None
     assignedDate: datetime | None = None
@@ -797,6 +801,8 @@ class GroupTask:
 
 @dataclass
 class Repeat:
+    """Task repeat data."""
+
     m: bool = True
     t: bool = True
     w: bool = True
@@ -807,6 +813,8 @@ class Repeat:
 
 
 class ChallengeAbortedReason(StrEnum):
+    """Task challenge aborted reason data."""
+
     CHALLENGE_DELETED = "CHALLENGE_DELETED"
     TASK_DELETED = "TASK_DELETED"
     UNSUBSCRIBED = "UNSUBSCRIBED"
@@ -827,12 +835,16 @@ class Challenge:
 
 @dataclass
 class Reminders:
+    """Task reminders data."""
+
     id: UUID
     time: datetime
     startDate: datetime | None = None
 
 
 class TaskType(StrEnum):
+    """Task types enum."""
+
     DAILY = "daily"
     TODO = "todo"
     HABIT = "habit"
@@ -840,6 +852,8 @@ class TaskType(StrEnum):
 
 
 class Attributes(StrEnum):
+    """Character attributes enum."""
+
     STR = "str"
     CON = "con"
     INT = "int"
@@ -847,6 +861,8 @@ class Attributes(StrEnum):
 
 
 class Frequency(StrEnum):
+    """Recurrence frequency enum."""
+
     DAILY = "daily"
     WEEKLY = "weekly"
     MONTHLY = "monthly"
