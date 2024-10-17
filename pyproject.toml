@@ -61,7 +61,7 @@ lint = [
 ]
 lint-check = [
   "ruff format --check .",
-  "ruff .",
+  "ruff check .",
   "mypy habiticalib/",
 ]
 docs-serve = "mkdocs serve"

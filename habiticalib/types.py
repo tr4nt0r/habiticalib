@@ -42,7 +42,7 @@ class NotificationsUser:
 
 @dataclass
 class HabiticaResponse(DataClassORJSONMixin):
-    """Representation of a Habitica API response."""
+    """Representation of a base Habitica API response."""
 
     data: Any
     success: bool
@@ -63,7 +63,7 @@ class LoginData:
 
 @dataclass
 class HabiticaLoginResponse(HabiticaResponse):
-    """Representation of a login response."""
+    """Representation of a login data response."""
 
     data: LoginData
 
@@ -772,7 +772,7 @@ class UserData:
 
 @dataclass
 class HabiticaUserResponse(HabiticaResponse):
-    """Representation of a user response."""
+    """Representation of a user data response."""
 
     data: UserData
 
@@ -900,7 +900,7 @@ class Task:
 
 @dataclass
 class HabiticaTasksResponse(HabiticaResponse):
-    """Repesentation of a tasks response."""
+    """Repesentation of a tasks data response."""
 
     data: list[Task]
 
@@ -988,15 +988,15 @@ class UserStyles(DataClassORJSONMixin):
 
 
 @dataclass
-class HabiticaUserExportResponse(UserData, DataClassORJSONMixin):
-    """Representation of a user data export response."""
+class HabiticaUserExport(UserData, DataClassORJSONMixin):
+    """Representation of a user data export."""
 
     tasks: TasksUserExport = field(default_factory=TasksUserExport)
 
 
 @dataclass
-class HabiticaAllocatStatPointsResponse(HabiticaResponse):
-    """Representation of a allocate stat points response."""
+class HabiticaStatsResponse(HabiticaResponse):
+    """Representation of a response containing stats data."""
 
     data: StatsUser
 
@@ -1041,3 +1041,38 @@ class Language(StrEnum):
     UK = "uk"
     ZH = "zh"
     ZH_TW = "zh_TW"
+
+
+class Skill(StrEnum):
+    """Skills or spells available for casting."""
+
+    # Mage skills
+    BURST_OF_FLAMES = "fireball"
+    ETHEREAL_SURGE = "mpheal"
+    EARTHQUAKE = "earth"
+    CHILLING_FROST = "frost"
+    # Warrior skills
+    BRUTAL_SMASH = "smash"
+    DEFENSIVE_STANCE = "defensiveStance"
+    VALOROUS_PRESENCE = "valorousPresence"
+    INTIMIDATING_GAZE = "intimidate"
+    # Rogue skills
+    PICKPOCKET = "Pickpocket"
+    BACKSTAB = "backStab"
+    TOOLS_OF_THE_TRADE = "toolsOfTrade"
+    STEALTH = "stealth"
+    # Healer skills
+    HEALING_LIGHT = "heal"
+    PROTECTIVE_AURA = "protectAura"
+    SEARING_BRIGHTNESS = "brightness"
+    BLESSING = "healAll"
+    # Transformation buffs
+    SNOWBALL = "snowball"
+    SPOOKY_SPARKLES = "spookySparkles"
+    SEAFOAM = "seafoam"
+    SHINY_SEED = "shinySeed"
+    # Debuff potions
+    SALT = "salt"  # removes snowball buff
+    OPAQUE_POTION = "opaquePotion"  # removes spooky sparkles buff
+    SAND = "sand"  # removes seafoam buff
+    PETAL_FREE_POTION = "petalFreePotion"

@@ -8,6 +8,7 @@ from http import HTTPStatus
 from io import BytesIO
 import logging
 from typing import IO, Self
+from uuid import UUID
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
 from PIL import Image
@@ -23,14 +24,15 @@ from .helpers import (
 )
 from .types import (
     Attributes,
-    HabiticaAllocatStatPointsResponse,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
     HabiticaResponse,
+    HabiticaStatsResponse,
     HabiticaTasksResponse,
-    HabiticaUserExportResponse,
+    HabiticaUserExport,
     HabiticaUserResponse,
     Language,
+    Skill,
     TaskFilter,
     UserStyles,
 )
@@ -281,7 +283,7 @@ class Habitica:
             await self._request("get", url=url, params=params)
         )
 
-    async def user_export(self) -> HabiticaUserExportResponse:
+    async def user_export(self) -> HabiticaUserExport:
         """Export the user's data from Habitica.
 
         Note:
@@ -309,7 +311,7 @@ class Habitica:
         """
         url = self.url.parent / "export/userdata.json"
 
-        return HabiticaUserExportResponse.from_json(
+        return HabiticaUserExport.from_json(
             await self._request("get", url=url)
         )
 
@@ -391,7 +393,7 @@ class Habitica:
 
     async def allocate_single_stat_point(
         self, stat: Attributes = Attributes.STR
-    ) -> HabiticaAllocatStatPointsResponse:
+    ) -> HabiticaStatsResponse:
         """Allocate a single stat point to the specified attribute.
 
         If no stat is specified, the default is 'str' (strength).
@@ -432,11 +434,11 @@ class Habitica:
         url = self.url / "v3/user/allocate"
         params = {"stat": stat}
 
-        return HabiticaAllocatStatPointsResponse.from_json(
+        return HabiticaStatsResponse.from_json(
             await self._request("post", url=url, params=params)
         )
 
-    async def allocate_stat_points(self) -> HabiticaAllocatStatPointsResponse:
+    async def allocate_stat_points(self) -> HabiticaStatsResponse:
         """Allocate all available stat points using the user's chosen automatic allocation method.
 
         This method uses the user's configured allocation strategy to distribute any unassigned
@@ -465,7 +467,7 @@ class Habitica:
         """
         url = self.url / "v3/user/allocate-now"
 
-        return HabiticaAllocatStatPointsResponse.from_json(
+        return HabiticaStatsResponse.from_json(
             await self._request("post", url=url)
         )
 
@@ -475,7 +477,7 @@ class Habitica:
         str_points: int = 0,
         con_points: int = 0,
         per_points: int = 0,
-    ) -> HabiticaAllocatStatPointsResponse:
+    ) -> HabiticaStatsResponse:
         """Allocate multiple stat points manually to different attributes.
 
         This method allows the user to manually allocate their available stat points to the
@@ -526,11 +528,11 @@ class Habitica:
             }
         }
 
-        return HabiticaAllocatStatPointsResponse.from_json(
+        return HabiticaStatsResponse.from_json(
             await self._request("post", url=url, json=data)
         )
 
-    async def buy_health_potion(self) -> HabiticaAllocatStatPointsResponse:
+    async def buy_health_potion(self) -> HabiticaStatsResponse:
         """Purchase a health potion for the authenticated user.
 
         If the user has enough gold and their health is not already full,
@@ -539,7 +541,7 @@ class Habitica:
 
         Returns
         -------
-        HabiticaAllocatStatPointsResponse
+        HabiticaStatResponse
             A response object containing the user's updated stats and a success message.
 
         Raises
@@ -555,14 +557,106 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url.with_path("/v3/user/buy-health-potion")
+        url = self.url / "v3/user/buy-health-potion"
 
-        return HabiticaAllocatStatPointsResponse.from_json(
+        return HabiticaStatsResponse.from_json(
             await self._request("post", url=url)
         )
 
+    async def cast_skill(
+        self, spell: Skill, target_id: UUID | None = None
+    ) -> HabiticaUserResponse:
+        """Cast a skill (spell) in Habitica, optionally targeting a specific user, task or party.
+
+        Parameters
+        ----------
+        spell : Skill
+            The skill (or spell) to be cast. This should be a valid `Skill` enum value.
+        target_id : UUID, optional
+            The unique identifier of the target for the skill. If the skill does not require a target,
+            this can be omitted.
+
+        Returns
+        -------
+        HabiticaStatResponse
+            A response object containing the user's updated stats and a success message.
+
+        Raises
+        ------
+        NotAuthorizedError
+            If the user does not have enough mana.
+        NotFoundError
+            The specified task, party or user could not be found
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+        """
+        url = self.url / "v3/class/cast" / spell
+        params = {}
+
+        if target_id:
+            params.update({"targetId": str(target_id)})
+        return HabiticaUserResponse.from_json(
+            await self._request("post", url=url, params=params)
+        )
+
+    async def sleep(
+        self,
+    ) -> HabiticaResponse:
+        """Toggles the user's sleep mode in Habitica.
+
+        Returns
+        -------
+        HabiticaResponse
+            A response object containing the result of the sleep mode toggle,
+            and the new sleep state (True if sleeping, False if not).
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+        """
+        url = self.url / "v3/user/sleep"
+
+        return HabiticaResponse.from_json(await self._request("post", url=url))
+
+    async def revive(
+        self,
+    ) -> HabiticaResponse:
+        """Revive user from death.
+
+        Raises
+        ------
+        NotAuthorizedError
+            If the player is not dead and therefore cannot be revived.
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+        """
+        url = self.url / "v3/user/revive"
+
+        return HabiticaResponse.from_json(await self._request("post", url=url))
+
     def cache_asset(self, asset: str, asset_data: BytesIO) -> None:
         """Cache assets and removes cached assets if over cache limit."""
+        if not self._cache_size:
+            return
         if len(self._cache_order) > self._cache_size:
             del self._assets_cache[self._cache_order.pop(0)]
         self._assets_cache[asset] = asset_data
@@ -623,6 +717,11 @@ class Habitica:
         for the authenticated user and builds the avatar accordingly. The base image is initialized
         as a transparent RGBA image of size (141, 147). A mount offset is applied based on the user's
         current mount status.
+
+        Note:
+            Animated avatars are not supported, animated gear and mounts will
+            be pasted without animation, showing only the first sprite.
+
 
         Parameters
         ----------
