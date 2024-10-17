@@ -1017,6 +1017,42 @@ class HabiticaStatsResponse(HabiticaResponse):
     data: StatsUser
 
 
+@dataclass
+class QuestTmpScore:
+    """Represents the quest progress details."""
+
+    progressDelta: float | None = None
+    collection: int | None = None
+
+
+@dataclass
+class DropTmpScore:
+    """Represents the details of an item drop."""
+
+    target: str | None = None
+    canDrop: bool | None = None
+    value: int | None = None
+    key: str | None = None
+    type: str | None = None
+    dialog: str | None = None
+
+
+@dataclass
+class TmpScore:
+    """Temporary quest and drop data."""
+
+    quest: QuestTmpScore = field(default_factory=QuestTmpScore)
+    drop: DropTmpScore = field(default_factory=DropTmpScore)
+
+
+@dataclass
+class HabiticaScoreResponse(StatsUser, DataClassORJSONMixin):
+    """Representation of a score response."""
+
+    delta: float | None = None
+    _tmp: TmpScore = field(default_factory=TmpScore)
+
+
 class TaskFilter(StrEnum):
     """Enum representing the valid types of tasks for requests."""
 
@@ -1092,3 +1128,10 @@ class Skill(StrEnum):
     OPAQUE_POTION = "opaquePotion"  # removes spooky sparkles buff
     SAND = "sand"  # removes seafoam buff
     PETAL_FREE_POTION = "petalFreePotion"
+
+
+class Direction(StrEnum):
+    """Direction to score a task."""
+
+    UP = "up"
+    DOWN = "down"

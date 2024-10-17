@@ -24,9 +24,11 @@ from .helpers import (
 )
 from .types import (
     Attributes,
+    Direction,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
     HabiticaResponse,
+    HabiticaScoreResponse,
     HabiticaStatsResponse,
     HabiticaTasksResponse,
     HabiticaUserExport,
@@ -653,8 +655,39 @@ class Habitica:
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
+    async def score(
+        self,
+        task_id: UUID | str,
+        direction: Direction = Direction.UP,
+    ) -> HabiticaScoreResponse:
+        """Submit a score update for a task in Habitica.
+
+        This method allows scoring a task based on its type:
+        - For Dailies and To-Dos: Marks the task as complete or incomplete.
+        - For Habits: Increases the positive or negative habit score.
+        - For Rewards: Buys the reward
+
+        Parameters
+        ----------
+        task_id : UUID | str
+            The ID of the task or an alias (e.g., a slug) associated with the task.
+        direction : Direction, optional
+            The direction to score the task, either `Direction.UP` to increase or complete the task,
+            or `Direction.DOWN` to decrease or uncomplete it. Defaults to `Direction.UP`.
+
+        Returns
+        -------
+        HabiticaScoreResponse
+            A response object that contains the updated stats and item drop.
+        """
+        url = self.url / "v3/tasks" / str(task_id) / "score" / direction.value
+
+        return HabiticaScoreResponse.from_json(
+            await self._request("post", url=url)
+        )
+
     def cache_asset(self, asset: str, asset_data: BytesIO) -> None:
-        """Cache assets and removes cached assets if over cache limit."""
+        """Cache assets and remove cached assets if over cache limit."""
         if not self._cache_size:
             return
         if len(self._cache_order) > self._cache_size:
@@ -689,7 +722,7 @@ class Habitica:
                 async with self._session.get(url) as r:
                     r.raise_for_status()
                     asset_data = BytesIO(await r.read())
-
+                    self.cache_asset(asset, asset_data)
         except ClientResponseError as e:
             _LOGGER.exception(
                 "Failed to load %s.png due to error [%s]: %s",
