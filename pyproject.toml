@@ -4,7 +4,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["TRY003", "D203", "D213", "D417", "ANN003", "ANN101", "ANN102", "ANN401", "E501", "COM812"]
+ignore = ["TRY003", "D203", "D213", "D417", "ANN003", "ANN101", "ANN102", "ANN401", "E501", "COM812", "ISC001"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
@@ -18,6 +18,7 @@ convention = "numpy"
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
 
 [tool.ruff.lint.mccabe]
 max-complexity = 25
