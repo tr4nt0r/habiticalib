@@ -17,7 +17,9 @@ from .exceptions import BadRequestError, NotAuthorizedError, NotFoundError
 from .helpers import extract_user_styles, get_user_agent, get_x_client, join_fields
 from .types import (
     Attributes,
+    Class,
     Direction,
+    HabiticaClassSystemResponse,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
     HabiticaResponse,
@@ -25,11 +27,14 @@ from .types import (
     HabiticaStatsResponse,
     HabiticaTagResponse,
     HabiticaTagsResponse,
+    HabiticaTaskOrderResponse,
+    HabiticaTaskResponse,
     HabiticaTasksResponse,
     HabiticaUserExport,
     HabiticaUserResponse,
     Language,
     Skill,
+    Task,
     TaskFilter,
     UserStyles,
 )
@@ -61,7 +66,7 @@ class Habitica:
         """Initialize the Habitica API client."""
         client_headers = {"X-CLIENT": get_x_client(x_client)}
         user_agent = {"User-Agent": get_user_agent()}
-
+        self._headers = {}
         if session:
             self._session = session
             self._session.headers.setdefault(*user_agent)
@@ -73,15 +78,14 @@ class Habitica:
             self._close_session = True
 
         if api_user and api_key:
-            self._headers.update(
-                {
-                    "X-API-USER": api_user,
-                    "X-API-KEY": api_key,
-                },
-            )
+            self._headers = {
+                "X-API-USER": api_user,
+                "X-API-KEY": api_key,
+            }
         elif api_user or api_key:
             msg = "Both 'api_user' and 'api_key' must be provided together."
             raise ValueError(msg)
+
         self.url = URL(url if url else DEFAULT_URL) / "api"
 
     async def _request(self, method: str, url: URL, **kwargs) -> str:
@@ -293,6 +297,208 @@ class Habitica:
             await self._request("get", url=url, params=params),
         )
 
+    async def get_task(self, task_id: UUID) -> HabiticaTaskResponse:
+        """Retrieve a specific task from the Habitica API.
+
+        This method sends a request to the Habitica API to retrieve a specific task
+        identified by the given `task_id`.
+
+        Parameters
+        ----------
+        task_id : UUID
+            The UUID of the task to retrieve.
+
+        Returns
+        -------
+        HabiticaTaskResponse
+            A response object containing the data for the specified task.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> task_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> task_response = await habitica.get_task(task_id)
+        >>> print(task_response.data)  # Displays the retrieved task information
+        """
+        url = self.url / "v3/tasks" / str(task_id)
+
+        return HabiticaTaskResponse.from_json(
+            await self._request("get", url=url),
+        )
+
+    async def create_task(self, task: Task) -> HabiticaTaskResponse:
+        """Create a new task in the Habitica API.
+
+        This method sends a request to the Habitica API to create a new task
+        with the specified attributes defined in the `task` object.
+
+        Parameters
+        ----------
+        task : Task
+            An instance of the `Task` dataclass containing the attributes for the new task.
+
+        Returns
+        -------
+        HabiticaTaskResponse
+            A response object containing the data for the newly created task.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> new_task = Task(name="New Task", ...)
+        >>> create_response = await habitica.create_task(new_task)
+        >>> print(create_response.data)  # Displays the created task information
+        """
+        url = self.url / "v3/tasks/user"
+
+        return HabiticaTaskResponse.from_json(
+            await self._request("post", url=url, json=task.to_dict()),
+        )
+
+    async def update_task(self, task_id: UUID, task: Task) -> HabiticaTaskResponse:
+        """Update an existing task in the Habitica API.
+
+        This method sends a request to the Habitica API to update the attributes
+        of a specific task identified by the given `task_id` with the specified
+        attributes defined in the `task` object.
+
+        Parameters
+        ----------
+        task_id : UUID
+            The UUID of the task to update.
+        task : Task
+            An instance of the `Task` dataclass containing the updated attributes for the task.
+
+        Returns
+        -------
+        HabiticaTaskResponse
+            A response object containing the data of the updated task.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> task_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> updated_task = Task(name="Updated Task", ...)
+        >>> update_response = await habitica.update_task(task_id, updated_task)
+        >>> print(update_response.data)  # Displays the updated task information
+        """
+        url = self.url / "v3/tasks" / str(task_id)
+
+        return HabiticaTaskResponse.from_json(
+            await self._request("put", url=url, json=task.to_dict()),
+        )
+
+    async def delete_task(self, task_id: UUID) -> HabiticaResponse:
+        """Delete a specific task.
+
+        This method sends a request to the Habitica API to delete a specific task
+        identified by the given `task_id`.
+
+        Parameters
+        ----------
+        task_id : UUID
+            The UUID of the task to delete.
+
+        Returns
+        -------
+        HabiticaTaskResponse
+            A response object containing the data for the deleted task.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> task_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> delete_response = await habitica.delete_task(task_id)
+        >>> print(delete_response.success)  # True if successfully deleted
+        """
+        url = self.url / "v3/tasks" / str(task_id)
+
+        return HabiticaResponse.from_json(
+            await self._request("delete", url=url),
+        )
+
+    async def reorder_task(self, task_id: UUID, to: int) -> HabiticaTaskOrderResponse:
+        """Reorder a user's tasks.
+
+        This method sends a request to the Habitica API to reorder a specific task,
+        identified by the given `task_id`, to a new position specified by `to`.
+
+        Parameters
+        ----------
+        task_id : UUID
+            The UUID of the task to reorder.
+        to : int
+            The new position to move the task to. Use 0 to move the task to the top,
+            and -1 to move it to the bottom of the list.
+
+        Returns
+        -------
+        HabiticaTaskOrderResponse
+            A response object containing a list of task IDs in the new sort order.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> task_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> reorder_response = await habitica.reorder_task(task_id, 2)
+        >>> print(reorder_response.data)  # Displays a list of task IDs in the new order
+        """
+        url = self.url / "v3/tasks" / str(task_id) / "move/to" / str(to)
+
+        return HabiticaTaskOrderResponse.from_json(
+            await self._request("post", url=url),
+        )
+
     async def get_user_export(self) -> HabiticaUserExport:
         """Export the user's data from Habitica.
 
@@ -384,7 +590,7 @@ class Habitica:
         Returns
         -------
         HabiticaResponse
-            A response containing an empty data object..
+            A response containing an empty data object.
 
         Raises
         ------
@@ -531,7 +737,7 @@ class Habitica:
         >>> await allocate_bulk_stat_points(int_points=2, str_points=1)
         """
         url = self.url / "v3/user/allocate-bulk"
-        data = {
+        json = {
             "stats": {
                 "int": int_points,
                 "str": str_points,
@@ -541,7 +747,7 @@ class Habitica:
         }
 
         return HabiticaStatsResponse.from_json(
-            await self._request("post", url=url, json=data),
+            await self._request("post", url=url, json=json),
         )
 
     async def buy_health_potion(self) -> HabiticaStatsResponse:
@@ -616,7 +822,7 @@ class Habitica:
         if target_id:
             params.update({"targetId": str(target_id)})
         return HabiticaUserResponse.from_json(
-            await self._request("post", url=url, params=params),
+            await self._request("post", url=url, json=params),
         )
 
     async def toggle_sleep(
@@ -666,6 +872,113 @@ class Habitica:
         url = self.url / "v3/user/revive"
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
+
+    async def change_class(self, Class: Class) -> HabiticaClassSystemResponse:  # noqa: N803
+        """Change the user's class in Habitica.
+
+        This method sends a request to the Habitica API to change the user's class
+        (e.g., warrior, mage, rogue, healer) to the specified class.
+
+        Parameters
+        ----------
+        Class : Class
+            An instance of the `Class` enum representing the new class to assign to the user.
+
+        Returns
+        -------
+        HabiticaClassSystemResponse
+            A response object containing stats, flags, items and preferences.
+
+        Raises
+        ------
+        NotAuthorizedError
+            If the player cannot change class at this time (e.g., conditions not met).
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> new_class = Class.WARRIOR
+        >>> change_response = await habitica.change_class(new_class)
+        >>> print(change_response.data.stats)  # Displays the user's stats after class change
+        """
+        url = self.url / "v3/user/change-class"
+        params = {"class": Class.value}
+
+        return HabiticaClassSystemResponse.from_json(
+            await self._request("post", url=url, params=params)
+        )
+
+    async def disable_classes(self) -> HabiticaClassSystemResponse:
+        """Disable the class system for the user in Habitica.
+
+        This method sends a request to the Habitica API to disable the class system for the user.
+
+        Returns
+        -------
+        HabiticaClassSystemResponse
+            A response object containing stats, flags, and preferences.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> disable_response = await habitica.disable_classes()
+        >>> print(disable_response.data.stats)  # Displays the user's stats after disabling the class system
+        """
+        url = self.url / "v3/user/disable-classes"
+
+        return HabiticaClassSystemResponse.from_json(
+            await self._request("post", url=url)
+        )
+
+    async def delete_completed_todos(self) -> HabiticaResponse:
+        """Delete all completed to-dos from the user's task list.
+
+        This method sends a request to the Habitica API to delete all completed to-dos
+        from the user's task list.
+
+        Returns
+        -------
+        HabiticaResponse
+            A response object containing an empty data object.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> delete_response = await habitica.delete_completed_todos()
+        >>> print(delete_response.success)  # True if successfully cleared completed to-dos
+        """
+        url = self.url / "v3/tasks/clearCompletedTodos"
+
+        return HabiticaClassSystemResponse.from_json(
+            await self._request("post", url=url)
+        )
 
     async def update_score(
         self,
@@ -853,9 +1166,9 @@ class Habitica:
         >>> print(new_tag_response.data.id)  # Displays the id of the new tag
         """
         url = self.url / "v3/tags"
-        params = {"name": name}
+        json = {"name": name}
         return HabiticaTagResponse.from_json(
-            await self._request("post", url=url, params=params),
+            await self._request("post", url=url, json=json),
         )
 
     async def update_tag(self, tag_id: UUID, name: str) -> HabiticaTagResponse:
@@ -894,9 +1207,9 @@ class Habitica:
         >>> print(update_response.data)  # Displays the updated tag information
         """
         url = self.url / "v3/tags" / str(tag_id)
-        params = {"name": name}
+        json = {"name": name}
         return HabiticaTagResponse.from_json(
-            await self._request("put", url=url, params=params),
+            await self._request("put", url=url, json=json),
         )
 
     async def reorder_tag(self, tag_id: UUID, to: int) -> HabiticaResponse:
@@ -935,10 +1248,10 @@ class Habitica:
         >>> print(reorder_response.success)  # True if reorder is successful
         """
         url = self.url / "v3/reorder-tags"
-        params = {"tagId": str(tag_id), "to": to}
+        json = {"tagId": str(tag_id), "to": to}
 
         return HabiticaTagResponse.from_json(
-            await self._request("post", url=url, params=params),
+            await self._request("post", url=url, json=json),
         )
 
     def _cache_asset(self, asset: str, asset_data: IO[bytes]) -> None:
@@ -1072,7 +1385,9 @@ class Habitica:
 
         async def paste_gear(gear_type: str) -> None:
             """Fetch and paste gear from equipped or costume gear sets."""
-            gear_set = items.gear.costume if preferences.costume else items.gear.equipped
+            gear_set = (
+                items.gear.costume if preferences.costume else items.gear.equipped
+            )
             gear = getattr(gear_set, gear_type)
             if gear and gear != f"{gear_type}_base_0":
                 # 2019 Kickstarter gear doesn't follow name conventions
@@ -1111,13 +1426,13 @@ class Habitica:
             if stats.buffs.shinySeed:
                 await self.paste_image(
                     image,
-                    f"avatar_snowball_{stats.role}",
+                    f"avatar_snowball_{stats.Class}",
                     (24, mount_offset_y),
                 )
             if stats.buffs.shinySeed:
                 await self.paste_image(
                     image,
-                    f"avatar_floral_{stats.role}",
+                    f"avatar_floral_{stats.Class}",
                     (24, mount_offset_y),
                 )
             if stats.buffs.seafoam:
