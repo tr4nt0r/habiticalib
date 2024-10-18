@@ -6,11 +6,13 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import Any
-from uuid import UUID
+from typing import TYPE_CHECKING, Any
 
 from mashumaro import field_options
 from mashumaro.mixins.orjson import DataClassORJSONMixin
+
+if TYPE_CHECKING:
+    from uuid import UUID
 
 
 def serialize_datetime(date: str | int | None) -> datetime | None:
@@ -21,8 +23,8 @@ def serialize_datetime(date: str | int | None) -> datetime | None:
         try:
             return datetime.fromisoformat(date)
         except ValueError:
-            # sometimes nextDue dates are JavaScript datetime strings instead of iso:
-            # "Mon May 06 2024 00:00:00 GMT+0200"
+            # sometimes nextDue dates are JavaScript datetime strings
+            # instead of iso: "Mon May 06 2024 00:00:00 GMT+0200"
             try:
                 return datetime.strptime(date, "%a %b %d %Y %H:%M:%S %Z%z")
             except ValueError:
@@ -363,15 +365,6 @@ class EquippedGear:
 
 
 @dataclass
-class OwnedGear:
-    """Gear owned data."""
-
-    # def __getattr__(self, name: str) -> Any:
-    #     """Return attribute or False."""
-    #     return getattr(self, name, False)
-
-
-@dataclass
 class GearItems:
     """Items gear data."""
 
@@ -673,8 +666,8 @@ class StatsUser:
 class TagsUser:
     """Tags user data."""
 
-    id: UUID
-    name: str
+    id: UUID | None = None
+    name: str | None = None
     challenge: bool | None = None
     group: str | None = None
 
@@ -700,7 +693,7 @@ class TasksOrderUser:
 
 
 @dataclass
-class pushDevicesUser:
+class PushDevicesUser:
     """PushDevices user data."""
 
     regId: str
@@ -754,7 +747,7 @@ class UserData:
     inbox: InboxUser = field(default_factory=InboxUser)
     tasksOrder: TasksOrderUser = field(default_factory=TasksOrderUser)
     extra: dict = field(default_factory=dict)
-    pushDevices: list[pushDevicesUser] = field(default_factory=list)
+    pushDevices: list[PushDevicesUser] = field(default_factory=list)
     webhooks: list[WebhooksUser] = field(default_factory=list)
     loginIncentives: int | None = None
     invitesSent: int | None = None
@@ -1051,6 +1044,20 @@ class HabiticaScoreResponse(StatsUser, DataClassORJSONMixin):
 
     delta: float | None = None
     _tmp: TmpScore = field(default_factory=TmpScore)
+
+
+@dataclass
+class HabiticaTagsResponse(HabiticaResponse, DataClassORJSONMixin):
+    """Representation of a score response."""
+
+    data: list[TagsUser]
+
+
+@dataclass
+class HabiticaTagResponse(HabiticaResponse, DataClassORJSONMixin):
+    """Representation of a score response."""
+
+    data: TagsUser
 
 
 class TaskFilter(StrEnum):

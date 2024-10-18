@@ -5,7 +5,7 @@ from typing import Self
 from habiticalib.types import HabiticaErrorResponse
 
 
-class HabiticaException(Exception):
+class HabiticaException(Exception):  # noqa: N818
     """Base class for Habitica errors."""
 
     def __init__(self: Self, error: HabiticaErrorResponse) -> None:
@@ -21,3 +21,7 @@ class NotAuthorizedError(HabiticaException):
 
 class NotFoundError(HabiticaException):
     """NotFound error."""
+
+
+class BadRequestError(HabiticaException):
+    """BadRequest error."""

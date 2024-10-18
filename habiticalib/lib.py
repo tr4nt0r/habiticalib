@@ -3,25 +3,18 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime
 from http import HTTPStatus
 from io import BytesIO
 import logging
-from typing import IO, Self
-from uuid import UUID
+from typing import IO, TYPE_CHECKING, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
 from PIL import Image
 from yarl import URL
 
 from .const import ASSETS_URL, BACKER_ONLY_GEAR, DEFAULT_URL
-from .exceptions import NotAuthorizedError, NotFoundError
-from .helpers import (
-    extract_user_styles,
-    get_user_agent,
-    get_x_client,
-    join_fields,
-)
+from .exceptions import BadRequestError, NotAuthorizedError, NotFoundError
+from .helpers import extract_user_styles, get_user_agent, get_x_client, join_fields
 from .types import (
     Attributes,
     Direction,
@@ -30,6 +23,8 @@ from .types import (
     HabiticaResponse,
     HabiticaScoreResponse,
     HabiticaStatsResponse,
+    HabiticaTagResponse,
+    HabiticaTagsResponse,
     HabiticaTasksResponse,
     HabiticaUserExport,
     HabiticaUserResponse,
@@ -39,6 +34,10 @@ from .types import (
     UserStyles,
 )
 
+if TYPE_CHECKING:
+    from datetime import datetime
+    from uuid import UUID
+
 _LOGGER = logging.getLogger(__package__)
 
 
@@ -46,8 +45,8 @@ class Habitica:
     """Modern asynchronous Python client library for the Habitica API."""
 
     _close_session: bool = False
-    _headers: dict[str, str] = {}
-    _assets_cache: dict[str, IO[bytes]] = {}
+    _headers: dict[str, str]
+    _assets_cache: dict[str, IO[bytes]]
     _cache_size = 32
     _cache_order: list[str]
 
@@ -69,7 +68,7 @@ class Habitica:
             self._headers = client_headers
         else:
             self._session = ClientSession(
-                headers={**user_agent, **client_headers}
+                headers={**user_agent, **client_headers},
             )
             self._close_session = True
 
@@ -78,26 +77,32 @@ class Habitica:
                 {
                     "X-API-USER": api_user,
                     "X-API-KEY": api_key,
-                }
+                },
             )
         elif api_user or api_key:
-            raise ValueError(
-                "Both 'api_user' and 'api_key' must be provided together."
-            )
+            msg = "Both 'api_user' and 'api_key' must be provided together."
+            raise ValueError(msg)
         self.url = URL(url if url else DEFAULT_URL) / "api"
 
     async def _request(self, method: str, url: URL, **kwargs) -> str:
         """Handle API request."""
         async with self._session.request(
-            method, url, headers=self._headers, **kwargs
+            method,
+            url,
+            headers=self._headers,
+            **kwargs,
         ) as r:
             if r.status == HTTPStatus.UNAUTHORIZED:
                 raise NotAuthorizedError(
-                    HabiticaErrorResponse.from_json(await r.text())
+                    HabiticaErrorResponse.from_json(await r.text()),
                 )
             if r.status == HTTPStatus.NOT_FOUND:
                 raise NotFoundError(
-                    HabiticaErrorResponse.from_json(await r.text())
+                    HabiticaErrorResponse.from_json(await r.text()),
+                )
+            if r.status == HTTPStatus.BAD_REQUEST:
+                raise BadRequestError(
+                    HabiticaErrorResponse.from_json(await r.text()),
                 )
             r.raise_for_status()
             return await r.text()
@@ -112,7 +117,9 @@ class Habitica:
             await self._session.close()
 
     async def login(
-        self, username: str, password: str
+        self,
+        username: str,
+        password: str,
     ) -> HabiticaLoginResponse:
         """Log in a user using their email or username and password.
 
@@ -161,19 +168,20 @@ class Habitica:
         }
 
         response = HabiticaLoginResponse.from_json(
-            await self._request("post", url=url, data=data)
+            await self._request("post", url=url, data=data),
         )
         self._headers.update(
             {
                 "X-API-USER": str(response.data.id),
                 "X-API-KEY": str(response.data.apiToken),
-            }
+            },
         )
         return response
 
-    async def user(
+    async def get_user(
         self,
         user_fields: str | list[str] | None = None,
+        *,
         anonymized: bool = False,
     ) -> HabiticaUserResponse:
         """Get the authenticated user's profile.
@@ -210,7 +218,7 @@ class Habitica:
 
         Examples
         --------
-        >>> response = await habitica.user(user_fields="achievements,items.mounts")
+        >>> response = await habitica.get_user(user_fields="achievements,items.mounts")
         >>> response.data  # Access the returned data from the response
         """
         url = self.url / "v3/user"
@@ -222,10 +230,10 @@ class Habitica:
             url = url / "anonymized"
 
         return HabiticaUserResponse.from_json(
-            await self._request("get", url=url, params=params)
+            await self._request("get", url=url, params=params),
         )
 
-    async def tasks(
+    async def get_tasks(
         self,
         task_type: TaskFilter | None = None,
         due_date: datetime | None = None,
@@ -264,15 +272,15 @@ class Habitica:
         --------
         Retrieve all tasks:
 
-        >>> await habitica.tasks()
+        >>> await habitica.get_tasks()
 
         Retrieve only todos:
 
-        >>> await habitica.tasks(TaskType.HABITS)
+        >>> await habitica.get_tasks(TaskType.HABITS)
 
         Retrieve todos with a specific due date:
 
-        >>> await habitica.tasks(TaskType.HABITS, due_date=datetime(2024, 10, 15))
+        >>> await habitica.get_tasks(TaskType.HABITS, due_date=datetime(2024, 10, 15))
         """
         url = self.url / "v3/tasks/user"
         params = {}
@@ -282,10 +290,10 @@ class Habitica:
         if due_date:
             params.update({"dueDate": due_date.isoformat()})
         return HabiticaTasksResponse.from_json(
-            await self._request("get", url=url, params=params)
+            await self._request("get", url=url, params=params),
         )
 
-    async def user_export(self) -> HabiticaUserExport:
+    async def get_user_export(self) -> HabiticaUserExport:
         """Export the user's data from Habitica.
 
         Note:
@@ -314,11 +322,12 @@ class Habitica:
         url = self.url.parent / "export/userdata.json"
 
         return HabiticaUserExport.from_json(
-            await self._request("get", url=url)
+            await self._request("get", url=url),
         )
 
-    async def content(
-        self, language: Language | None = None
+    async def get_content(
+        self,
+        language: Language | None = None,
     ) -> HabiticaResponse:
         """
         Fetch game content from the Habitica API.
@@ -361,7 +370,7 @@ class Habitica:
             params.update({"language": language.value})
 
         return HabiticaResponse.from_json(
-            await self._request("get", url=url, params=params)
+            await self._request("get", url=url, params=params),
         )
 
     async def run_cron(self) -> HabiticaResponse:
@@ -394,7 +403,8 @@ class Habitica:
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
     async def allocate_single_stat_point(
-        self, stat: Attributes = Attributes.STR
+        self,
+        stat: Attributes = Attributes.STR,
     ) -> HabiticaStatsResponse:
         """Allocate a single stat point to the specified attribute.
 
@@ -437,7 +447,7 @@ class Habitica:
         params = {"stat": stat}
 
         return HabiticaStatsResponse.from_json(
-            await self._request("post", url=url, params=params)
+            await self._request("post", url=url, params=params),
         )
 
     async def allocate_stat_points(self) -> HabiticaStatsResponse:
@@ -470,7 +480,7 @@ class Habitica:
         url = self.url / "v3/user/allocate-now"
 
         return HabiticaStatsResponse.from_json(
-            await self._request("post", url=url)
+            await self._request("post", url=url),
         )
 
     async def allocate_bulk_stat_points(
@@ -527,11 +537,11 @@ class Habitica:
                 "str": str_points,
                 "con": con_points,
                 "per": per_points,
-            }
+            },
         }
 
         return HabiticaStatsResponse.from_json(
-            await self._request("post", url=url, json=data)
+            await self._request("post", url=url, json=data),
         )
 
     async def buy_health_potion(self) -> HabiticaStatsResponse:
@@ -562,11 +572,13 @@ class Habitica:
         url = self.url / "v3/user/buy-health-potion"
 
         return HabiticaStatsResponse.from_json(
-            await self._request("post", url=url)
+            await self._request("post", url=url),
         )
 
     async def cast_skill(
-        self, spell: Skill, target_id: UUID | None = None
+        self,
+        spell: Skill,
+        target_id: UUID | None = None,
     ) -> HabiticaUserResponse:
         """Cast a skill (spell) in Habitica, optionally targeting a specific user, task or party.
 
@@ -604,10 +616,10 @@ class Habitica:
         if target_id:
             params.update({"targetId": str(target_id)})
         return HabiticaUserResponse.from_json(
-            await self._request("post", url=url, params=params)
+            await self._request("post", url=url, params=params),
         )
 
-    async def sleep(
+    async def toggle_sleep(
         self,
     ) -> HabiticaResponse:
         """Toggles the user's sleep mode in Habitica.
@@ -655,10 +667,10 @@ class Habitica:
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
-    async def score(
+    async def update_score(
         self,
         task_id: UUID | str,
-        direction: Direction = Direction.UP,
+        direction: Direction,
     ) -> HabiticaScoreResponse:
         """Submit a score update for a task in Habitica.
 
@@ -671,23 +683,284 @@ class Habitica:
         ----------
         task_id : UUID | str
             The ID of the task or an alias (e.g., a slug) associated with the task.
-        direction : Direction, optional
+        direction : Direction
             The direction to score the task, either `Direction.UP` to increase or complete the task,
-            or `Direction.DOWN` to decrease or uncomplete it. Defaults to `Direction.UP`.
+            or `Direction.DOWN` to decrease or uncomplete it..
 
         Returns
         -------
         HabiticaScoreResponse
             A response object that contains the updated stats and item drop.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
         """
         url = self.url / "v3/tasks" / str(task_id) / "score" / direction.value
 
         return HabiticaScoreResponse.from_json(
-            await self._request("post", url=url)
+            await self._request("post", url=url),
         )
 
-    def cache_asset(self, asset: str, asset_data: BytesIO) -> None:
-        """Cache assets and remove cached assets if over cache limit."""
+    async def get_tags(self) -> HabiticaTagsResponse:
+        """Retrieve a user's tags from the Habitica API.
+
+        This method sends a POST request to the Habitica API to fetch the tags
+        associated with the user's account.
+
+        Returns
+        -------
+        HabiticaTagsResponse
+            A response object containing the user's tags.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> tags_response = await habitica.get_tags()
+        >>> print(tags_response.data)
+        """
+        url = self.url / "v3/tags"
+
+        return HabiticaTagsResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def get_tag(self, tag_id: UUID) -> HabiticaTagResponse:
+        """Retrieve a specific tag from the Habitica API.
+
+        This method sends a request to the Habitica API to retrieve a specific tag
+        identified by the given `tag_id`.
+
+        Parameters
+        ----------
+        tag_id : UUID
+            The UUID of the tag to retrieve.
+
+        Returns
+        -------
+        HabiticaTagResponse
+            A response object containing the data for the specified tag.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> tag_response = await habitica.get_tag()
+        >>> print(tag_response.data)
+        """
+        url = self.url / "v3/tags" / str(tag_id)
+
+        return HabiticaTagResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def delete_tag(self, tag_id: UUID) -> HabiticaResponse:
+        """Delete a user's tag from the Habitica API.
+
+        This method sends a request to the Habitica API to delete a specific
+        tag identified by the given `tag_id`.
+
+        Parameters
+        ----------
+        tag_id : UUID
+            The UUID of the tag to delete.
+
+        Returns
+        -------
+        HabiticaTagResponse
+            A response object with an empty data object.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> tag_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> delete_response = await habitica.delete_tag(tag_id)
+        >>> print(delete_response.success)  # True if successfully deleted
+        """
+        url = self.url / "v3/tags" / str(tag_id)
+
+        return HabiticaTagResponse.from_json(
+            await self._request("delete", url=url),
+        )
+
+    async def create_tag(self, name: str) -> HabiticaTagResponse:
+        """Create a new tag in the Habitica API.
+
+        This method sends a request to the Habitica API to create a new tag
+        with the specified `name`.
+
+        Parameters
+        ----------
+        name : str
+            The name to assign to the new tag.
+
+        Returns
+        -------
+        HabiticaTagResponse
+            A response object containing a dictionary with the newly
+            created tag information, including the ID of the new tag.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> new_tag_response = await habitica.create_tag("New Tag Name")
+        >>> print(new_tag_response.data.id)  # Displays the id of the new tag
+        """
+        url = self.url / "v3/tags"
+        params = {"name": name}
+        return HabiticaTagResponse.from_json(
+            await self._request("post", url=url, params=params),
+        )
+
+    async def update_tag(self, tag_id: UUID, name: str) -> HabiticaTagResponse:
+        """Update a user's tag in the Habitica API.
+
+        This method sends a request to the Habitica API to update the name of a
+        specific tag, identified by the given `tag_id`.
+
+        Parameters
+        ----------
+        tag_id : UUID
+            The UUID of the tag to update.
+        name : str
+            The new name to assign to the tag.
+
+        Returns
+        -------
+        HabiticaTagResponse
+            A response object containing a dictionary with the updated tag information.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> tag_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> update_response = await habitica.update_tag(tag_id, "New Tag Name")
+        >>> print(update_response.data)  # Displays the updated tag information
+        """
+        url = self.url / "v3/tags" / str(tag_id)
+        params = {"name": name}
+        return HabiticaTagResponse.from_json(
+            await self._request("put", url=url, params=params),
+        )
+
+    async def reorder_tag(self, tag_id: UUID, to: int) -> HabiticaResponse:
+        """Reorder a user's tag in the Habitica API.
+
+        This method sends a request to the Habitica API to reorder a specific tag,
+        identified by the given `tag_id`, to a new position specified by `to`.
+
+        Parameters
+        ----------
+        tag_id : UUID
+            The UUID of the tag to reorder.
+        to : int
+            The new position to move the tag to (starting from 0).
+
+        Returns
+        -------
+        HabiticaResponse
+            A response object containing an empty data object.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> tag_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> reorder_response = await habitica.reorder_tag(tag_id, 2)
+        >>> print(reorder_response.success)  # True if reorder is successful
+        """
+        url = self.url / "v3/reorder-tags"
+        params = {"tagId": str(tag_id), "to": to}
+
+        return HabiticaTagResponse.from_json(
+            await self._request("post", url=url, params=params),
+        )
+
+    def _cache_asset(self, asset: str, asset_data: IO[bytes]) -> None:
+        """Cache an asset and maintain the cache size limit by removing older entries.
+
+        This method stores the given asset in the in-memory cache. If the cache exceeds the
+        specified limit (`self._cache_size`), the oldest cached asset is removed.
+        The cache is updated with the new asset, and its order of insertion is tracked.
+
+        Parameters
+        ----------
+        asset : str
+            The identifier or name of the asset to be cached.
+        asset_data : IO[bytes]
+            The asset data as an I/O stream of bytes to be cached.
+
+        Notes
+        -----
+        If `self._cache_size` is zero or `None`, the caching operation is skipped. When
+        the cache limit is exceeded, the least recently added asset is evicted to
+        make space for the new asset.
+        """
         if not self._cache_size:
             return
         if len(self._cache_order) > self._cache_size:
@@ -696,7 +969,10 @@ class Habitica:
         self._cache_order.append(asset)
 
     async def paste_image(
-        self, image: Image.Image, asset: str, position: tuple[int, int]
+        self,
+        image: Image.Image,
+        asset: str,
+        position: tuple[int, int],
     ) -> None:
         """Fetch asset and paste it onto the base image at specified position.
 
@@ -722,7 +998,7 @@ class Habitica:
                 async with self._session.get(url) as r:
                     r.raise_for_status()
                     asset_data = BytesIO(await r.read())
-                    self.cache_asset(asset, asset_data)
+                    self._cache_asset(asset, asset_data)
         except ClientResponseError as e:
             _LOGGER.exception(
                 "Failed to load %s.png due to error [%s]: %s",
@@ -732,13 +1008,14 @@ class Habitica:
             )
         except ClientError:
             _LOGGER.exception(
-                "Failed to load %s.png due to a request error", asset
+                "Failed to load %s.png due to a request error",
+                asset,
             )
         else:
             fetched_image = Image.open(asset_data).convert("RGBA")
             image.paste(fetched_image, position, fetched_image)
 
-    async def avatar(
+    async def generate_avatar(  # noqa: PLR0912, PLR0915
         self,
         fp: str | IO[bytes],
         user_styles: UserStyles | None = None,
@@ -776,14 +1053,14 @@ class Habitica:
         --------
         Using a bytes buffer:
         >>> avatar = BytesIO()
-        >>> await habitica avatar(avatar, fmt='png')
+        >>> await habitica generate_avatar(avatar, fmt='png')
 
         Using a file path:
-        >>> await habitica.avatar("/path/to/image/avatar.png")
+        >>> await habitica.generate_avatar("/path/to/image/avatar.png")
         """
         if not user_styles:
             user_styles = extract_user_styles(
-                await self.user(user_fields=["preferences", "items", "stats"])
+                await self.get_user(user_fields=["preferences", "items", "stats"]),
             )
         preferences = user_styles.preferences
         items = user_styles.items
@@ -795,11 +1072,7 @@ class Habitica:
 
         async def paste_gear(gear_type: str) -> None:
             """Fetch and paste gear from equipped or costume gear sets."""
-            gear_set = (
-                items.gear.costume
-                if preferences.costume
-                else items.gear.equipped
-            )
+            gear_set = items.gear.costume if preferences.costume else items.gear.equipped
             gear = getattr(gear_set, gear_type)
             if gear and gear != f"{gear_type}_base_0":
                 # 2019 Kickstarter gear doesn't follow name conventions
@@ -813,13 +1086,17 @@ class Habitica:
         # fetch and paste the background
         if preferences.background:
             await self.paste_image(
-                image, f"background_{preferences.background}", (0, 0)
+                image,
+                f"background_{preferences.background}",
+                (0, 0),
             )
 
         # Fetch and paste the mount body
         if items.currentMount:
             await self.paste_image(
-                image, f"Mount_Body_{items.currentMount}", (24, 18)
+                image,
+                f"Mount_Body_{items.currentMount}",
+                (24, 18),
             )
 
         # Fetch and paste avatars for visual buffs
@@ -839,11 +1116,15 @@ class Habitica:
                 )
             if stats.buffs.shinySeed:
                 await self.paste_image(
-                    image, f"avatar_floral_{stats.role}", (24, mount_offset_y)
+                    image,
+                    f"avatar_floral_{stats.role}",
+                    (24, mount_offset_y),
                 )
             if stats.buffs.seafoam:
                 await self.paste_image(
-                    image, "seafoam_star", (24, mount_offset_y)
+                    image,
+                    "seafoam_star",
+                    (24, mount_offset_y),
                 )
 
             # Fetch and paste the hairflower
@@ -858,7 +1139,9 @@ class Habitica:
             # Fetch and paste the chair
             if preferences.chair and preferences.chair != "none":
                 await self.paste_image(
-                    image, f"chair_{preferences.chair}", (24, 0)
+                    image,
+                    f"chair_{preferences.chair}",
+                    (24, 0),
                 )
 
             # Fetch and paste the back accessory
@@ -917,7 +1200,9 @@ class Habitica:
         # Fetch and paste the mount head
         if items.currentMount:
             await self.paste_image(
-                image, f"Mount_Head_{items.currentMount}", (24, 18)
+                image,
+                f"Mount_Head_{items.currentMount}",
+                (24, 18),
             )
         # Fetch and paste the pet
         if items.currentPet:

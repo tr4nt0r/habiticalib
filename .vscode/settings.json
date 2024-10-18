@@ -5,7 +5,7 @@
     "python.terminal.activateEnvInCurrentTerminal": true,
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "editor.rulers": [79],
+    "editor.rulers": [88],
     "python.defaultInterpreterPath": "${workspaceFolder}/.hatch/habitica/bin/python",
     "python.testing.pytestPath": "${workspaceFolder}/.hatch/habitica/bin/pytest",
     "python.testing.cwd": "${workspaceFolder}",
@@ -17,5 +17,6 @@
         "source.organizeImports": "explicit"
       },
       "editor.defaultFormatter": "charliermarsh.ruff"
-    }
+    },
+    "pylint.enabled": false
   }

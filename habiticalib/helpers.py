@@ -102,10 +102,11 @@ def get_x_client(x_client: str | None = None) -> str:
         try:
             uuid.UUID(x_client[:36])
         except ValueError as e:
-            raise ValueError(
+            msg = (
                 "Invalid User ID provided in x-client. Expected a valid "
                 "UUID format. Please ensure the User ID is correct"
-            ) from e
+            )
+            raise ValueError(msg) from e
 
         return x_client
 
