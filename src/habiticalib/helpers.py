@@ -30,11 +30,7 @@ def join_fields(user_fields: list[str] | str) -> str:
         A comma-separated string of user fields if `user_fields` is a list,
         or the original string if `user_fields` is a single string.
     """
-    return (
-        ",".join(user_fields)
-        if isinstance(user_fields, list)
-        else str(user_fields)
-    )
+    return ",".join(user_fields) if isinstance(user_fields, list) else str(user_fields)
 
 
 def get_user_agent() -> str:

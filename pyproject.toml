@@ -4,7 +4,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["TRY003", "D203", "D213", "D417", "ANN003", "ANN101", "ANN102", "ANN401", "E501", "COM812", "ISC001"]
+ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN101", "ANN102", "ANN401", "E501", "COM812", "ISC001"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
@@ -27,8 +27,10 @@ max-complexity = 25
 "types.py" = ["N815"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=habiticalib/ --cov-report=term-missing"
-asyncio_mode = "strict"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "--cov=src/habiticalib --cov-report=term-missing"
+asyncio_mode = "auto"
 
 [tool.pylint.DESIGN]
 max-attributes = 8
@@ -58,21 +60,22 @@ allow-direct-references = true
 [tool.hatch.version]
 source = "regex_commit"
 commit_extra_args = ["-e"]
-path = "habiticalib/__init__.py"
+path = "src/habiticalib/__init__.py"
 
 [tool.hatch.envs.default]
 python = "3.12"
 dependencies = [
-    "aiohttp",
-    "mashumaro",
-    "orjson",
-    "mypy",
-    "ruff",
-    "pytest",
-    "pytest-cov",
-    "mkdocs-material",
-    "mkdocstrings[python]",
-    "pytest-asyncio",
+    "aiohttp==3.10.10",
+    "mashumaro==3.13.1",
+    "orjson==3.10.7",
+    "Pillow==10.4.0",
+    "mypy==1.12.0",
+    "ruff==0.7.0",
+    "pytest==8.3.3",
+    "pytest-cov==5.0.0",
+    "mkdocs-material==9.5.41",
+    "mkdocstrings[python]==0.26.2",
+    "pytest-asyncio==0.24.0"
 ]
 installer = "uv"
 
@@ -82,12 +85,12 @@ test-cov-xml = "pytest --cov-report=xml"
 lint = [
   "ruff format .",
   "ruff check --fix .",
-  "mypy habiticalib/",
+  "mypy src/habiticalib/",
 ]
 lint-check = [
-  "ruff format --check .",
-  "ruff check .",
-  "mypy habiticalib/",
+  "ruff format --check src/habiticalib",
+  "ruff check src/habiticalib",
+  "mypy src/habiticalib/",
 ]
 docs-serve = "mkdocs serve"
 docs-build = "mkdocs build"
@@ -115,9 +118,10 @@ classifiers = [
 license = {text = "MIT License"}
 requires-python = ">=3.12"
 dependencies = [
-    "aiohttp",
-    "mashumaro",
-    "orjson"
+    "aiohttp~=3.9",
+    "mashumaro~=3.13",
+    "orjson~=3.10",
+    "Pillow~=10.4"
 ]
 
 [project.urls]
