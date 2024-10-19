@@ -77,7 +77,8 @@ dependencies = [
     "mkdocs-material==9.5.41",
     "mkdocstrings[python]==0.26.2",
     "pytest-asyncio==0.24.0",
-    "aioresponses==0.7.6"
+    "aioresponses==0.7.6",
+    "pre-commit==4.0.1"
 ]
 installer = "uv"
 
@@ -96,6 +97,11 @@ lint-check = [
 ]
 docs-serve = "mkdocs serve"
 docs-build = "mkdocs build"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["3.12", "3.13", "3.11"]
+
+
 
 [build-system]
 requires = ["hatchling", "hatch-regex-commit"]
