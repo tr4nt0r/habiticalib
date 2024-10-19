@@ -78,7 +78,8 @@ dependencies = [
     "mkdocstrings[python]==0.26.2",
     "pytest-asyncio==0.24.0",
     "aioresponses==0.7.6",
-    "pre-commit==4.0.1"
+    "pre-commit==4.0.1",
+    "syrupy==4.7.2"
 ]
 installer = "uv"
 
