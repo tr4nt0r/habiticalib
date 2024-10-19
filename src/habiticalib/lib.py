@@ -50,10 +50,7 @@ class Habitica:
     """Modern asynchronous Python client library for the Habitica API."""
 
     _close_session: bool = False
-    _headers: dict[str, str]
-    _assets_cache: dict[str, IO[bytes]]
     _cache_size = 32
-    _cache_order: list[str]
 
     def __init__(
         self,
@@ -66,7 +63,8 @@ class Habitica:
         """Initialize the Habitica API client."""
         client_headers = {"X-CLIENT": get_x_client(x_client)}
         user_agent = {"User-Agent": get_user_agent()}
-        self._headers = {}
+        self._headers: dict[str, str] = {}
+
         if session:
             self._session = session
             if "User-Agent" not in session.headers:
@@ -90,6 +88,9 @@ class Habitica:
             raise ValueError(msg)
 
         self.url = URL(url if url else DEFAULT_URL) / "api"
+
+        self._assets_cache: dict[str, IO[bytes]] = {}
+        self._cache_order: list[str] = []
 
     async def _request(self, method: str, url: URL, **kwargs) -> str:
         """Handle API request."""
