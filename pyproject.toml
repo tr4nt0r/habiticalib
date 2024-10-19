@@ -25,6 +25,7 @@ max-complexity = 25
 
 [tool.ruff.lint.per-file-ignores]
 "types.py" = ["N815"]
+"tests/*" = ["SLF001", "S101"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -75,7 +76,8 @@ dependencies = [
     "pytest-cov==5.0.0",
     "mkdocs-material==9.5.41",
     "mkdocstrings[python]==0.26.2",
-    "pytest-asyncio==0.24.0"
+    "pytest-asyncio==0.24.0",
+    "aioresponses==0.7.6"
 ]
 installer = "uv"
 

@@ -58,7 +58,7 @@ def get_user_agent() -> str:
     os_info = f"{os_name} {os_release} ({os_version}); {arch}"
 
     return (
-        f"Hhabiticalib/{version("habiticalib")} ({os_info}) "
+        f"Habiticalib/{version("habiticalib")} ({os_info}) "
         f"aiohttp/{aiohttp.__version__} Python/{platform.python_version()} "
         " +https://github.com/tr4nt0r/habiticalib)"
     )

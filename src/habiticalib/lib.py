@@ -69,8 +69,9 @@ class Habitica:
         self._headers = {}
         if session:
             self._session = session
-            self._session.headers.setdefault(*user_agent)
-            self._headers = client_headers
+            if "User-Agent" not in session.headers:
+                self._headers.update(user_agent)
+            self._headers.update(client_headers)
         else:
             self._session = ClientSession(
                 headers={**user_agent, **client_headers},
@@ -78,10 +79,12 @@ class Habitica:
             self._close_session = True
 
         if api_user and api_key:
-            self._headers = {
-                "X-API-USER": api_user,
-                "X-API-KEY": api_key,
-            }
+            self._headers.update(
+                {
+                    "X-API-USER": api_user,
+                    "X-API-KEY": api_key,
+                }
+            )
         elif api_user or api_key:
             msg = "Both 'api_user' and 'api_key' must be provided together."
             raise ValueError(msg)
