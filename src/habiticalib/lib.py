@@ -150,7 +150,7 @@ class Habitica:
         Raises
         ------
         NotAuthorizedError
-        If the login request fails due to incorrect username or password (HTTP 401).
+            If the login request fails due to incorrect username or password (HTTP 401).
         aiohttp.ClientResponseError
             For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
         aiohttp.ClientConnectionError
@@ -201,7 +201,7 @@ class Habitica:
             If None, the full user profile document is returned. Default is None.
         anonymized : bool
             When True, returns the user's data without: Authentication information,
-            NewMessages/Invitations/Inbox, Profile, Purchased information,
+            New Messages/Invitations/Inbox, Profile, Purchased information,
             Contributor information, Special items, Webhooks, Notifications.
             (default is False)
 
@@ -505,28 +505,30 @@ class Habitica:
     async def get_user_export(self) -> HabiticaUserExport:
         """Export the user's data from Habitica.
 
-        Note:
-            This endpoint is part of Habitica's private API and intended for use
-            on the website only. It may change at any time without notice, and
-            backward compatibility is not guaranteed.
+        Notes
+        -----
+        This endpoint is part of Habitica's private API and intended for use
+        on the website only. It may change at any time without notice, and
+        backward compatibility is not guaranteed.
 
         Returns
         -------
-            HabiticaUserExportResponse: The user's exported data, containing
+        HabiticaUserExportResponse:
+            The user's exported data, containing
             information such as tasks, settings, and profile details.
 
         Raises
         ------
-            NotAuthorizedError
-                If the API request is unauthorized (HTTP 401).
-            aiohttp.ClientResponseError
-                For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
-            aiohttp.ClientConnectionError
-                If the connection to the API fails.
-            aiohttp.ClientError
-                For any other exceptions raised by aiohttp during the request.
-            TimeoutError
-                If the connection times out.
+        NotAuthorizedError
+            If the API request is unauthorized (HTTP 401).
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
         """
         url = self.url.parent / "export/userdata.json"
 
@@ -559,18 +561,19 @@ class Habitica:
 
         Returns
         -------
-            HabiticaResponse: A response object containing the game content in JSON format.
+        HabiticaResponse:
+            A response object containing the game content in JSON format.
 
         Raises
         ------
-            aiohttp.ClientResponseError
-                For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
-            aiohttp.ClientConnectionError
-                If the connection to the API fails.
-            aiohttp.ClientError
-                For any other exceptions raised by aiohttp during the request.
-            TimeoutError
-                If the connection times out.
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
         """
         url = self.url / "v3/content"
         params = {}
@@ -1297,7 +1300,7 @@ class Habitica:
         image : Image
             The base image onto which the asset will be pasted.
         asset : str
-            The name of the image asset to fetch (e.g., "hair_bangs_style_color").
+            The name of the image asset to fetch (e.g., "hair_bangs_1_red.png").
             If no file extension is provided, `.png` will be added by default.
         position : tuple of int
             The (x, y) position coordinates where the asset will be pasted on the base image.
