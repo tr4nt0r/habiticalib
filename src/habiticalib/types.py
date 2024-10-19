@@ -6,14 +6,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from enum import StrEnum
-from typing import TYPE_CHECKING, Any
+from typing import Any
+from uuid import UUID  # noqa: TCH003
 
 from mashumaro import field_options
 from mashumaro.config import BaseConfig
 from mashumaro.mixins.orjson import DataClassORJSONMixin
-
-if TYPE_CHECKING:
-    from uuid import UUID
 
 
 def serialize_datetime(date: str | int | None) -> datetime | None:

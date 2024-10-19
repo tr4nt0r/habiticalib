@@ -98,11 +98,6 @@ lint-check = [
 docs-serve = "mkdocs serve"
 docs-build = "mkdocs build"
 
-[[tool.hatch.envs.test.matrix]]
-python = ["3.12", "3.13", "3.11"]
-
-
-
 [build-system]
 requires = ["hatchling", "hatch-regex-commit"]
 build-backend = "hatchling.build"
