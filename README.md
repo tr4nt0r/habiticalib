@@ -5,7 +5,7 @@
 </p>
 
 [![build](https://github.com/tr4nt0r/habiticalib/workflows/Build/badge.svg)](https://github.com/tr4nt0r/habiticalib/actions)
-[![codecov](https://codecov.io/gh/tr4nt0r/habiticalib/branch/master/graph/badge.svg)](https://codecov.io/gh/tr4nt0r/habiticalib)
+[![codecov](https://codecov.io/gh/tr4nt0r/habiticalib/graph/badge.svg?token=iEsZ1Ktj7d)](https://codecov.io/gh/tr4nt0r/habiticalib)
 [![PyPI version](https://badge.fury.io/py/habiticalib.svg)](https://badge.fury.io/py/habiticalib)
 
 ---
