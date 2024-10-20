@@ -25,9 +25,10 @@
 - name: duplicate
   description: This issue or pull request already exists
   color: cfd3d7
-- name: enhancement
+- name: feature
   description: New feature or request
   color: a2eeef
+  from_name: enhancement
 - name: github_actions
   description: Pull requests that update Github_actions code
   color: "000000"
@@ -52,9 +53,10 @@
 - name: refactoring
   description: Refactoring
   color: ef67c4
-- name: removal
+- name: deprecation
   description: Removals and Deprecations
   color: 9ae7ea
+  from_name: removal
 - name: style
   description: Style
   color: c120e5
