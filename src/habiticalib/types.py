@@ -17,7 +17,7 @@ from mashumaro.mixins.orjson import DataClassORJSONMixin
 def serialize_datetime(date: str | int | None) -> datetime | None:
     """Convert an iso date to a datetime.date object."""
     if isinstance(date, int):
-        datetime.fromtimestamp(date / 1000, tz=UTC)
+        return datetime.fromtimestamp(date / 1000, tz=UTC)
     if isinstance(date, str):
         try:
             return datetime.fromisoformat(date)
