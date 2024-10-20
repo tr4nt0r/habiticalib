@@ -1,10 +1,11 @@
 """Modern asynchronous Python client library for the Habitica API."""
 
+from .const import __version__
 from .exceptions import HabiticaException, NotAuthorizedError, NotFoundError
 from .lib import Habitica
 
-__version__ = "0.1.0a1"
 __all__ = [
+    "__version__",
     "Habitica",
     "HabiticaException",
     "NotAuthorizedError",

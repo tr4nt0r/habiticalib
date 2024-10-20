@@ -61,7 +61,7 @@ allow-direct-references = true
 [tool.hatch.version]
 source = "regex_commit"
 commit_extra_args = ["-e"]
-path = "src/habiticalib/__init__.py"
+path = "src/habiticalib/const.py"
 
 [tool.hatch.envs.default]
 python = "3.12"

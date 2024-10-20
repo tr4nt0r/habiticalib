@@ -1,13 +1,12 @@
 """Helper functions for Habiticalib."""
 
 from dataclasses import asdict
-from importlib.metadata import version
 import platform
 import uuid
 
 import aiohttp
 
-from .const import DEVELOPER_ID
+from .const import DEVELOPER_ID, __version__
 from .types import HabiticaUserResponse, UserData, UserStyles
 
 
@@ -58,7 +57,7 @@ def get_user_agent() -> str:
     os_info = f"{os_name} {os_release} ({os_version}); {arch}"
 
     return (
-        f"Habiticalib/{version("habiticalib")} ({os_info}) "
+        f"Habiticalib/{__version__} ({os_info}) "
         f"aiohttp/{aiohttp.__version__} Python/{platform.python_version()} "
         " +https://github.com/tr4nt0r/habiticalib)"
     )
@@ -106,7 +105,7 @@ def get_x_client(x_client: str | None = None) -> str:
 
         return x_client
 
-    return f"{DEVELOPER_ID} - Habiticalib/{version("habiticalib")}"
+    return f"{DEVELOPER_ID} - Habiticalib/{__version__}"
 
 
 def extract_user_styles(user_data: HabiticaUserResponse) -> UserStyles:
