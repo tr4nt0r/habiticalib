@@ -1,0 +1,57 @@
+{
+    "items": {
+        "gear": {
+            "equipped": {
+                "weapon": "weapon_special_fall2024Warrior",
+                "armor": "armor_special_fall2024Warrior",
+                "head": "head_special_fall2024Warrior",
+                "shield": "shield_special_fall2024Warrior",
+                "back": "back_mystery_201402",
+                "headAccessory": "headAccessory_special_pinkHeadband",
+                "eyewear": "eyewear_special_pinkHalfMoon",
+                "body": "body_mystery_202003"
+            },
+            "costume": {
+                "weapon": null,
+                "armor": "armor_base_0",
+                "head": "head_base_0",
+                "shield": "shield_base_0",
+                "back": null,
+                "headAccessory": null,
+                "eyewear": null,
+                "body": null
+            }
+        },
+        "currentMount": "Velociraptor-Base",
+        "currentPet": "Rat-Shade"
+    },
+    "preferences": {
+        "hair": {
+            "color": "red",
+            "base": 3,
+            "bangs": 1,
+            "beard": 0,
+            "mustache": 0,
+            "flower": 1
+        },
+        "size": "slim",
+        "skin": "915533",
+        "shirt": "blue",
+        "chair": "none",
+        "costume": false,
+        "sleep": false,
+        "background": "violet"
+    },
+    "stats": {
+        "buffs": {
+            "per": 0,
+            "con": 0,
+            "stealth": 0,
+            "seafoam": false,
+            "shinySeed": false,
+            "snowball": true,
+            "spookySparkles": false
+        },
+        "Class": "warrior"
+    }
+}

@@ -11,9 +11,7 @@ from .conftest import load_fixture
 
 async def test_user(mock_aiohttp: aioresponses, snapshot: SnapshotAssertion) -> None:
     """Test default user agent is set."""
-    mock_aiohttp.get(
-        "https://habitica.com/api/v3/user", payload=load_fixture("user.json")
-    )
+    mock_aiohttp.get("https://habitica.com/api/v3/user", body=load_fixture("user.json"))
     async with ClientSession() as session:
         habitica = Habitica(session, "test", "test")
         response = await habitica.get_user()
