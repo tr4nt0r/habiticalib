@@ -50,9 +50,10 @@
 - name: question
   description: Further information is requested
   color: d876e3
-- name: refactoring
-  description: Refactoring
+- name: code quality
+  description: Code quality improvements
   color: ef67c4
+  from_name: refactor
 - name: deprecation
   description: Removals and Deprecations
   color: 9ae7ea
@@ -61,7 +62,7 @@
   description: Style
   color: c120e5
 - name: testing
-  description: Testing
+  description: Pull request that adds tests
   color: b1fc6f
 - name: wontfix
   description: This will not be worked on
