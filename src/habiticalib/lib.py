@@ -25,6 +25,7 @@ from .types import (
     Direction,
     HabiticaClass,
     HabiticaClassSystemResponse,
+    HabiticaContentResponse,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
     HabiticaResponse,
@@ -549,7 +550,7 @@ class Habitica:
     async def get_content(
         self,
         language: Language | None = None,
-    ) -> HabiticaResponse:
+    ) -> HabiticaContentResponse:
         """
         Fetch game content from the Habitica API.
 
@@ -591,7 +592,7 @@ class Habitica:
         if language:
             params.update({"language": language.value})
 
-        return HabiticaResponse.from_json(
+        return HabiticaContentResponse.from_json(
             await self._request("get", url=url, params=params),
         )
 

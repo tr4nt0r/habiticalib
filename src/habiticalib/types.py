@@ -1229,3 +1229,386 @@ class TaskPriority(Enum):
     EASY = 1
     MEDIUM = 1.5
     HARD = 2
+
+
+@dataclass
+class AchievmentContent:
+    """Achievment content data."""
+
+    icon: str
+    key: str
+    titleKey: str | None = None
+    textKey: str | None = None
+    singularTitleKey: str | None = None
+    singularTextKey: str | None = None
+    pluralTitleKey: str | None = None
+    pluralTextKey: str | None = None
+
+
+@dataclass
+class AnimalColorAchievementContent:
+    """animalColorAchievement content data."""
+
+    color: str
+    petAchievement: str
+    petNotificationType: str
+    mountAchievement: str
+    mountNotificationType: str
+
+
+@dataclass
+class AnimalSetAchievementContent:
+    """animalSetAchievements content data."""
+
+    Type: str = field(metadata=field_options(alias="type"))
+    species: list[str]
+    achievementKey: str
+    notificationType: str
+
+
+@dataclass
+class StableAchievementContent:
+    """stableAchievements content data."""
+
+    masterAchievement: str
+    masterNotificationType: str
+
+
+@dataclass
+class PetSetCompleteAchievsContent:
+    """petSetCompleteAchievs content data."""
+
+    color: str
+    petAchievement: str
+    petNotificationType: str
+
+
+@dataclass
+class QuestBossRage:
+    """QuestBossRage content data."""
+
+    title: str
+    description: str
+    value: float
+    effect: str | None = None
+    healing: float | None = None
+
+
+@dataclass
+class QuestBoss:
+    """QuestBoss content data."""
+
+    name: str
+    hp: float
+    Str: float = field(metadata=field_options(alias="str"))
+    Def: float = field(metadata=field_options(alias="def"))
+    rage: QuestBossRage | None = None
+
+
+@dataclass
+class QuestItem:
+    """QuestItem content data."""
+
+    Type: str = field(metadata=field_options(alias="type"))
+    key: str
+    text: str
+
+
+@dataclass
+class QuestDrop:
+    """QuestDrop content data."""
+
+    gp: float
+    exp: float
+    items: list[QuestItem] | None = None
+
+
+@dataclass
+class QuestCollect:
+    """QuestCollect content data."""
+
+    text: str
+    count: int
+
+
+@dataclass
+class QuestUnlockCondition:
+    """QuestUnlockCondition content data."""
+
+    condition: str
+    text: str
+
+
+@dataclass
+class QuestsContent:
+    """petSetCompleteAchievs content data."""
+
+    text: str
+    notes: str
+
+    completion: str
+    category: str
+
+    drop: QuestDrop
+    key: str
+    goldValue: float | None = None
+    value: float | None = None
+    previous: str | None = None
+    prereqQuests: list[str] | None = None
+    collect: dict[str, QuestCollect] | None = None
+    unlockCondition: QuestUnlockCondition | None = None
+    boss: QuestBoss | None = None
+    group: str | None = None
+
+
+@dataclass
+class ItemListEntry:
+    """ItemListEntry content data."""
+
+    localeKey: str
+    isEquipment: bool
+
+
+@dataclass
+class ItemListContent:
+    """ItemListContent content data."""
+
+    weapon: ItemListEntry
+    armor: ItemListEntry
+    head: ItemListEntry
+    shield: ItemListEntry
+    back: ItemListEntry
+    body: ItemListEntry
+    headAccessory: ItemListEntry
+    eyewear: ItemListEntry
+    hatchingPotions: ItemListEntry
+    premiumHatchingPotions: ItemListEntry
+    eggs: ItemListEntry
+    quests: ItemListEntry
+    food: ItemListEntry
+    Saddle: ItemListEntry
+    bundles: ItemListEntry
+
+
+@dataclass
+class GearEntry:
+    """GearEntry content data."""
+
+    text: str
+    notes: str
+    Int: int = field(metadata=field_options(alias="int"))
+    value: int
+    Type: str = field(metadata=field_options(alias="type"))
+    key: str
+    Set: str = field(metadata=field_options(alias="set"))
+    klass: str
+    index: str
+    Str: int = field(metadata=field_options(alias="str"))
+    per: int
+    con: int
+
+
+@dataclass
+class GearClass:
+    """GearClass content data."""
+
+    warrior: dict[str, GearEntry] | None = None
+    wizard: dict[str, GearEntry] | None = None
+    rogue: dict[str, GearEntry] | None = None
+    special: dict[str, GearEntry] | None = None
+    armoire: dict[str, GearEntry] | None = None
+    mystery: dict[str, GearEntry] | None = None
+    healer: dict[str, GearEntry] | None = None
+
+
+@dataclass
+class GearType:
+    """GearType content data."""
+
+    weapon: GearClass
+    armor: GearClass
+    head: GearClass
+    shield: GearClass
+    back: GearClass
+    body: GearClass
+    headAccessory: GearClass
+    eyewear: GearClass
+
+
+@dataclass
+class GearContent:
+    """GearContent content data."""
+
+    tree: GearType
+    flat: dict[str, GearEntry]
+
+
+@dataclass
+class SpellEntry:
+    """SpellEntry content data."""
+
+    text: str
+    mana: int
+    target: str
+    notes: str
+    key: str
+    previousPurchase: bool | None = None
+    limited: bool | None = None
+    lvl: int | None = None
+    value: int | None = None
+    immediateUse: bool | None = None
+    purchaseType: str | None = None
+    silent: bool | None = None
+
+
+@dataclass
+class SpellsClass:
+    """SpellsClass content data."""
+
+    wizard: dict[str, SpellEntry]
+    warrior: dict[str, SpellEntry]
+    rogue: dict[str, SpellEntry]
+    healer: dict[str, SpellEntry]
+    special: dict[str, SpellEntry]
+
+
+@dataclass
+class CarTypes:
+    """CarTypes content data."""
+
+    key: str
+    messageOptions: int
+    yearRound: bool = False
+
+
+@dataclass
+class SpecialItemEntry:
+    """Item content data."""
+
+    key: str | None = None
+    text: str | None = None
+    notes: str | None = None
+    immediateUse: bool | None = None
+    limited: bool | None = None
+    mana: int | None = None
+    previousPurchase: bool | None = None
+    purchaseType: str | None = None
+    silent: bool | None = None
+    target: str | None = None
+    value: int | None = None
+
+
+@dataclass
+class EggEntry:
+    """Egg content data."""
+
+    text: str | None = None
+    mountText: str | None = None
+    adjective: str | None = None
+    value: int | None = None
+    key: str | None = None
+    notes: str | None = None
+
+
+@dataclass
+class HatchingPotionEntry:
+    """Hatching potion content data."""
+
+    value: int | None = None
+    key: str | None = None
+    text: str | None = None
+    notes: str | None = None
+    premium: bool | None = None
+    limited: bool | None = None
+    _addlNotes: str | None = None
+    wacky: bool | None = None
+
+
+@dataclass
+class PetEntry:
+    """Pet content data."""
+
+    key: str | None = None
+    Type: str | None = field(default=None, metadata=field_options(alias="type"))
+    potion: str | None = None
+    egg: str | None = None
+    text: str | None = None
+
+
+@dataclass
+class InventoryItemEntry:
+    """Inventory item content data."""
+
+    text: str | None = None
+    textA: str | None = None
+    textThe: str | None = None
+    target: str | None = None
+    value: int | None = None
+    key: str | None = None
+    notes: str | None = None
+    canDrop: bool | None = None
+
+
+@dataclass
+class ContentData:
+    """Content data."""
+
+    achievements: dict[str, AchievmentContent]
+    questSeriesAchievements: dict[str, list[str]]
+    animalColorAchievements: list[AnimalColorAchievementContent]
+    animalSetAchievements: dict[str, AnimalSetAchievementContent]
+    stableAchievements: dict[str, StableAchievementContent]
+    petSetCompleteAchievs: list[PetSetCompleteAchievsContent]
+    quests: dict[str, QuestsContent]
+    questsByLevel: list[QuestsContent]
+    userCanOwnQuestCategories: list[str]
+    itemList: ItemListContent
+    gear: GearContent
+    spells: SpellsClass
+    audioThemes: list[str]
+    # mystery
+    officialPinnedItems: list
+    # bundles
+    # potion
+    # armoire
+    # events
+    # repeatingEvents
+    classes: list[str]
+    gearTypes: list[str]
+    cardTypes: dict[str, CarTypes]
+    special: dict[str, SpecialItemEntry]
+    dropEggs: dict[str, EggEntry]
+    questEggs: dict[str, EggEntry]
+    eggs: dict[str, EggEntry]
+    # timeTravelStable
+    dropHatchingPotions: dict[str, HatchingPotionEntry]
+    premiumHatchingPotions: dict[str, HatchingPotionEntry]
+    wackyHatchingPotions: dict[str, HatchingPotionEntry]
+    hatchingPotions: dict[str, HatchingPotionEntry]
+    pets: dict[str, bool]
+    premiumPets: dict[str, bool]
+    questPets: dict[str, bool]
+    specialPets: dict[str, str]
+    wackyPets: dict[str, bool]
+    petInfo: dict[str, PetEntry]
+    mounts: dict[str, bool]
+    premiumMounts: dict[str, bool]
+    questMounts: dict[str, bool]
+    specialMounts: dict[str, str]
+    mountInfo: dict[str, PetEntry]
+    food: dict[str, InventoryItemEntry]
+    # appearances
+    # backgrounds
+    # backgroundsFlat
+    # userDefaults
+    # tasksByCategory
+    # userDefaultsMobile
+    # faq
+    # loginIncentives
+
+
+@dataclass
+class HabiticaContentResponse(HabiticaResponse):
+    """Representation of a content response."""
+
+    data: ContentData
