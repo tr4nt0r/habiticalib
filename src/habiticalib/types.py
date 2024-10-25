@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from enum import StrEnum
+from enum import Enum, StrEnum
 from typing import Any
 from uuid import UUID  # noqa: TCH003
 
@@ -866,10 +866,10 @@ class Task(DataClassORJSONMixin):
     tags: list[UUID] | None = None
     collapseChecklist: bool | None = None
     date: datetime | None = None
-    priority: float | None = None
+    priority: TaskPriority | None = None
     reminders: list[Reminders] | None = None
     checklist: list[str] | None = None
-    task_type: TaskType | None = None
+    Type: TaskType | None = field(default=None, metadata=field_options(alias="type"))
     up: bool | None = None
     down: bool | None = None
     counterUp: int | None = None
@@ -895,7 +895,7 @@ class TaskData:
     notes: str | None = None
     tags: list[UUID] | None = None
     value: float | None = None
-    priority: float | None = None
+    priority: TaskPriority | None = None
     attribute: Attributes | None = None
     byHabitica: bool | None = None
     createdAt: datetime | None = None
@@ -1201,3 +1201,12 @@ class Direction(StrEnum):
 
     UP = "up"
     DOWN = "down"
+
+
+class TaskPriority(Enum):
+    """Task difficulties."""
+
+    TRIVIAL = 0.1
+    EASY = 1
+    MEDIUM = 1.5
+    HARD = 2

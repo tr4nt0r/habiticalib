@@ -28,10 +28,10 @@ categories:
     labels:
       - 'perfomance'
       - 'refactor'
-  - title: '🔬 Other updates'
-    labels:
       - 'ci'
       - 'build'
+  - title: '🔬 Other updates'
+    labels:
       - 'style'
       - 'testing'
 
@@ -42,9 +42,9 @@ autolabeler:
   - label: 'bug'
     title:
       - '/fix/i'
-  - label: 'refactor'
+  - label: 'code quality'
     title:
-      - '/refactor/i'
+      - '/Refactor/i'
   - label: 'testing'
     title:
       - '/test:/i'
@@ -67,7 +67,7 @@ autolabeler:
       - '/bump/i'
   - label: 'deprecation'
     title:
-      - '/deprecate/i'
+      - '/Deprecate/i'
 
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.

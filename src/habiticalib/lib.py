@@ -87,7 +87,7 @@ class Habitica:
             msg = "Both 'api_user' and 'api_key' must be provided together."
             raise ValueError(msg)
 
-        self.url = URL(url if url else DEFAULT_URL) / "api"
+        self.url = URL(url if url else DEFAULT_URL)
 
         self._assets_cache: dict[str, IO[bytes]] = {}
         self._cache_order: list[str] = []
@@ -169,7 +169,7 @@ class Habitica:
         >>> response.data.apiToken
         'api-token'
         """
-        url = self.url / "v3/user/auth/local/login"
+        url = self.url / "api/v3/user/auth/local/login"
         data = {
             "username": username,
             "password": password,
@@ -229,7 +229,7 @@ class Habitica:
         >>> response = await habitica.get_user(user_fields="achievements,items.mounts")
         >>> response.data  # Access the returned data from the response
         """
-        url = self.url / "v3/user"
+        url = self.url / "api/v3/user"
         params = {}
 
         if user_fields:
@@ -290,7 +290,7 @@ class Habitica:
 
         >>> await habitica.get_tasks(TaskType.HABITS, due_date=datetime(2024, 10, 15))
         """
-        url = self.url / "v3/tasks/user"
+        url = self.url / "api/v3/tasks/user"
         params = {}
 
         if task_type:
@@ -334,7 +334,7 @@ class Habitica:
         >>> task_response = await habitica.get_task(task_id)
         >>> print(task_response.data)  # Displays the retrieved task information
         """
-        url = self.url / "v3/tasks" / str(task_id)
+        url = self.url / "api/v3/tasks" / str(task_id)
 
         return HabiticaTaskResponse.from_json(
             await self._request("get", url=url),
@@ -373,7 +373,7 @@ class Habitica:
         >>> create_response = await habitica.create_task(new_task)
         >>> print(create_response.data)  # Displays the created task information
         """
-        url = self.url / "v3/tasks/user"
+        url = self.url / "api/v3/tasks/user"
 
         return HabiticaTaskResponse.from_json(
             await self._request("post", url=url, json=task.to_dict()),
@@ -416,7 +416,7 @@ class Habitica:
         >>> update_response = await habitica.update_task(task_id, updated_task)
         >>> print(update_response.data)  # Displays the updated task information
         """
-        url = self.url / "v3/tasks" / str(task_id)
+        url = self.url / "api/v3/tasks" / str(task_id)
 
         return HabiticaTaskResponse.from_json(
             await self._request("put", url=url, json=task.to_dict()),
@@ -455,7 +455,7 @@ class Habitica:
         >>> delete_response = await habitica.delete_task(task_id)
         >>> print(delete_response.success)  # True if successfully deleted
         """
-        url = self.url / "v3/tasks" / str(task_id)
+        url = self.url / "api/v3/tasks" / str(task_id)
 
         return HabiticaResponse.from_json(
             await self._request("delete", url=url),
@@ -497,7 +497,7 @@ class Habitica:
         >>> reorder_response = await habitica.reorder_task(task_id, 2)
         >>> print(reorder_response.data)  # Displays a list of task IDs in the new order
         """
-        url = self.url / "v3/tasks" / str(task_id) / "move/to" / str(to)
+        url = self.url / "api/v3/tasks" / str(task_id) / "move/to" / str(to)
 
         return HabiticaTaskOrderResponse.from_json(
             await self._request("post", url=url),
@@ -531,7 +531,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url.parent / "export/userdata.json"
+        url = self.url / "export/userdata.json"
 
         return HabiticaUserExport.from_json(
             await self._request("get", url=url),
@@ -576,7 +576,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/content"
+        url = self.url / "api/v3/content"
         params = {}
 
         if language:
@@ -612,7 +612,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/cron"
+        url = self.url / "api/v3/cron"
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
     async def allocate_single_stat_point(
@@ -656,7 +656,7 @@ class Habitica:
         Allocate a single stat point to Strength (default):
         >>> await habitica.allocate_single_stat_point()
         """
-        url = self.url / "v3/user/allocate"
+        url = self.url / "api/v3/user/allocate"
         params = {"stat": stat}
 
         return HabiticaStatsResponse.from_json(
@@ -690,7 +690,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/user/allocate-now"
+        url = self.url / "api/v3/user/allocate-now"
 
         return HabiticaStatsResponse.from_json(
             await self._request("post", url=url),
@@ -743,7 +743,7 @@ class Habitica:
         Allocate 2 points to INT and 1 point to STR:
         >>> await allocate_bulk_stat_points(int_points=2, str_points=1)
         """
-        url = self.url / "v3/user/allocate-bulk"
+        url = self.url / "api/v3/user/allocate-bulk"
         json = {
             "stats": {
                 "int": int_points,
@@ -782,7 +782,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/user/buy-health-potion"
+        url = self.url / "api/v3/user/buy-health-potion"
 
         return HabiticaStatsResponse.from_json(
             await self._request("post", url=url),
@@ -823,7 +823,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/class/cast" / spell
+        url = self.url / "api/v3/class/cast" / spell
         params = {}
 
         if target_id:
@@ -854,7 +854,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/user/sleep"
+        url = self.url / "api/v3/user/sleep"
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
@@ -876,7 +876,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/user/revive"
+        url = self.url / "api/v3/user/revive"
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
@@ -915,7 +915,7 @@ class Habitica:
         >>> change_response = await habitica.change_class(new_class)
         >>> print(change_response.data.stats)  # Displays the user's stats after class change
         """
-        url = self.url / "v3/user/change-class"
+        url = self.url / "api/v3/user/change-class"
         params = {"class": Class.value}
 
         return HabiticaClassSystemResponse.from_json(
@@ -948,7 +948,7 @@ class Habitica:
         >>> disable_response = await habitica.disable_classes()
         >>> print(disable_response.data.stats)  # Displays the user's stats after disabling the class system
         """
-        url = self.url / "v3/user/disable-classes"
+        url = self.url / "api/v3/user/disable-classes"
 
         return HabiticaClassSystemResponse.from_json(
             await self._request("post", url=url)
@@ -981,7 +981,7 @@ class Habitica:
         >>> delete_response = await habitica.delete_completed_todos()
         >>> print(delete_response.success)  # True if successfully cleared completed to-dos
         """
-        url = self.url / "v3/tasks/clearCompletedTodos"
+        url = self.url / "api/v3/tasks/clearCompletedTodos"
 
         return HabiticaClassSystemResponse.from_json(
             await self._request("post", url=url)
@@ -1023,7 +1023,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "v3/tasks" / str(task_id) / "score" / direction.value
+        url = self.url / "api/v3/tasks" / str(task_id) / "score" / direction.value
 
         return HabiticaScoreResponse.from_json(
             await self._request("post", url=url),
@@ -1056,7 +1056,7 @@ class Habitica:
         >>> tags_response = await habitica.get_tags()
         >>> print(tags_response.data)
         """
-        url = self.url / "v3/tags"
+        url = self.url / "api/v3/tags"
 
         return HabiticaTagsResponse.from_json(
             await self._request("post", url=url),
@@ -1094,7 +1094,7 @@ class Habitica:
         >>> tag_response = await habitica.get_tag()
         >>> print(tag_response.data)
         """
-        url = self.url / "v3/tags" / str(tag_id)
+        url = self.url / "api/v3/tags" / str(tag_id)
 
         return HabiticaTagResponse.from_json(
             await self._request("post", url=url),
@@ -1133,7 +1133,7 @@ class Habitica:
         >>> delete_response = await habitica.delete_tag(tag_id)
         >>> print(delete_response.success)  # True if successfully deleted
         """
-        url = self.url / "v3/tags" / str(tag_id)
+        url = self.url / "api/v3/tags" / str(tag_id)
 
         return HabiticaTagResponse.from_json(
             await self._request("delete", url=url),
@@ -1172,7 +1172,7 @@ class Habitica:
         >>> new_tag_response = await habitica.create_tag("New Tag Name")
         >>> print(new_tag_response.data.id)  # Displays the id of the new tag
         """
-        url = self.url / "v3/tags"
+        url = self.url / "api/v3/tags"
         json = {"name": name}
         return HabiticaTagResponse.from_json(
             await self._request("post", url=url, json=json),
@@ -1213,7 +1213,7 @@ class Habitica:
         >>> update_response = await habitica.update_tag(tag_id, "New Tag Name")
         >>> print(update_response.data)  # Displays the updated tag information
         """
-        url = self.url / "v3/tags" / str(tag_id)
+        url = self.url / "api/v3/tags" / str(tag_id)
         json = {"name": name}
         return HabiticaTagResponse.from_json(
             await self._request("put", url=url, json=json),
@@ -1254,7 +1254,7 @@ class Habitica:
         >>> reorder_response = await habitica.reorder_tag(tag_id, 2)
         >>> print(reorder_response.success)  # True if reorder is successful
         """
-        url = self.url / "v3/reorder-tags"
+        url = self.url / "api/v3/reorder-tags"
         json = {"tagId": str(tag_id), "to": to}
 
         return HabiticaTagResponse.from_json(

@@ -129,9 +129,14 @@
         "items": {
             "gear": {
                 "equipped": {
-                    "armor": "armor_base_0",
-                    "head": "head_base_0",
-                    "shield": "shield_base_0"
+                    "weapon": "weapon_special_fall2024Warrior",
+                    "armor": "armor_special_fall2024Warrior",
+                    "head": "head_special_fall2024Warrior",
+                    "shield": "shield_special_fall2024Warrior",
+                    "back": "back_mystery_201402",
+                    "headAccessory": "headAccessory_special_pinkHeadband",
+                    "eyewear": "eyewear_special_pinkHalfMoon",
+                    "body": "body_mystery_202003"
                 },
                 "costume": {
                     "armor": "armor_base_0",
@@ -188,8 +193,8 @@
                 "count": 0,
                 "date": "2024-10-19T18:43:39.784Z"
             },
-            "currentPet": "",
-            "currentMount": "",
+            "currentPet": "Rat-Shade",
+            "currentMount": "Velociraptor-Base",
             "pets": {},
             "eggs": {},
             "hatchingPotions": {},
