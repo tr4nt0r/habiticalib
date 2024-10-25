@@ -1,13 +1,69 @@
 """Modern asynchronous Python client library for the Habitica API."""
 
-from .const import __version__
-from .exceptions import HabiticaException, NotAuthorizedError, NotFoundError
+from .const import ASSETS_URL, DEFAULT_URL, __version__
+from .exceptions import (
+    BadRequestError,
+    HabiticaException,
+    NotAuthorizedError,
+    NotFoundError,
+)
 from .lib import Habitica
+from .types import (
+    Attributes,
+    Class,
+    Direction,
+    Frequency,
+    HabiticaClassSystemResponse,
+    HabiticaErrorResponse,
+    HabiticaLoginResponse,
+    HabiticaResponse,
+    HabiticaScoreResponse,
+    HabiticaStatsResponse,
+    HabiticaTagResponse,
+    HabiticaTagsResponse,
+    HabiticaTaskOrderResponse,
+    HabiticaTaskResponse,
+    HabiticaTasksResponse,
+    HabiticaUserExport,
+    HabiticaUserResponse,
+    Language,
+    Skill,
+    Task,
+    TaskFilter,
+    TaskType,
+    UserStyles,
+)
 
 __all__ = [
     "__version__",
+    "ASSETS_URL",
+    "Attributes",
+    "BadRequestError",
+    "Class",
+    "DEFAULT_URL",
+    "Direction",
+    "Frequency",
     "Habitica",
+    "HabiticaClassSystemResponse",
+    "HabiticaErrorResponse",
     "HabiticaException",
+    "HabiticaLoginResponse",
+    "HabiticaResponse",
+    "HabiticaScoreResponse",
+    "HabiticaStatsResponse",
+    "HabiticaTagResponse",
+    "HabiticaTagsResponse",
+    "HabiticaTaskOrderResponse",
+    "HabiticaTaskResponse",
+    "HabiticaTasksResponse",
+    "HabiticaUserExport",
+    "HabiticaUserResponse",
+    "Language",
     "NotAuthorizedError",
     "NotFoundError",
+    "Skill",
+    "Task",
+    "TaskFilter",
+    "TaskType",
+    "UserStyles",
 ]

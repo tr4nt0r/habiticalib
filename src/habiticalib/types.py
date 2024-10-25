@@ -24,6 +24,7 @@ def serialize_datetime(date: str | int | None) -> datetime | None:
         except ValueError:
             # sometimes nextDue dates are JavaScript datetime strings
             # instead of iso: "Mon May 06 2024 00:00:00 GMT+0200"
+            # This was fixed in Habitica v5.28.9, nextDue dates are now isoformat
             try:
                 return datetime.strptime(date, "%a %b %d %Y %H:%M:%S %Z%z")
             except ValueError:
