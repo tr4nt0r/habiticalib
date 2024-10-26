@@ -13,7 +13,12 @@ from PIL import Image
 from yarl import URL
 
 from .const import ASSETS_URL, BACKER_ONLY_GEAR, DEFAULT_URL
-from .exceptions import BadRequestError, NotAuthorizedError, NotFoundError
+from .exceptions import (
+    BadRequestError,
+    NotAuthorizedError,
+    NotFoundError,
+    TooManyRequestsError,
+)
 from .helpers import extract_user_styles, get_user_agent, get_x_client, join_fields
 from .types import (
     Attributes,
@@ -102,15 +107,19 @@ class Habitica:
         ) as r:
             if r.status == HTTPStatus.UNAUTHORIZED:
                 raise NotAuthorizedError(
-                    HabiticaErrorResponse.from_json(await r.text()),
+                    HabiticaErrorResponse.from_json(await r.text()), r.headers
                 )
             if r.status == HTTPStatus.NOT_FOUND:
                 raise NotFoundError(
-                    HabiticaErrorResponse.from_json(await r.text()),
+                    HabiticaErrorResponse.from_json(await r.text()), r.headers
                 )
             if r.status == HTTPStatus.BAD_REQUEST:
                 raise BadRequestError(
-                    HabiticaErrorResponse.from_json(await r.text()),
+                    HabiticaErrorResponse.from_json(await r.text()), r.headers
+                )
+            if r.status == HTTPStatus.TOO_MANY_REQUESTS:
+                raise TooManyRequestsError(
+                    HabiticaErrorResponse.from_json(await r.text()), r.headers
                 )
             r.raise_for_status()
             return await r.text()
