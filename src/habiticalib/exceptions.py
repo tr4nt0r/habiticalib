@@ -1,5 +1,6 @@
 """Exceptions for Habiticalib."""
 
+from datetime import datetime
 from typing import Self
 
 from multidict import CIMultiDictProxy
@@ -17,10 +18,20 @@ class HabiticaException(Exception):  # noqa: N818
     ) -> None:
         """Initialize the Exception."""
         self.error = error
-        self.rate_limit = headers.get("x-ratelimit-limit")
-        self.rate_limit_remaining = headers.get("x-ratelimit-remaining")
-        self.rate_limit_reset = headers.get("x-ratelimit-reset")
-        self.retry_after = headers.get("retry-after")
+        self.rate_limit: int | None = (
+            int(r) if (r := headers.get("x-ratelimit-limit")) else None
+        )
+        self.rate_limit_remaining: int | None = (
+            int(r) if (r := headers.get("x-ratelimit-remaining")) else None
+        )
+        self.rate_limit_reset: datetime | None = (
+            datetime.strptime(r[:25], "%a %b %d %Y %H:%M:%S %Z%z")
+            if (r := headers.get("x-ratelimit-reset"))
+            else None
+        )
+        self.retry_after: float | None = (
+            float(r) if (r := headers.get("retry-after")) else None
+        )
 
         super().__init__(error.message)
 
