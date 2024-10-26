@@ -717,7 +717,7 @@ class UserData:
 
     id: UUID | None = None
     preferences: PreferencesUser = field(default_factory=PreferencesUser)
-    flags: FlagsUser | None = None
+    flags: FlagsUser = field(default_factory=FlagsUser)
     auth: AuthUser = field(default_factory=AuthUser)
     achievements: AchievementsUser = field(default_factory=AchievementsUser)
     backer: BackerUser = field(default_factory=BackerUser)
