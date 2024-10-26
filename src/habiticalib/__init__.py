@@ -6,6 +6,7 @@ from .exceptions import (
     HabiticaException,
     NotAuthorizedError,
     NotFoundError,
+    TooManyRequestsError,
 )
 from .lib import Habitica
 from .types import (
@@ -65,5 +66,6 @@ __all__ = [
     "Task",
     "TaskFilter",
     "TaskType",
+    "TooManyRequestsError",
     "UserStyles",
 ]
