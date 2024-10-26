@@ -628,6 +628,15 @@ class TrainingStats:
     Int: int | None = field(default=None, metadata=field_options(alias="int"))
 
 
+class Class(StrEnum):
+    """Habitica's player classes."""
+
+    WARRIOR = "warrior"
+    ROGUE = "rogue"
+    MAGE = "wizard"
+    HEALER = "healer"
+
+
 @dataclass(kw_only=True)
 class StatsUser:
     """Stats user data."""
@@ -639,7 +648,7 @@ class StatsUser:
     exp: int | None = None
     gp: float | None = None
     lvl: int | None = None
-    Class: str = field(default="warrior", metadata=field_options(alias="class"))
+    Class: Class = field(default=Class.WARRIOR, metadata=field_options(alias="class"))
     points: int | None = None
     Str: int | None = field(default=None, metadata=field_options(alias="str"))
     con: int | None = None
@@ -1185,15 +1194,6 @@ class Skill(StrEnum):
     OPAQUE_POTION = "opaquePotion"  # removes spooky sparkles buff
     SAND = "sand"  # removes seafoam buff
     PETAL_FREE_POTION = "petalFreePotion"
-
-
-class Class(StrEnum):
-    """Habitica's player classes."""
-
-    WARRIOR = "warrior"
-    ROGUE = "rogue"
-    MAGE = "mage"
-    HEALER = "healer"
 
 
 class Direction(StrEnum):
