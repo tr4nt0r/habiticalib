@@ -11,9 +11,9 @@ from .exceptions import (
 from .lib import Habitica
 from .types import (
     Attributes,
-    Class,
     Direction,
     Frequency,
+    HabiticaClass,
     HabiticaClassSystemResponse,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
@@ -40,11 +40,11 @@ __all__ = [
     "ASSETS_URL",
     "Attributes",
     "BadRequestError",
-    "Class",
     "DEFAULT_URL",
     "Direction",
     "Frequency",
     "Habitica",
+    "HabiticaClass",
     "HabiticaClassSystemResponse",
     "HabiticaErrorResponse",
     "HabiticaException",
