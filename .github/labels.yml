@@ -28,7 +28,6 @@
 - name: feature
   description: New feature or request
   color: a2eeef
-  from_name: enhancement
 - name: github_actions
   description: Pull requests that update Github_actions code
   color: "000000"
@@ -53,11 +52,9 @@
 - name: code quality
   description: Code quality improvements
   color: ef67c4
-  from_name: refactor
 - name: deprecation
   description: Removals and Deprecations
   color: 9ae7ea
-  from_name: removal
 - name: style
   description: Style
   color: c120e5
