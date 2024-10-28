@@ -629,7 +629,7 @@ class TrainingStats:
     Int: int | None = field(default=None, metadata=field_options(alias="int"))
 
 
-class Class(StrEnum):
+class HabiticaClass(StrEnum):
     """Habitica's player classes."""
 
     WARRIOR = "warrior"
@@ -649,7 +649,9 @@ class StatsUser:
     exp: int | None = None
     gp: float | None = None
     lvl: int | None = None
-    Class: Class = field(default=Class.WARRIOR, metadata=field_options(alias="class"))
+    Class: HabiticaClass | None = field(
+        default=None, metadata=field_options(alias="class")
+    )
     points: int | None = None
     Str: int | None = field(default=None, metadata=field_options(alias="str"))
     con: int | None = None
@@ -658,6 +660,13 @@ class StatsUser:
     maxHealth: int | None = None
     maxMP: int | None = None
     Int: int | None = field(default=None, metadata=field_options(alias="int"))
+
+
+field(
+    metadata=field_options(
+        deserialize=serialize_datetime,
+    )
+)
 
 
 @dataclass(kw_only=True)
@@ -989,7 +998,7 @@ class StatsUserStyles:
     """Stats user styles data."""
 
     buffs: BuffsUserStyles = field(default_factory=BuffsUserStyles)
-    Class: str = field(default="warrior", metadata=field_options(alias="class"))
+    Class: HabiticaClass = field(default=HabiticaClass.WARRIOR)
 
 
 @dataclass(kw_only=True)

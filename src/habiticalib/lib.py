@@ -22,8 +22,8 @@ from .exceptions import (
 from .helpers import extract_user_styles, get_user_agent, get_x_client, join_fields
 from .types import (
     Attributes,
-    Class,
     Direction,
+    HabiticaClass,
     HabiticaClassSystemResponse,
     HabiticaErrorResponse,
     HabiticaLoginResponse,
@@ -889,7 +889,7 @@ class Habitica:
 
         return HabiticaResponse.from_json(await self._request("post", url=url))
 
-    async def change_class(self, Class: Class) -> HabiticaClassSystemResponse:  # noqa: N803
+    async def change_class(self, Class: HabiticaClass) -> HabiticaClassSystemResponse:  # noqa: N803
         """Change the user's class in Habitica.
 
         This method sends a request to the Habitica API to change the user's class
@@ -920,7 +920,7 @@ class Habitica:
 
         Examples
         --------
-        >>> new_class = Class.WARRIOR
+        >>> new_class = HabiticaClass.WARRIOR
         >>> change_response = await habitica.change_class(new_class)
         >>> print(change_response.data.stats)  # Displays the user's stats after class change
         """
