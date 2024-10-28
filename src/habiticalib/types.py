@@ -61,6 +61,7 @@ class LoginData:
     apiToken: str
     newUser: bool
     username: str
+    passwordResetCode: str | None = None
 
 
 @dataclass(kw_only=True)
