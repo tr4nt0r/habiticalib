@@ -25,7 +25,7 @@ class HabiticaException(Exception):  # noqa: N818
             int(r) if (r := headers.get("x-ratelimit-remaining")) else None
         )
         self.rate_limit_reset: datetime | None = (
-            datetime.strptime(r[:25], "%a %b %d %Y %H:%M:%S %Z%z")
+            datetime.strptime(r[:33], "%a %b %d %Y %H:%M:%S %Z%z")
             if (r := headers.get("x-ratelimit-reset"))
             else None
         )
