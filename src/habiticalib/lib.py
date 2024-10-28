@@ -1068,7 +1068,7 @@ class Habitica:
         url = self.url / "api/v3/tags"
 
         return HabiticaTagsResponse.from_json(
-            await self._request("post", url=url),
+            await self._request("get", url=url),
         )
 
     async def get_tag(self, tag_id: UUID) -> HabiticaTagResponse:
@@ -1106,7 +1106,7 @@ class Habitica:
         url = self.url / "api/v3/tags" / str(tag_id)
 
         return HabiticaTagResponse.from_json(
-            await self._request("post", url=url),
+            await self._request("get", url=url),
         )
 
     async def delete_tag(self, tag_id: UUID) -> HabiticaResponse:
@@ -1266,7 +1266,7 @@ class Habitica:
         url = self.url / "api/v3/reorder-tags"
         json = {"tagId": str(tag_id), "to": to}
 
-        return HabiticaTagResponse.from_json(
+        return HabiticaResponse.from_json(
             await self._request("post", url=url, json=json),
         )
 
