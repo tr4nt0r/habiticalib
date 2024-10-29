@@ -1071,7 +1071,7 @@ class DropTmpScore:
     canDrop: bool | None = None
     value: int | None = None
     key: str | None = None
-    type: str | None = None
+    Type: str | None = field(default=None, metadata=field_options(alias="type"))
     dialog: str | None = None
 
 
