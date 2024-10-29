@@ -4,13 +4,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import UTC, date as dt_date, datetime
+from datetime import UTC, date, datetime
 from enum import Enum, StrEnum
-from typing import Any
+from typing import Any, NotRequired, TypedDict
 from uuid import UUID  # noqa: TCH003
 
 from mashumaro import field_options
-from mashumaro.config import BaseConfig
 from mashumaro.mixins.orjson import DataClassORJSONMixin
 
 
@@ -869,38 +868,36 @@ class Frequency(StrEnum):
     YEARLY = "yearly"
 
 
-@dataclass(kw_only=True)
-class Task(DataClassORJSONMixin):
+class Task(
+    TypedDict(
+        "Task",
+        {"type": NotRequired[TaskType], "date": NotRequired[datetime | date | None]},
+    ),
+    total=True,
+):
     """Representation of a task."""
 
-    class Config(BaseConfig):
-        """Config."""
-
-        omit_none = True
-
-    text: str | None = None
-    attribute: Attributes | None = None
-    alias: str | None = None
-    notes: str | None = None
-    tags: list[UUID] | None = None
-    collapseChecklist: bool | None = None
-    date: datetime | dt_date | None = None
-    priority: TaskPriority | None = None
-    reminders: list[Reminders] | None = None
-    checklist: list[str] | None = None
-    Type: TaskType | None = field(default=None, metadata=field_options(alias="type"))
-    up: bool | None = None
-    down: bool | None = None
-    counterUp: int | None = None
-    counterDown: int | None = None
-    startDate: datetime | dt_date | None = None
-    frequency: Frequency | None = None
-    everyX: int | None = None
-    repeat: Repeat | None = None
-    daysOfMonth: list[int] | None = None
-    weeksOfMonth: list[int] | None = None
-    completed: bool | None = None
-    streak: int | None = None
+    text: NotRequired[str]
+    attribute: NotRequired[Attributes]
+    alias: NotRequired[str]
+    notes: NotRequired[str]
+    tags: NotRequired[list[UUID]]
+    collapseChecklist: NotRequired[bool]
+    priority: NotRequired[TaskPriority]
+    reminders: NotRequired[list[Reminders]]
+    checklist: NotRequired[list[str]]
+    up: NotRequired[bool]
+    down: NotRequired[bool]
+    counterUp: NotRequired[int]
+    counterDown: NotRequired[int]
+    startDate: NotRequired[datetime]
+    frequency: NotRequired[Frequency]
+    everyX: NotRequired[int]
+    repeat: NotRequired[Repeat]
+    daysOfMonth: NotRequired[list[int]]
+    weeksOfMonth: NotRequired[list[int]]
+    completed: NotRequired[bool]
+    streak: NotRequired[int]
 
 
 @dataclass(kw_only=True)
@@ -1135,7 +1132,7 @@ class HabiticaClassSystemResponse(HabiticaResponse, DataClassORJSONMixin):
 class HabiticaTaskOrderResponse(HabiticaResponse):
     """Representation of a reorder task response."""
 
-    data: TasksOrderUser = field(default_factory=TasksOrderUser)
+    data: list[UUID] = field(default_factory=list)
 
 
 class TaskFilter(StrEnum):

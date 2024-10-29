@@ -385,7 +385,7 @@ class Habitica:
         url = self.url / "api/v3/tasks/user"
 
         return HabiticaTaskResponse.from_json(
-            await self._request("post", url=url, json=task.to_dict()),
+            await self._request("post", url=url, json=task),
         )
 
     async def update_task(self, task_id: UUID, task: Task) -> HabiticaTaskResponse:
@@ -428,7 +428,7 @@ class Habitica:
         url = self.url / "api/v3/tasks" / str(task_id)
 
         return HabiticaTaskResponse.from_json(
-            await self._request("put", url=url, json=task.to_dict()),
+            await self._request("put", url=url, json=task),
         )
 
     async def delete_task(self, task_id: UUID) -> HabiticaResponse:
