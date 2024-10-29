@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import UTC, datetime
+from datetime import UTC, date as dt_date, datetime
 from enum import Enum, StrEnum
 from typing import Any
 from uuid import UUID  # noqa: TCH003
@@ -884,7 +884,7 @@ class Task(DataClassORJSONMixin):
     notes: str | None = None
     tags: list[UUID] | None = None
     collapseChecklist: bool | None = None
-    date: datetime | None = None
+    date: datetime | dt_date | None = None
     priority: TaskPriority | None = None
     reminders: list[Reminders] | None = None
     checklist: list[str] | None = None
@@ -893,7 +893,7 @@ class Task(DataClassORJSONMixin):
     down: bool | None = None
     counterUp: int | None = None
     counterDown: int | None = None
-    startDate: datetime | None = None
+    startDate: datetime | dt_date | None = None
     frequency: Frequency | None = None
     everyX: int | None = None
     repeat: Repeat | None = None
