@@ -1088,7 +1088,9 @@ class ScoreData(StatsUser):
     """Scora data."""
 
     delta: float | None = None
-    _tmp: TmpScore = field(default_factory=TmpScore)
+    tmp: TmpScore = field(
+        default_factory=TmpScore, metadata=field_options(alias="_tmp")
+    )
 
 
 @dataclass(kw_only=True)
