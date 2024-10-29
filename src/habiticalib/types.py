@@ -1083,12 +1083,19 @@ class TmpScore:
     drop: DropTmpScore = field(default_factory=DropTmpScore)
 
 
-@dataclass(kw_only=True)
-class HabiticaScoreResponse(StatsUser, DataClassORJSONMixin):
-    """Representation of a score response."""
+@dataclass
+class ScoreData(StatsUser):
+    """Scora data."""
 
     delta: float | None = None
     _tmp: TmpScore = field(default_factory=TmpScore)
+
+
+@dataclass(kw_only=True)
+class HabiticaScoreResponse(HabiticaResponse, DataClassORJSONMixin):
+    """Representation of a score response."""
+
+    data: ScoreData
 
 
 @dataclass(kw_only=True)
