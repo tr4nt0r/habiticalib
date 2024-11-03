@@ -799,14 +799,14 @@ class Habitica:
 
     async def cast_skill(
         self,
-        spell: Skill,
+        skill: Skill,
         target_id: UUID | None = None,
     ) -> HabiticaUserResponse:
         """Cast a skill (spell) in Habitica, optionally targeting a specific user, task or party.
 
         Parameters
         ----------
-        spell : Skill
+        skill : Skill
             The skill (or spell) to be cast. This should be a valid `Skill` enum value.
         target_id : UUID, optional
             The unique identifier of the target for the skill. If the skill does not require a target,
@@ -832,7 +832,7 @@ class Habitica:
         TimeoutError
             If the connection times out.
         """
-        url = self.url / "api/v3/class/cast" / spell
+        url = self.url / "api/v3/user/class/cast" / skill
         params = {}
 
         if target_id:
