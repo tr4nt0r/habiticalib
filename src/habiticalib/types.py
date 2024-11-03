@@ -693,10 +693,10 @@ class InboxUser:
 class TasksOrderUser:
     """TasksOrder user data."""
 
-    habits: list[str] = field(default_factory=list)
-    dailys: list[str] = field(default_factory=list)
-    todos: list[str] = field(default_factory=list)
-    rewards: list[str] = field(default_factory=list)
+    habits: list[UUID] = field(default_factory=list)
+    dailys: list[UUID] = field(default_factory=list)
+    todos: list[UUID] = field(default_factory=list)
+    rewards: list[UUID] = field(default_factory=list)
 
 
 @dataclass(kw_only=True)
@@ -765,8 +765,8 @@ class UserData:
     balance: float | None = None
     lastCron: datetime | None = None
     needsCron: bool | None = None
-    challenges: list[str] = field(default_factory=list)
-    guilds: list[str] = field(default_factory=list)
+    challenges: list[UUID] = field(default_factory=list)
+    guilds: list[UUID] = field(default_factory=list)
     newMessages: dict[str, bool] = field(default_factory=dict)
 
 
