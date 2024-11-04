@@ -75,27 +75,27 @@ class HabiticaLoginResponse(HabiticaResponse):
 class LocalAuth:
     """Auth local data."""
 
-    email: str
-    username: str
-    lowerCaseUsername: str
-    has_password: bool
+    email: str | None = None
+    username: str | None = None
+    lowerCaseUsername: str | None = None
+    has_password: bool | None = None
 
 
 @dataclass(kw_only=True)
 class LocalTimestamps:
     """Timestamps local data."""
 
-    created: datetime
-    loggedin: datetime
-    updated: datetime
+    created: datetime | None = None
+    loggedin: datetime | None = None
+    updated: datetime | None = None
 
 
 @dataclass(kw_only=True)
 class AuthUser:
     """User auth data."""
 
-    local: LocalAuth | None = None
-    timestamps: LocalTimestamps | None = None
+    local: LocalAuth = field(default_factory=LocalAuth)
+    timestamps: LocalTimestamps = field(default_factory=LocalTimestamps)
     facebook: dict | None = None
     google: dict | None = None
     apple: dict | None = None
