@@ -29,9 +29,7 @@ class HabiticaException(Exception):  # noqa: N818
             if (r := headers.get("x-ratelimit-reset"))
             else None
         )
-        self.retry_after: float | None = (
-            float(r) if (r := headers.get("retry-after")) else None
-        )
+        self.retry_after: int = round(float(headers.get("retry-after", 0)))
 
         super().__init__(error.message)
 
