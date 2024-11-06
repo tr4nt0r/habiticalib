@@ -1,7 +1,10 @@
 """Helper functions for Habiticalib."""
 
-from dataclasses import asdict
+from dataclasses import asdict, is_dataclass
+from datetime import date, datetime
+from enum import Enum
 import platform
+from typing import Any
 import uuid
 
 import aiohttp
@@ -112,3 +115,24 @@ def extract_user_styles(user_data: HabiticaUserResponse) -> UserStyles:
     """Extract user styles from a user data object."""
     data: UserData = user_data.data
     return UserStyles.from_dict(asdict(data))
+
+
+def deserialize_task(value: Any) -> Any:  # noqa: PLR0911
+    """Recursively convert Enums to values, dates to ISO strings, UUIDs to strings."""
+
+    if is_dataclass(value) and not isinstance(value, type):
+        # Convert dataclass to dict and recursively deserialize
+        return deserialize_task(asdict(value))
+    if isinstance(value, Enum):
+        return value.value  # Convert Enum to its value
+    if isinstance(value, uuid.UUID):
+        return str(value)  # Convert UUID to string
+    if isinstance(value, datetime | date):
+        return value.isoformat()  # Convert datetime/date to ISO string
+    if isinstance(value, list):
+        # Recursively apply deserialization to each item in the list
+        return [deserialize_task(item) for item in value]
+    if isinstance(value, dict):
+        # Recursively apply deserialization to each key-value pair in the dictionary
+        return {k: deserialize_task(v) for k, v in value.items()}
+    return value  # Return other types unchanged
