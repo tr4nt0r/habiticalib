@@ -69,7 +69,7 @@ dependencies = [
     "aiohttp==3.10.10",
     "mashumaro==3.13.1",
     "orjson==3.10.7",
-    "Pillow==10.4.0",
+    "Pillow==11.0.0",
     "mypy==1.12.0",
     "ruff==0.7.0",
     "pytest==8.3.3",
@@ -125,7 +125,7 @@ dependencies = [
     "aiohttp~=3.9",
     "mashumaro~=3.13",
     "orjson~=3.10",
-    "Pillow~=10.4"
+    "Pillow~=11.0"
 ]
 
 [project.urls]
