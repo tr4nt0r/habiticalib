@@ -1,6 +1,6 @@
 """Constants for Habiticalib."""
 
-__version__ = "0.1.0a2"
+__version__ = "0.1.0a3"
 
 DEFAULT_URL = "https://habitica.com/"
 ASSETS_URL = "https://habitica-assets.s3.amazonaws.com/mobileApp/images/"
