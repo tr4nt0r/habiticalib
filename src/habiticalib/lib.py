@@ -19,7 +19,13 @@ from .exceptions import (
     NotFoundError,
     TooManyRequestsError,
 )
-from .helpers import extract_user_styles, get_user_agent, get_x_client, join_fields
+from .helpers import (
+    deserialize_task,
+    extract_user_styles,
+    get_user_agent,
+    get_x_client,
+    join_fields,
+)
 from .types import (
     Attributes,
     Direction,
@@ -378,14 +384,16 @@ class Habitica:
 
         Examples
         --------
-        >>> new_task = Task(name="New Task", ...)
+        >>> new_task = Task(text="New Task", type=TaskType.TODO ...)
         >>> create_response = await habitica.create_task(new_task)
         >>> print(create_response.data)  # Displays the created task information
         """
         url = self.url / "api/v3/tasks/user"
 
+        json = deserialize_task(task)
+
         return HabiticaTaskResponse.from_json(
-            await self._request("post", url=url, json=task.to_dict()),
+            await self._request("post", url=url, json=json),
         )
 
     async def update_task(self, task_id: UUID, task: Task) -> HabiticaTaskResponse:
@@ -421,14 +429,16 @@ class Habitica:
         Examples
         --------
         >>> task_id = UUID("12345678-1234-5678-1234-567812345678")
-        >>> updated_task = Task(name="Updated Task", ...)
+        >>> updated_task = Task(text="Updated Task", ...)
         >>> update_response = await habitica.update_task(task_id, updated_task)
         >>> print(update_response.data)  # Displays the updated task information
         """
         url = self.url / "api/v3/tasks" / str(task_id)
 
+        json = deserialize_task(task)
+
         return HabiticaTaskResponse.from_json(
-            await self._request("put", url=url, json=task.to_dict()),
+            await self._request("put", url=url, json=json),
         )
 
     async def delete_task(self, task_id: UUID) -> HabiticaResponse:
