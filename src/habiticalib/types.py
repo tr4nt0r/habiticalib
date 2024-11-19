@@ -1135,7 +1135,7 @@ class HabiticaClassSystemResponse(HabiticaResponse, DataClassORJSONMixin):
 class HabiticaTaskOrderResponse(HabiticaResponse):
     """Representation of a reorder task response."""
 
-    data: TasksOrderUser = field(default_factory=TasksOrderUser)
+    data: list[UUID] = field(default_factory=list)
 
 
 class TaskFilter(StrEnum):
