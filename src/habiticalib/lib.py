@@ -849,7 +849,7 @@ class Habitica:
         if target_id:
             params.update({"targetId": str(target_id)})
         return HabiticaUserResponse.from_json(
-            await self._request("post", url=url, json=params),
+            await self._request("post", url=url, params=params),
         )
 
     async def toggle_sleep(
