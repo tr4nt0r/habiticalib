@@ -1194,7 +1194,7 @@ class Skill(StrEnum):
     VALOROUS_PRESENCE = "valorousPresence"
     INTIMIDATING_GAZE = "intimidate"
     # Rogue skills
-    PICKPOCKET = "Pickpocket"
+    PICKPOCKET = "pickPocket"
     BACKSTAB = "backStab"
     TOOLS_OF_THE_TRADE = "toolsOfTrade"
     STEALTH = "stealth"
