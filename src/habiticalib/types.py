@@ -1131,6 +1131,13 @@ class HabiticaTaskOrderResponse(HabiticaResponse):
     data: list[UUID] = field(default_factory=list)
 
 
+@dataclass
+class HabiticaSleepResponse(HabiticaResponse):
+    """Representation of a sleep response."""
+
+    data: bool
+
+
 class TaskFilter(StrEnum):
     """Enum representing the valid types of tasks for requests."""
 

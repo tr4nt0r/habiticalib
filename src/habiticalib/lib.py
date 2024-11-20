@@ -35,6 +35,7 @@ from .types import (
     HabiticaLoginResponse,
     HabiticaResponse,
     HabiticaScoreResponse,
+    HabiticaSleepResponse,
     HabiticaStatsResponse,
     HabiticaTagResponse,
     HabiticaTagsResponse,
@@ -853,12 +854,12 @@ class Habitica:
 
     async def toggle_sleep(
         self,
-    ) -> HabiticaResponse:
+    ) -> HabiticaSleepResponse:
         """Toggles the user's sleep mode in Habitica.
 
         Returns
         -------
-        HabiticaResponse
+        HabiticaSleepResponse
             A response object containing the result of the sleep mode toggle,
             and the new sleep state (True if sleeping, False if not).
 
@@ -875,7 +876,7 @@ class Habitica:
         """
         url = self.url / "api/v3/user/sleep"
 
-        return HabiticaResponse.from_json(await self._request("post", url=url))
+        return HabiticaSleepResponse.from_json(await self._request("post", url=url))
 
     async def revive(
         self,
