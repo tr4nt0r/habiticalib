@@ -34,6 +34,7 @@ from .types import (
     HabiticaErrorResponse,
     HabiticaGroupMembersResponse,
     HabiticaLoginResponse,
+    HabiticaQuestResponse,
     HabiticaResponse,
     HabiticaScoreResponse,
     HabiticaSleepResponse,
@@ -1374,6 +1375,350 @@ class Habitica:
             response.data.extend(next_page.data)
 
         return response
+
+    async def abort_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Abort an active quest for the party or a specific group.
+
+        Prematurely terminates an ongoing quest, causing all progress to be lost.
+        The quest scroll will be returned to the owner's inventory.
+        Only the quest leader or group leader is allowed to perform this action.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the specific group whose quest should be aborted.
+            Defaults to the user's party if not specified.
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        NotAuthorizedError
+            If the user does not have permission to abort the quest.
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        Abort the party's current quest:
+        >>> response = await habitica.abort_quest()
+        >>> print(response.success)  # True if the quest was successfully aborted.
+
+        Abort a quest for a specific group:
+        >>> group_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> response = await habitica.abort_quest(group_id)
+        >>> print(response.success)  # True if the quest was successfully aborted.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/abort"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def accept_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Accept a pending invitation to a quest from the party or a specific group.
+
+        Allows a user to accept an invitation to participate in a quest within a
+        specified group.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group for which the quest invitation is being accepted.
+            Defaults to the user's party if not specified.
+
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Accept a pending quest invitation from the party:
+        >>> response = await habitica.accept_quest()
+        >>> print(response.success)  # True if the quest invitation was successfully accepted.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/accept"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def reject_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Reject a pending quest invitation from the party or a specific group.
+
+        Allows a user to reject an invitation to participate in a quest within a
+        specified group. The user will not join the quest and will be excluded from
+        its progress and rewards.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group for which the quest invitation is being rejected.
+            Defaults to the user's party if not specified.
+
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Reject a pending quest invitation from the party:
+        >>> response = await habitica.reject_quest()
+        >>> print(response.success)  # True if the quest invitation was successfully rejected.
+
+        Reject a pending quest invitation from a specific group:
+        >>> group_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> response = await habitica.reject_quest(group_id)
+        >>> print(response.success)  # True if the quest invitation was successfully rejected.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/reject"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def cancel_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Cancel a pending quest for the party or a specific group.
+
+        Cancel a quest that has not yet startet. All accepted and pending invitations
+        will be canceled and the quest roll returned to the owner's inventory.
+        Only quest leader or group leader can perform this action.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group for which the quest is being canceled.
+            Defaults to the user's party if not specified.
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing details about the canceled quest.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        NotAuthorizedError
+            If the user does not have permission to cancel the quest.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Cancel a pending quest for the party:
+        >>> response = await habitica.cancel_quest()
+        >>> print(response.success)  # True if the quest was successfully canceled.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/cancel"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def start_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Force-start a quest for the party or a specific group.
+
+        Begins a quest immediately, bypassing any pending invitations that haven't been
+        accepted or rejected.
+        Only quest leader or group leader can perform this action.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group for which the quest should be started.
+            Defaults to the user's party if not specified.
+
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        NotAuthorizedError
+            If the user does not have permission to start the quest.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Cancel a pending quest for the party:
+        >>> response = await habitica.cancel_quest()
+        >>> print(response.success)  # True if the quest was successfully canceled.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/force-start"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def invite_quest(
+        self,
+        group_id: UUID | None = None,
+        *,
+        quest_key: str,
+    ) -> HabiticaQuestResponse:
+        """Invite members of the party or a specific group to participate in a quest.
+
+        Sends invitations for a quest to all eligible members of the specified group.
+        The quest is started when all members accept or reject the invitation.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group for which the quest invitations should be sent.
+            Defaults to the user's party if not specified.
+        quest_key : str
+            The unique key identifying the quest to invite members to.
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Send a quest invitation to the party:
+        >>> response = await habitica.invite_quest(quest_key="dilatory_derby")
+        >>> print(response.success)  # True if invitations were successfully sent.
+
+        Send a quest invitation to a specific group:
+        >>> group_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> response = await habitica.invite_quest(group_id, quest_key="golden_knight")
+        >>> print(response.success)  # True if invitations were successfully sent.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/invite" / quest_key
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
+
+    async def leave_quest(self, group_id: UUID | None = None) -> HabiticaQuestResponse:
+        """Leave the current quest from the party or a specific group.
+
+        Allows a user to exit an ongoing quest they are part of. This action removes
+        them from the quest but does not affect its progress for other participants.
+        Users who leave a quest will not contribute to its completion or receive rewards.
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group associated with the quest the user is leaving.
+            Defaults to the user's party if not specified.
+        quest_key : str
+            The unique key identifying the quest to invite members to.
+
+        Returns
+        -------
+        HabiticaQuestResponse
+            A response object containing updated quest data of the group or party.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified group or quest could not be found.
+        aiohttp.ClientResponseError
+            Raised for HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            Raised for any other exceptions encountered by `aiohttp` during the request.
+        TimeoutError
+            If the connection to the API times out.
+
+        Examples
+        --------
+        Leave the current quest in the user's party:
+        >>> response = await habitica.leave_quest()
+        >>> print(response.success)  # True if the user successfully left the quest.
+
+        Leave the current quest in a specific group:
+        >>> group_id = UUID("12345678-1234-5678-1234-567812345678")
+        >>> response = await habitica.leave_quest(group_id)
+        >>> print(response.success)  # True if the user successfully left the quest.
+        """
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "quests/leave"
+
+        return HabiticaQuestResponse.from_json(
+            await self._request("post", url=url),
+        )
 
     def _cache_asset(self, asset: str, asset_data: IO[bytes]) -> None:
         """Cache an asset and maintain the cache size limit by removing older entries.
