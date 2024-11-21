@@ -778,6 +778,13 @@ class HabiticaUserResponse(HabiticaResponse):
 
 
 @dataclass(kw_only=True)
+class HabiticaGroupMembersResponse(HabiticaResponse):
+    """Representation of a group members data response."""
+
+    data: list[UserData]
+
+
+@dataclass(kw_only=True)
 class CompletedBy:
     """Task group completedby data."""
 
