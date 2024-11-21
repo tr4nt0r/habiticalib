@@ -14,3 +14,5 @@ BACKER_ONLY_GEAR = {
     "shield_special_ks2019": "BackerOnly-Equip-MythicGryphonShield.gif",
     "weapon_special_ks2019": "BackerOnly-Equip-MythicGryphonGlaive.gif",
 }
+
+PAGE_LIMIT = 60

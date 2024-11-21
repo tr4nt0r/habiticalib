@@ -12,7 +12,7 @@ from aiohttp import ClientError, ClientResponseError, ClientSession
 from PIL import Image
 from yarl import URL
 
-from .const import ASSETS_URL, BACKER_ONLY_GEAR, DEFAULT_URL
+from .const import ASSETS_URL, BACKER_ONLY_GEAR, DEFAULT_URL, PAGE_LIMIT
 from .exceptions import (
     BadRequestError,
     NotAuthorizedError,
@@ -32,6 +32,7 @@ from .types import (
     HabiticaClass,
     HabiticaClassSystemResponse,
     HabiticaErrorResponse,
+    HabiticaGroupMembersResponse,
     HabiticaLoginResponse,
     HabiticaResponse,
     HabiticaScoreResponse,
@@ -1280,6 +1281,99 @@ class Habitica:
         return HabiticaResponse.from_json(
             await self._request("post", url=url, json=json),
         )
+
+    async def get_group_members(
+        self,
+        group_id: UUID | None = None,
+        *,
+        limit: int | None = None,
+        tasks: bool = False,
+        public_fields: bool = False,
+        last_id: UUID | None = None,
+    ) -> HabiticaGroupMembersResponse:
+        """Get members of the party or a specific group.
+
+        This method retrieves a list of members for a party or a specified group
+        from the Habitica API. Additional options allow including tasks or public
+        through results if necessary to collect all members. If the API rate limit is
+        exceeded, the method will pause for the duration specified in the `retry-after`
+        header and retry the request.
+
+
+        Parameters
+        ----------
+        group_id : UUID, optional
+            The UUID of the group. Defaults to the user's party if not specified.
+        limit : int, optional
+            Maximum number of members per request (default: 30, max: 60).
+        tasks : bool, optional
+            Whether to include tasks associated with the group.
+        public_fields : bool, optional
+            Whether to include all public fields for group members.
+        last_id : UUID, optional
+            For paginated requests, the UUID of the last member retrieved.
+
+        Returns
+        -------
+        HabiticaGroupMembersResponse
+            A response object containing the group member data.
+
+        Raises
+        ------
+        aiohttp.ClientResponseError
+            For HTTP-related errors, such as HTTP 400 or 500 response status.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> members_response = await habitica.get_group_members()
+        >>> for member in members_response.data:
+        ...     print(member.profile.name)
+        """
+
+        if limit is not None and (limit < 1 or limit > PAGE_LIMIT):
+            msg = f"The 'limit' parameter must be between 1 and {PAGE_LIMIT}."
+            raise ValueError(msg)
+
+        group = "party" if not group_id else str(group_id)
+        url = self.url / "api/v3/groups" / group / "members"
+
+        params: dict[str, str | int] = {}
+
+        if tasks:
+            params["includeTasks"] = "true"
+        if public_fields:
+            params["includeAllPublicFields"] = "true"
+        if last_id:
+            params["lastId"] = str(last_id)
+        if limit:
+            params["limit"] = limit
+
+        while True:
+            try:
+                response = HabiticaGroupMembersResponse.from_json(
+                    await self._request("get", url=url, params=params),
+                )
+                break
+            except TooManyRequestsError as e:
+                await asyncio.sleep(e.retry_after)
+
+        if len(response.data) == limit:
+            next_page = await self.get_group_members(
+                group_id=group_id,
+                limit=limit,
+                tasks=tasks,
+                public_fields=public_fields,
+                last_id=response.data[-1].id,
+            )
+            response.data.extend(next_page.data)
+
+        return response
 
     def _cache_asset(self, asset: str, asset_data: IO[bytes]) -> None:
         """Cache an asset and maintain the cache size limit by removing older entries.
