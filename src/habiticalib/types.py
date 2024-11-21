@@ -1114,6 +1114,25 @@ class HabiticaTagResponse(HabiticaResponse, DataClassORJSONMixin):
     data: TagsUser
 
 
+@dataclass(kw_only=True)
+class QuestData:
+    """Quest data."""
+
+    progress: ProgressQuest = field(default_factory=ProgressQuest)
+    active: bool = False
+    members: dict[str, bool | None]
+    extra: dict | None = None
+    key: str
+    leader: UUID | None = None
+
+
+@dataclass(kw_only=True)
+class HabiticaQuestResponse(HabiticaResponse, DataClassORJSONMixin):
+    """Representation of a quest response."""
+
+    data: QuestData
+
+
 @dataclass
 class ChangeClassData:
     """Change class data."""
