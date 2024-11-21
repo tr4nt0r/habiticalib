@@ -591,7 +591,7 @@ class PreferencesUser:
     webhooks: dict = field(default_factory=dict)
     improvementCategories: list[str] = field(default_factory=list)
     timezoneOffsetAtLastCron: int | None = None
-    language: str | None = None
+    language: Language | None = None
 
 
 @dataclass(kw_only=True)
