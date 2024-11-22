@@ -264,14 +264,15 @@ class Habitica:
         self,
         task_type: TaskFilter | None = None,
         due_date: datetime | None = None,
-    ) -> HabiticaResponse:
+    ) -> HabiticaTasksResponse:
         """Get the authenticated user's tasks.
 
         Parameters
         ----------
         task_type : TaskFilter | None
             The type of task to retrieve, defined in TaskFilter enum.
-            If `None`, all task types will be retrieved (default is None).
+            If `None`, all task types will be retrieved except completed to-dos
+            (default is None).
 
         due_date : datetime | None
             Optional date to use for computing the nextDue field for each returned task.
