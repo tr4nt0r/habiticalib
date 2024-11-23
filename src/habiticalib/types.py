@@ -662,13 +662,6 @@ class StatsUser:
     Int: int | None = field(default=None, metadata=field_options(alias="int"))
 
 
-field(
-    metadata=field_options(
-        deserialize=serialize_datetime,
-    )
-)
-
-
 @dataclass(kw_only=True)
 class TagsUser:
     """Tags user data."""
@@ -1438,6 +1431,7 @@ class GearEntry:
 class GearClass:
     """GearClass content data."""
 
+    base: dict[str, GearEntry] | None = None
     warrior: dict[str, GearEntry] | None = None
     wizard: dict[str, GearEntry] | None = None
     rogue: dict[str, GearEntry] | None = None
