@@ -460,7 +460,7 @@ class Habitica:
         Returns
         -------
         HabiticaTaskResponse
-            A response object containing the data for the deleted task.
+            A response containing an empty data object.
 
         Raises
         ------
