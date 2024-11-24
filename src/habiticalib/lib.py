@@ -9,6 +9,7 @@ import logging
 from typing import IO, TYPE_CHECKING, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
+from habitipy.aio import HabitipyAsync
 from PIL import Image
 from yarl import URL
 
@@ -1998,3 +1999,33 @@ class Habitica:
             image.save(fp, fmt)
 
         return user_styles
+
+    async def habitipy(self) -> HabitipyAsync:
+        """Create a Habitipy instance."""
+
+        _session = self._session
+        _headers = self._headers
+        loop = asyncio.get_running_loop()
+
+        class HAHabitipyAsync(HabitipyAsync):
+            """Closure API class to hold session."""
+
+            def __call__(self, **kwargs):  # noqa: ANN204
+                """Pass session to habitipy."""
+                return super().__call__(_session, **kwargs)
+
+            def _make_headers(self) -> dict[str, str]:
+                """Inject headers."""
+                headers = super()._make_headers()
+                headers.update(_headers)
+                return headers
+
+        return await loop.run_in_executor(
+            None,
+            HAHabitipyAsync,
+            {
+                "url": str(self.url),
+                "login": self._headers.get("X-API-USER"),
+                "password": self._headers.get("X-API-KEY"),
+            },  # type: ignore[var-annotated]
+        )
