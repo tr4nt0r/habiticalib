@@ -6,10 +6,10 @@ import asyncio
 from http import HTTPStatus
 from io import BytesIO
 import logging
-from typing import IO, TYPE_CHECKING, Self
+from typing import IO, TYPE_CHECKING, Any, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
-from habitipy.aio import HabitipyAsync
+from habitipy.aio import HabitipyAsync  # type: ignore[import-untyped]
 from PIL import Image
 from yarl import URL
 
@@ -2010,7 +2010,7 @@ class Habitica:
         class HAHabitipyAsync(HabitipyAsync):
             """Closure API class to hold session."""
 
-            def __call__(self, **kwargs):  # noqa: ANN204
+            def __call__(self, **kwargs) -> Any:
                 """Pass session to habitipy."""
                 return super().__call__(_session, **kwargs)
 
