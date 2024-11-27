@@ -1041,6 +1041,21 @@ class HabiticaUserExport(UserData, DataClassORJSONMixin):
     tasks: TasksUserExport = field(default_factory=TasksUserExport)
 
 
+@dataclass
+class UserAnonymizedData:
+    """Anonymized user data."""
+
+    user: UserData = field(default_factory=UserData)
+    tasks: list[TaskData] = field(default_factory=list)
+
+
+@dataclass(kw_only=True)
+class HabiticaUserAnonymized(DataClassORJSONMixin):
+    """Representation of a anonymized user data export."""
+
+    data: UserAnonymizedData
+
+
 @dataclass(kw_only=True)
 class HabiticaStatsResponse(HabiticaResponse):
     """Representation of a response containing stats data."""
