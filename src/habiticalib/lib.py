@@ -46,6 +46,7 @@ from .types import (
     HabiticaTaskOrderResponse,
     HabiticaTaskResponse,
     HabiticaTasksResponse,
+    HabiticaUserAnonymized,
     HabiticaUserExport,
     HabiticaUserResponse,
     Language,
@@ -207,10 +208,7 @@ class Habitica:
         return response
 
     async def get_user(
-        self,
-        user_fields: str | list[str] | None = None,
-        *,
-        anonymized: bool = False,
+        self, user_fields: str | list[str] | None = None
     ) -> HabiticaUserResponse:
         """Get the authenticated user's profile.
 
@@ -220,11 +218,6 @@ class Habitica:
             A string or a list of fields to include in the response.
             If provided as a list, the fields will be joined with commas.
             If None, the full user profile document is returned. Default is None.
-        anonymized : bool
-            When True, returns the user's data without: Authentication information,
-            New Messages/Invitations/Inbox, Profile, Purchased information,
-            Contributor information, Special items, Webhooks, Notifications.
-            (default is False)
 
         Returns
         -------
@@ -254,11 +247,52 @@ class Habitica:
 
         if user_fields:
             params = {"userFields": join_fields(user_fields)}
-        if anonymized:
-            url = url / "anonymized"
 
         return HabiticaUserResponse.from_json(
             await self._request("get", url=url, params=params),
+        )
+
+    async def get_user_anonymized(
+        self,
+    ) -> HabiticaUserAnonymized:
+        """Get the authenticated user's anonymized profile.
+
+        This method retrieves the user's profile data while excluding sensitive
+        and personally identifiable information such as authentication details,
+        profile data, purchased items, contributor information, special items,
+        webhooks, and notifications.
+
+        Returns
+        -------
+        HabiticaUserAnonymized
+            A response object containing the anonymized user profile data.
+
+
+        Raises
+        ------
+        NotAuthorizedError
+            If the API request is unauthorized (HTTP 401).
+        aiohttp.ClientResponseError
+            For other HTTP-related errors raised by aiohttp, such as HTTP 400 or 500.
+        aiohttp.ClientConnectionError
+            If the connection to the API fails.
+        aiohttp.ClientError
+            For any other exceptions raised by aiohttp during the request.
+        TimeoutError
+            If the connection times out.
+
+        Examples
+        --------
+        >>> response = await habitica.get_user_anonymized()
+        >>> response.data.user  # Access the anonymized user data
+        >>> response.data.tasks  # Access the user's anonymized tasks
+        """
+        url = self.url / "api/v3/user"
+
+        url = url / "anonymized"
+
+        return HabiticaUserAnonymized.from_json(
+            await self._request("get", url=url),
         )
 
     async def get_tasks(
