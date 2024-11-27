@@ -8,7 +8,7 @@ import datetime as dt
 from datetime import UTC, datetime
 from enum import Enum, StrEnum
 from typing import Any, NotRequired, TypedDict
-from uuid import UUID  # noqa: TCH003
+from uuid import UUID
 
 from mashumaro import field_options
 from mashumaro.mixins.orjson import DataClassORJSONMixin

@@ -51,14 +51,12 @@ from .types import (
 )
 
 __all__ = [
-    "__version__",
     "ASSETS_URL",
+    "DEFAULT_URL",
     "Attributes",
     "BadRequestError",
     "ChangeClassData",
     "ContentData",
-    "DEFAULT_URL",
-    "deserialize_task",
     "Direction",
     "Frequency",
     "Habitica",
@@ -98,4 +96,6 @@ __all__ = [
     "TooManyRequestsError",
     "UserData",
     "UserStyles",
+    "__version__",
+    "deserialize_task",
 ]
