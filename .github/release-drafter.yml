@@ -39,6 +39,7 @@ autolabeler:
   - label: 'feature'
     title:
       - '/adds/i'
+      - '/add method/i'
   - label: 'bug'
     title:
       - '/fix/i'
@@ -48,6 +49,7 @@ autolabeler:
   - label: 'testing'
     title:
       - '/test:/i'
+      - '/add test/i'
     files:
       - 'test_*'
       - 'conftest.py'
@@ -78,12 +80,15 @@ version-resolver:
   major:
     labels:
       - 'major'
+      - 'breaking'
   minor:
     labels:
       - 'minor'
+      - 'feature'
   patch:
     labels:
       - 'patch'
+      - 'bug'
   default: patch
 
 template: |
