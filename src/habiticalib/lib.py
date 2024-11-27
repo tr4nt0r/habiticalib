@@ -46,7 +46,7 @@ from .types import (
     HabiticaTaskOrderResponse,
     HabiticaTaskResponse,
     HabiticaTasksResponse,
-    HabiticaUserAnonymized,
+    HabiticaUserAnonymizedrResponse,
     HabiticaUserExport,
     HabiticaUserResponse,
     Language,
@@ -254,7 +254,7 @@ class Habitica:
 
     async def get_user_anonymized(
         self,
-    ) -> HabiticaUserAnonymized:
+    ) -> HabiticaUserAnonymizedrResponse:
         """Get the authenticated user's anonymized profile.
 
         This method retrieves the user's profile data while excluding sensitive
@@ -291,7 +291,7 @@ class Habitica:
 
         url = url / "anonymized"
 
-        return HabiticaUserAnonymized.from_json(
+        return HabiticaUserAnonymizedrResponse.from_json(
             await self._request("get", url=url),
         )
 

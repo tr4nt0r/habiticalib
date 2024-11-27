@@ -1050,7 +1050,7 @@ class UserAnonymizedData:
 
 
 @dataclass(kw_only=True)
-class HabiticaUserAnonymized(DataClassORJSONMixin):
+class HabiticaUserAnonymizedrResponse(DataClassORJSONMixin):
     """Representation of a anonymized user data export."""
 
     data: UserAnonymizedData
