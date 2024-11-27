@@ -24,7 +24,7 @@ indent-style = "space"
 max-complexity = 25
 
 [tool.ruff.lint.per-file-ignores]
-"types.py" = ["N815"]
+"types.py" = ["N815", "TCH003"]
 "tests/*" = ["SLF001", "S101", "ARG001"]
 
 [tool.pytest.ini_options]
