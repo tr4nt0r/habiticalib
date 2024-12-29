@@ -842,6 +842,15 @@ class Reminders:
     startDate: datetime | None = None
 
 
+@dataclass(kw_only=True)
+class Checklist:
+    """Task checklist data."""
+
+    id: UUID
+    text: str
+    completed: bool
+
+
 class TaskType(StrEnum):
     """Task types enum."""
 
@@ -881,7 +890,7 @@ class Task(TypedDict("Task", {"type": NotRequired[TaskType]}), total=True):
     date: NotRequired[datetime | dt.date | None]
     priority: NotRequired[TaskPriority]
     reminders: NotRequired[list[Reminders]]
-    checklist: NotRequired[list[str]]
+    checklist: NotRequired[list[Checklist]]
     up: NotRequired[bool]
     down: NotRequired[bool]
     counterUp: NotRequired[int]
@@ -935,7 +944,7 @@ class TaskData:
     yesterDaily: bool | None = None
     completed: bool | None = None
     collapseChecklist: bool = False
-    checklist: list[str] = field(default_factory=list)
+    checklist: list[Checklist] = field(default_factory=list)
     isDue: bool | None = None
     repeat: Repeat = field(default_factory=Repeat)
 
