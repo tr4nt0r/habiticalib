@@ -1656,3 +1656,29 @@ class HabiticaContentResponse(HabiticaResponse):
     """Representation of a content response."""
 
     data: ContentData
+
+
+@dataclass
+class PartyMember:
+    """Party member data."""
+
+    stats: StatsUser
+    achievements: AchievementsUser
+    items: ItemsUser
+    profile: ProfileUser
+
+
+@dataclass
+class UserTasks:
+    """User and tasks data."""
+
+    user: UserData
+    partyMembers: list[PartyMember] = field(default_factory=list)
+    task: TaskData | None = None
+
+
+@dataclass
+class HabiticaCastSkillResponse(HabiticaResponse):
+    """Representation of a cast skill response."""
+
+    data: UserTasks
