@@ -30,6 +30,7 @@ from .helpers import (
 from .types import (
     Attributes,
     Direction,
+    HabiticaCastSkillResponse,
     HabiticaClass,
     HabiticaClassSystemResponse,
     HabiticaContentResponse,
@@ -851,7 +852,7 @@ class Habitica:
         self,
         skill: Skill,
         target_id: UUID | None = None,
-    ) -> HabiticaUserResponse:
+    ) -> HabiticaCastSkillResponse:
         """Cast a skill (spell) in Habitica, optionally targeting a specific user, task or party.
 
         Parameters
@@ -864,8 +865,9 @@ class Habitica:
 
         Returns
         -------
-        HabiticaStatResponse
-            A response object containing the user's updated stats and a success message.
+        HabiticaCastSkillResponse
+            A response object containing the user's updated data, updated task data if
+            a task was targeted, and a success message.
 
         Raises
         ------
@@ -887,7 +889,7 @@ class Habitica:
 
         if target_id:
             params.update({"targetId": str(target_id)})
-        return HabiticaUserResponse.from_json(
+        return HabiticaCastSkillResponse.from_json(
             await self._request("post", url=url, params=params),
         )
 
