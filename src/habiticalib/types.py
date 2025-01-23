@@ -914,7 +914,7 @@ class TaskData:
     Type: TaskType | None = field(default=None, metadata=field_options(alias="type"))
     text: str | None = None
     notes: str | None = None
-    tags: list[UUID] | None = None
+    tags: list[UUID] = field(default_factory=list)
     value: float | None = None
     priority: TaskPriority | None = None
     attribute: Attributes | None = None
@@ -929,7 +929,7 @@ class TaskData:
     counterUp: int | None = None
     counterDown: int | None = None
     frequency: Frequency | None = None
-    history: list[EntryHistory] | None = None
+    history: list[EntryHistory] = field(default_factory=list)
     alias: str | None = None
     everyX: int | None = None
     startDate: datetime | None = None
