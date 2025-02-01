@@ -1967,7 +1967,7 @@ class Habitica:
                 await self.paste_image(
                     image,
                     f"chair_{preferences.chair}",
-                    (24, 0),
+                    (24, mount_offset_y),
                 )
 
             # Fetch and paste the back accessory
