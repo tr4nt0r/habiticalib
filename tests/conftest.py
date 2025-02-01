@@ -3,6 +3,8 @@
 from collections.abc import Generator
 from functools import lru_cache
 import pathlib
+import re
+from unittest.mock import MagicMock, patch
 
 from aioresponses import CallbackResult, aioresponses
 import pytest
@@ -11,6 +13,15 @@ from syrupy.extensions.image import PNGImageSnapshotExtension
 from yarl import URL
 
 from habiticalib.const import ASSETS_URL, DEFAULT_URL
+
+TEST_API_USER = "a380546a-94be-4b8e-8a0b-23e0d5c03303"
+TEST_API_KEY = "cd0e5985-17de-4b4f-849e-5d506c5e4382"
+DEFAULT_HEADERS = {
+    "User-Agent": "Habiticalib/HABITICALIB_VER (OS RELEASE (VERSION); ARCH) aiohttp/AIOHTTP_VER Python/PYTHON_VER  +https://github.com/tr4nt0r/habiticalib)",
+    "X-API-KEY": "cd0e5985-17de-4b4f-849e-5d506c5e4382",
+    "X-API-USER": "a380546a-94be-4b8e-8a0b-23e0d5c03303",
+    "X-CLIENT": "4c4ca53f-c059-4ffa-966e-9d29dd405daf - Habiticalib/HABITICALIB_VER",
+}
 
 
 @pytest.fixture
@@ -26,10 +37,36 @@ def load_assets_fixture(url: URL, **kwargs) -> CallbackResult:
     return CallbackResult(body=load_bytes_fixture(asset))
 
 
+@pytest.fixture(autouse=True)
+def mock_platform() -> Generator[MagicMock]:
+    """Mock platform."""
+
+    with (
+        patch("habiticalib.helpers.__version__", "HABITICALIB_VER"),
+        patch("habiticalib.helpers.aiohttp.__version__", "AIOHTTP_VER"),
+        patch("habiticalib.helpers.platform", autospec=True) as client,
+    ):
+        client.system.return_value = "OS"
+        client.release.return_value = "RELEASE"
+        client.version.return_value = "VERSION"
+        client.architecture.return_value = ("ARCH", "")
+        client.python_version.return_value = "PYTHON_VER"
+        yield client
+
+
 @pytest.fixture(name="mock_aiohttp", autouse=True)
 def aioclient_mock() -> Generator[aioresponses]:
     """Mock Aiohttp client requests."""
     with aioresponses(passthrough=[ASSETS_URL]) as m:
+        m.post(
+            "https://habitica.com/api/v3/user/auth/local/login",
+            body=load_fixture("login.json"),
+        )
+        m.get(
+            re.compile(r"^https://habitica\.com/api/v3/user.*$"),
+            body=load_fixture("user.json"),
+        )
+
         yield m
 
 

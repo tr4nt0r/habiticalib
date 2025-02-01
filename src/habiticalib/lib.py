@@ -120,7 +120,7 @@ class Habitica:
     async def _request(self, method: str, url: URL, **kwargs) -> str:
         """Handle API request."""
         async with self._session.request(
-            method,
+            method.upper(),
             url,
             headers=self._headers,
             **kwargs,
