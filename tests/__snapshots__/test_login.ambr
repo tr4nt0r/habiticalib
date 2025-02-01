@@ -1,0 +1,4 @@
+# serializer version: 1
+# name: test_login
+  HabiticaLoginResponse(data=LoginData(id=UUID('a380546a-94be-4b8e-8a0b-23e0d5c03303'), apiToken='cd0e5985-17de-4b4f-849e-5d506c5e4382', newUser=False, username='test-username', passwordResetCode=None), success=True, notifications=[], userV=None, appVersion='5.30.0')
+# ---
