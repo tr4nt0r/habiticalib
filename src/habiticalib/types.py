@@ -903,6 +903,7 @@ class Task(TypedDict("Task", {"type": NotRequired[TaskType]}), total=True):
     weeksOfMonth: NotRequired[list[int]]
     completed: NotRequired[bool]
     streak: NotRequired[int]
+    value: NotRequired[float]
 
 
 @dataclass(kw_only=True)
