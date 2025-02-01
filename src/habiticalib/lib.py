@@ -1934,7 +1934,7 @@ class Habitica:
         ):
             if stats.buffs.spookySparkles:
                 await self.paste_image(image, "ghost", (24, mount_offset_y))
-            if stats.buffs.shinySeed:
+            if stats.buffs.snowball:
                 await self.paste_image(
                     image,
                     f"avatar_snowball_{stats.Class}",
