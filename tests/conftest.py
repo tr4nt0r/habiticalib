@@ -66,6 +66,38 @@ def aioclient_mock() -> Generator[aioresponses]:
             re.compile(r"^https://habitica\.com/api/v3/user.*$"),
             body=load_fixture("user.json"),
         )
+        m.get(
+            "https://habitica.com/api/v3/user/anonymized",
+            body=load_fixture("user_anonymized.json"),
+        )
+        m.get(
+            re.compile(r"^https://habitica\.com/api/v3/tasks/user\?.*$"),
+            body=load_fixture("tasks.json"),
+        )
+        m.get(
+            "https://habitica.com/api/v3/tasks/user",
+            body=load_fixture("tasks.json"),
+        )
+        m.post(
+            "https://habitica.com/api/v3/tasks/user",
+            body=load_fixture("task.json"),
+        )
+        m.get(
+            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
+            body=load_fixture("task.json"),
+        )
+        m.put(
+            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
+            body=load_fixture("task.json"),
+        )
+        m.delete(
+            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
+            body=load_fixture("empty_data.json"),
+        )
+        m.post(
+            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f/move/to/2",
+            body=load_fixture("task_order.json"),
+        )
 
         yield m
 

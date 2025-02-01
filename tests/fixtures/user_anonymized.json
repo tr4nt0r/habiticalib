@@ -1,0 +1,1791 @@
+{
+    "success": true,
+    "data": {
+        "user": {
+            "auth": {
+                "timestamps": {
+                    "created": "2024-09-22T16:41:11.476Z",
+                    "loggedin": "2025-02-01T15:06:43.520Z",
+                    "updated": "2025-02-01T20:20:45.622Z"
+                }
+            },
+            "achievements": {
+                "ultimateGearSets": {
+                    "healer": false,
+                    "wizard": false,
+                    "rogue": false,
+                    "warrior": false
+                },
+                "streak": 0,
+                "perfect": 12,
+                "quests": {},
+                "createdTask": true,
+                "completedTask": true,
+                "hatchedPet": true,
+                "purchasedEquipment": true,
+                "habitBirthdays": 1
+            },
+            "backer": {},
+            "purchased": {
+                "ads": false,
+                "txnCount": 0,
+                "skin": {},
+                "hair": {},
+                "shirt": {},
+                "background": {
+                    "violet": true,
+                    "blue": true,
+                    "green": true,
+                    "purple": true,
+                    "red": true,
+                    "yellow": true
+                }
+            },
+            "flags": {
+                "tour": {
+                    "intro": -1,
+                    "classes": -1,
+                    "stats": -1,
+                    "tavern": -1,
+                    "party": -1,
+                    "guilds": -1,
+                    "challenges": -1,
+                    "market": -1,
+                    "pets": -2,
+                    "mounts": -1,
+                    "hall": -1,
+                    "equipment": -2,
+                    "groupPlans": -1
+                },
+                "tutorial": {
+                    "common": {
+                        "habits": true,
+                        "dailies": true,
+                        "todos": true,
+                        "rewards": true,
+                        "party": true,
+                        "pets": true,
+                        "gems": true,
+                        "skills": true,
+                        "classes": true,
+                        "tavern": true,
+                        "equipment": true,
+                        "items": true,
+                        "mounts": true,
+                        "inbox": true,
+                        "stats": true
+                    },
+                    "ios": {
+                        "addTask": false,
+                        "editTask": false,
+                        "deleteTask": false,
+                        "filterTask": false,
+                        "groupPets": false,
+                        "inviteParty": false,
+                        "reorderTask": false
+                    }
+                },
+                "verifiedUsername": true,
+                "customizationsNotification": true,
+                "showTour": true,
+                "dropsEnabled": false,
+                "itemsEnabled": true,
+                "lastNewStuffRead": "d3e40c33-3391-4a7e-bde6-30e2a13fad92",
+                "rewrite": true,
+                "classSelected": true,
+                "rebirthEnabled": false,
+                "levelDrops": {
+                    "atom1": true
+                },
+                "recaptureEmailsPhase": 0,
+                "weeklyRecapEmailsPhase": 0,
+                "lastWeeklyRecap": "2024-09-22T16:41:11.476Z",
+                "communityGuidelinesAccepted": false,
+                "cronCount": 39,
+                "welcomed": true,
+                "armoireEnabled": true,
+                "armoireOpened": false,
+                "armoireEmpty": false,
+                "cardReceived": false,
+                "warnedLowHealth": true,
+                "thirdPartyTools": "2025-01-29T20:25:26.761Z",
+                "newStuff": true
+            },
+            "history": {
+                "exp": [
+                    {
+                        "date": "2024-09-23T10:12:17.177Z",
+                        "value": 1070
+                    },
+                    {
+                        "date": "2024-09-27T13:24:02.947Z",
+                        "value": 4710
+                    },
+                    {
+                        "date": "2024-09-28T13:44:49.826Z",
+                        "value": 4710
+                    },
+                    {
+                        "date": "2024-09-29T01:05:43.948Z",
+                        "value": 4757.368421052632
+                    },
+                    {
+                        "date": "2024-10-04T17:35:52.442Z",
+                        "value": 4773.157894736842
+                    },
+                    {
+                        "date": "2024-10-05T14:48:11.872Z",
+                        "value": 4788.9473684210525
+                    },
+                    {
+                        "date": "2024-10-05T22:09:14.908Z",
+                        "value": 4796.9473684210525
+                    },
+                    {
+                        "date": "2024-10-06T23:40:31.471Z",
+                        "value": 4823.0343249427915
+                    },
+                    {
+                        "date": "2024-10-07T23:51:02.202Z",
+                        "value": 4831.0343249427915
+                    },
+                    {
+                        "date": "2024-10-10T15:49:58.051Z",
+                        "value": 4846.823798627002
+                    },
+                    {
+                        "date": "2024-10-13T17:31:28.061Z",
+                        "value": 4862.613272311213
+                    },
+                    {
+                        "date": "2024-10-14T17:54:05.833Z",
+                        "value": 4862.613272311213
+                    },
+                    {
+                        "date": "2024-10-15T22:27:57.305Z",
+                        "value": 4862.613272311213
+                    },
+                    {
+                        "date": "2024-10-17T09:20:36.850Z",
+                        "value": 5043.613272311213
+                    },
+                    {
+                        "date": "2024-10-17T22:24:32.385Z",
+                        "value": 5124.613272311213
+                    },
+                    {
+                        "date": "2024-10-19T15:36:32.988Z",
+                        "value": 5221.613272311213
+                    },
+                    {
+                        "date": "2024-10-20T09:01:52.024Z",
+                        "value": 5247.613272311213
+                    },
+                    {
+                        "date": "2024-10-22T20:22:58.313Z",
+                        "value": 5273.613272311213
+                    },
+                    {
+                        "date": "2024-10-22T22:13:52.112Z",
+                        "value": 5273.613272311213
+                    },
+                    {
+                        "date": "2024-10-24T22:19:06.462Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-10-26T16:48:08.716Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-11-29T00:11:06.033Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-12-02T11:31:19.072Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-12-13T18:02:35.138Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-12-14T00:57:21.435Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-12-26T16:20:10.840Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2024-12-31T02:32:18.172Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2025-01-03T19:45:01.650Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2025-01-03T23:49:19.681Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2025-01-06T18:18:34.912Z",
+                        "value": 5271.613272311213
+                    },
+                    {
+                        "date": "2025-01-06T23:00:09.954Z",
+                        "value": 5430.613272311213
+                    },
+                    {
+                        "date": "2025-01-10T01:12:46.481Z",
+                        "value": 5483.613272311213
+                    },
+                    {
+                        "date": "2025-01-10T23:02:08.839Z",
+                        "value": 5483.613272311213
+                    },
+                    {
+                        "date": "2025-01-13T17:48:43.329Z",
+                        "value": 5504.613272311213
+                    },
+                    {
+                        "date": "2025-01-13T23:00:47.776Z",
+                        "value": 5558.613272311213
+                    },
+                    {
+                        "date": "2025-01-15T17:31:41.465Z",
+                        "value": 5566.613272311213
+                    },
+                    {
+                        "date": "2025-01-18T18:22:22.041Z",
+                        "value": 5592.613272311213
+                    },
+                    {
+                        "date": "2025-01-20T11:47:03.159Z",
+                        "value": 5652.613272311213
+                    },
+                    {
+                        "date": "2025-02-01T15:06:43.520Z",
+                        "value": 5652.613272311213
+                    }
+                ],
+                "todos": [
+                    {
+                        "date": "2024-09-23T10:12:17.177Z",
+                        "value": -1
+                    },
+                    {
+                        "date": "2024-09-27T13:24:02.947Z",
+                        "value": -2.025956704627065
+                    },
+                    {
+                        "date": "2024-09-28T13:44:49.826Z",
+                        "value": -3.0792442306676366
+                    },
+                    {
+                        "date": "2024-09-29T01:05:43.948Z",
+                        "value": -4.161348258391508
+                    },
+                    {
+                        "date": "2024-10-04T17:35:52.442Z",
+                        "value": -5.2738783997395196
+                    },
+                    {
+                        "date": "2024-10-05T14:48:11.872Z",
+                        "value": -6.418582324043852
+                    },
+                    {
+                        "date": "2024-10-05T22:09:14.908Z",
+                        "value": -7.597361948942557
+                    },
+                    {
+                        "date": "2024-10-06T23:40:31.471Z",
+                        "value": -8.812292068721371
+                    },
+                    {
+                        "date": "2024-10-07T23:51:02.202Z",
+                        "value": -10.065641872820203
+                    },
+                    {
+                        "date": "2024-10-10T15:49:58.051Z",
+                        "value": -11.3598999082337
+                    },
+                    {
+                        "date": "2024-10-13T17:31:28.061Z",
+                        "value": -12.697803167060998
+                    },
+                    {
+                        "date": "2024-10-14T17:54:05.833Z",
+                        "value": -14.082371142610924
+                    },
+                    {
+                        "date": "2024-10-15T22:27:57.305Z",
+                        "value": -15.516945905169635
+                    },
+                    {
+                        "date": "2024-10-17T09:20:36.850Z",
+                        "value": 0
+                    },
+                    {
+                        "date": "2024-10-17T22:24:32.385Z",
+                        "value": -7
+                    },
+                    {
+                        "date": "2024-10-19T15:36:32.988Z",
+                        "value": 0
+                    },
+                    {
+                        "date": "2024-10-20T09:01:52.024Z",
+                        "value": 0
+                    },
+                    {
+                        "date": "2024-10-22T20:22:58.313Z",
+                        "value": 0
+                    },
+                    {
+                        "date": "2024-10-22T22:13:52.112Z",
+                        "value": 0
+                    },
+                    {
+                        "date": "2024-10-24T22:19:06.462Z",
+                        "value": -16.885204776616614
+                    },
+                    {
+                        "date": "2024-10-26T16:48:08.716Z",
+                        "value": -18.42660712730773
+                    },
+                    {
+                        "date": "2024-11-29T00:11:06.033Z",
+                        "value": -20.030112192153897
+                    },
+                    {
+                        "date": "2024-12-02T11:31:19.072Z",
+                        "value": -21.70087884424286
+                    },
+                    {
+                        "date": "2024-12-13T18:02:35.138Z",
+                        "value": -23.444731620484347
+                    },
+                    {
+                        "date": "2024-12-14T00:57:21.435Z",
+                        "value": -25.268279680840667
+                    },
+                    {
+                        "date": "2024-12-26T16:20:10.840Z",
+                        "value": -26.97815595263978
+                    },
+                    {
+                        "date": "2024-12-31T02:32:18.172Z",
+                        "value": -28.97452493274309
+                    },
+                    {
+                        "date": "2025-01-03T19:45:01.650Z",
+                        "value": -31.075681772191214
+                    },
+                    {
+                        "date": "2025-01-03T23:49:19.681Z",
+                        "value": -33.293072958732736
+                    },
+                    {
+                        "date": "2025-01-06T18:18:34.912Z",
+                        "value": -37.64010889224181
+                    },
+                    {
+                        "date": "2025-01-06T23:00:09.954Z",
+                        "value": -43.13263128480955
+                    },
+                    {
+                        "date": "2025-01-10T01:12:46.481Z",
+                        "value": -46.867428729761386
+                    },
+                    {
+                        "date": "2025-01-10T23:02:08.839Z",
+                        "value": -52.87141452221408
+                    },
+                    {
+                        "date": "2025-01-13T17:48:43.329Z",
+                        "value": -59.17687646392601
+                    },
+                    {
+                        "date": "2025-01-13T23:00:47.776Z",
+                        "value": -65.82308114140208
+                    },
+                    {
+                        "date": "2025-01-15T17:31:41.465Z",
+                        "value": -72.61510575604868
+                    },
+                    {
+                        "date": "2025-01-18T18:22:22.041Z",
+                        "value": -88.74262324377598
+                    },
+                    {
+                        "date": "2025-01-20T11:47:03.159Z",
+                        "value": -98.851898823531
+                    },
+                    {
+                        "date": "2025-02-01T15:06:43.520Z",
+                        "value": -109.16002463680209
+                    }
+                ]
+            },
+            "items": {
+                "gear": {
+                    "equipped": {
+                        "armor": "armor_base_0",
+                        "head": "head_base_0",
+                        "shield": "shield_base_0",
+                        "headAccessory": "headAccessory_base_0"
+                    },
+                    "costume": {
+                        "armor": "armor_base_0",
+                        "head": "head_base_0",
+                        "shield": "shield_base_0"
+                    },
+                    "owned": {
+                        "headAccessory_special_blackHeadband": true,
+                        "headAccessory_special_blueHeadband": true,
+                        "headAccessory_special_greenHeadband": true,
+                        "headAccessory_special_pinkHeadband": true,
+                        "headAccessory_special_redHeadband": true,
+                        "headAccessory_special_whiteHeadband": true,
+                        "headAccessory_special_yellowHeadband": true,
+                        "eyewear_special_blackTopFrame": true,
+                        "eyewear_special_blueTopFrame": true,
+                        "eyewear_special_greenTopFrame": true,
+                        "eyewear_special_pinkTopFrame": true,
+                        "eyewear_special_redTopFrame": true,
+                        "eyewear_special_whiteTopFrame": true,
+                        "eyewear_special_yellowTopFrame": true,
+                        "eyewear_special_blackHalfMoon": true,
+                        "eyewear_special_blueHalfMoon": true,
+                        "eyewear_special_greenHalfMoon": true,
+                        "eyewear_special_pinkHalfMoon": true,
+                        "eyewear_special_redHalfMoon": true,
+                        "eyewear_special_whiteHalfMoon": true,
+                        "eyewear_special_yellowHalfMoon": true,
+                        "weapon_wizard_0": true,
+                        "armor_special_bardRobes": true,
+                        "head_special_bardHat": true,
+                        "weapon_rogue_0": true,
+                        "shield_rogue_0": true,
+                        "head_rogue_1": true,
+                        "armor_rogue_1": true,
+                        "weapon_special_bardInstrument": true,
+                        "head_special_nye": true,
+                        "armor_special_birthday": true
+                    }
+                },
+                "special": {
+                    "snowball": 0,
+                    "spookySparkles": 0,
+                    "shinySeed": 0,
+                    "seafoam": 0,
+                    "valentine": 0,
+                    "nye": 0,
+                    "greeting": 0,
+                    "greetingReceived": [],
+                    "thankyou": 0,
+                    "thankyouReceived": [],
+                    "birthday": 0,
+                    "birthdayReceived": [],
+                    "congrats": 0,
+                    "congratsReceived": [],
+                    "getwell": 0,
+                    "getwellReceived": [],
+                    "goodluck": 0,
+                    "goodluckReceived": []
+                },
+                "lastDrop": {
+                    "count": 0,
+                    "date": "2025-01-20T11:47:02.985Z"
+                },
+                "currentPet": "",
+                "currentMount": "",
+                "pets": {
+                    "LionCub-RoyalPurple": 5,
+                    "JackOLantern-Base": 5,
+                    "Turkey-Base": 5
+                },
+                "eggs": {
+                    "LionCub": 1,
+                    "FlyingPig": 1,
+                    "Fox": 3,
+                    "TigerCub": 1,
+                    "Cactus": 1
+                },
+                "hatchingPotions": {
+                    "RoyalPurple": 3,
+                    "Red": 2,
+                    "CottonCandyPink": 1,
+                    "Base": 1,
+                    "CottonCandyBlue": 1,
+                    "Skeleton": 1
+                },
+                "food": {
+                    "Chocolate": 5,
+                    "Meat": 1,
+                    "CottonCandyPink": 2,
+                    "Strawberry": 1,
+                    "Potatoe": 4,
+                    "CottonCandyBlue": 2,
+                    "Fish": 5,
+                    "RottenMeat": 3,
+                    "Candy_Base": 1,
+                    "Candy_CottonCandyBlue": 1,
+                    "Candy_CottonCandyPink": 1,
+                    "Candy_Desert": 1,
+                    "Candy_Golden": 1,
+                    "Candy_Red": 1,
+                    "Candy_Shade": 1,
+                    "Candy_Skeleton": 1,
+                    "Candy_White": 1,
+                    "Candy_Zombie": 1,
+                    "Milk": 1,
+                    "Honey": 4,
+                    "Cake_Base": 1,
+                    "Cake_CottonCandyBlue": 1,
+                    "Cake_CottonCandyPink": 1,
+                    "Cake_Desert": 1,
+                    "Cake_Golden": 1,
+                    "Cake_Red": 1,
+                    "Cake_Shade": 1,
+                    "Cake_Skeleton": 1,
+                    "Cake_White": 1,
+                    "Cake_Zombie": 1
+                },
+                "mounts": {},
+                "quests": {
+                    "dustbunnies": 1,
+                    "atom1": 1,
+                    "moon1": 1,
+                    "moon2": 1
+                }
+            },
+            "party": {
+                "quest": {
+                    "progress": {
+                        "up": 0,
+                        "down": 0,
+                        "collectedItems": 0,
+                        "collect": {}
+                    },
+                    "RSVPNeeded": false
+                },
+                "order": "level",
+                "orderAscending": "ascending",
+                "_id": "a8289328-c2ae-4007-9ef4-833b9ac90d37"
+            },
+            "preferences": {
+                "hair": {
+                    "color": "red",
+                    "base": 3,
+                    "bangs": 0,
+                    "beard": 0,
+                    "mustache": 0,
+                    "flower": 1
+                },
+                "emailNotifications": {
+                    "unsubscribeFromAll": false,
+                    "newPM": true,
+                    "kickedGroup": true,
+                    "wonChallenge": true,
+                    "giftedGems": true,
+                    "giftedSubscription": true,
+                    "invitedParty": true,
+                    "invitedGuild": true,
+                    "questStarted": true,
+                    "invitedQuest": true,
+                    "importantAnnouncements": true,
+                    "weeklyRecaps": true,
+                    "onboarding": true,
+                    "majorUpdates": true,
+                    "subscriptionReminders": true,
+                    "contentRelease": true
+                },
+                "pushNotifications": {
+                    "unsubscribeFromAll": false,
+                    "newPM": true,
+                    "wonChallenge": true,
+                    "giftedGems": true,
+                    "giftedSubscription": true,
+                    "invitedParty": true,
+                    "invitedGuild": true,
+                    "questStarted": true,
+                    "invitedQuest": true,
+                    "majorUpdates": true,
+                    "mentionParty": true,
+                    "mentionJoinedGuild": true,
+                    "mentionUnjoinedGuild": true,
+                    "partyActivity": true,
+                    "contentRelease": true
+                },
+                "suppressModals": {
+                    "levelUp": false,
+                    "hatchPet": false,
+                    "raisePet": false,
+                    "streak": false
+                },
+                "tasks": {
+                    "activeFilter": {
+                        "habit": "all",
+                        "daily": "all",
+                        "todo": "remaining",
+                        "reward": "all"
+                    },
+                    "groupByChallenge": false,
+                    "confirmScoreNotes": false,
+                    "mirrorGroupTasks": []
+                },
+                "language": "en",
+                "dayStart": 0,
+                "size": "slim",
+                "hideHeader": false,
+                "skin": "915533",
+                "shirt": "pink",
+                "timezoneOffset": -60,
+                "sound": "rosstavoTheme",
+                "chair": "none",
+                "allocationMode": "flat",
+                "autoEquip": true,
+                "costume": false,
+                "dateFormat": "MM/dd/yyyy",
+                "sleep": false,
+                "stickyHeader": true,
+                "disableClasses": false,
+                "newTaskEdit": false,
+                "dailyDueDefaultView": false,
+                "advancedCollapsed": false,
+                "toolbarCollapsed": false,
+                "reverseChatOrder": false,
+                "developerMode": true,
+                "displayInviteToPartyWhenPartyIs1": true,
+                "webhooks": {},
+                "improvementCategories": [],
+                "background": "violet",
+                "timezoneOffsetAtLastCron": -60
+            },
+            "stats": {
+                "buffs": {
+                    "str": 0,
+                    "int": 0,
+                    "per": 0,
+                    "con": 0,
+                    "stealth": 0,
+                    "streaks": false,
+                    "seafoam": false,
+                    "shinySeed": false,
+                    "snowball": false,
+                    "spookySparkles": false
+                },
+                "training": {
+                    "int": 0,
+                    "per": 0,
+                    "str": 0,
+                    "con": 0
+                },
+                "hp": 41.59999999999999,
+                "mp": 52,
+                "exp": 42.61327231121277,
+                "gp": 142.2664776215955,
+                "lvl": 22,
+                "class": "rogue",
+                "points": 22,
+                "str": 0,
+                "con": 0,
+                "int": 0,
+                "per": 0,
+                "toNextLevel": 480,
+                "maxHealth": 50,
+                "maxMP": 52
+            },
+            "inbox": {
+                "newMessages": 0,
+                "optOut": false,
+                "blocks": [],
+                "messages": {}
+            },
+            "tasksOrder": {
+                "habits": [
+                    "67894647-f6e6-4f1a-824c-62a7fffff752",
+                    "5e1bf953-af75-492c-ba02-c18789758d26",
+                    "7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"
+                ],
+                "dailys": [
+                    "d9247fff-37ec-4c7e-9b15-de79b99a830f",
+                    "a41c65d3-f97b-4fac-8bd8-1e9c43be99d1",
+                    "dad786c2-d333-4a24-b81e-4714537b0fec",
+                    "8b54b538-7fe5-4132-91e1-4eebac0073f5",
+                    "1b21023c-b1e6-4b11-bcfa-9d48473033a1",
+                    "c65a4932-f81d-4e83-a1f5-b94bc1b5a505"
+                ],
+                "todos": [
+                    "e8be3a26-6d3b-43bc-9aac-8246a8bedaed",
+                    "a029cb52-1012-4d36-91af-b45c0bdbda69",
+                    "9983f4c9-04be-446c-99d2-fca07e9e2dcd",
+                    "2cae3698-0ca3-441d-ac4e-980323956f42",
+                    "203048ee-4020-48ef-99ef-3a20c7c9a8b3",
+                    "75a4ac64-e8ac-44b8-b300-2086af8d2845",
+                    "cfd7c79b-ac4d-4133-923f-36f169308b0d"
+                ],
+                "rewards": ["93eb1e9c-4d14-4a94-b699-279963ecf410"]
+            },
+            "_id": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+            "_v": 916,
+            "balance": 5,
+            "_subSignature": "NOT_RUNNING",
+            "challenges": [],
+            "guilds": [],
+            "loginIncentives": 39,
+            "invitesSent": 0,
+            "pinnedItemsOrder": [],
+            "lastCron": "2025-02-01T15:06:43.520Z",
+            "tags": [
+                {
+                    "id": "8515e4ae-2f4b-455a-b4a4-8939e04b1bfd",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "6aa65cbb-dc08-4fdd-9a66-7dedb7ba4cab",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "20409521-c096-447f-9a90-23e8da615710",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "2ac458af-0833-4f3f-bf04-98a0c33ef60b",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "1bcb1a0f-4d05-4087-8223-5ea779e258b0",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "b2780f82-b3b5-49a3-a677-48f2c8c7e3bb",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "id": "3450351f-1323-4c7e-9fd2-0cdff25b3ce0",
+                    "name": "tag",
+                    "challenge": "challenge"
+                },
+                {
+                    "name": "tag",
+                    "id": "50021cf7-b9f2-4f94-b80d-0263ce7cf3ec",
+                    "challenge": "challenge"
+                }
+            ],
+            "extra": {},
+            "pushDevices": [
+                {
+                    "regId": "f3iZfZ1tRJyCPAoghzWL-S:APA91bFqVH8g8NF3Tn56U9kUHauXpiMkx4ikLjNyHcuxvv9wxm2PYccBmIn-0UwoRfmgtpCj709_0UmxWrHFR8aXG4rHM6FAAq8m9I43wc2ndlSJ_FU1t_739JvV6DG71UjEU7V83Rc9",
+                    "type": "android",
+                    "createdAt": "2024-10-13T17:53:34.655Z",
+                    "updatedAt": "2025-02-01T15:10:08.070Z"
+                }
+            ],
+            "pinnedItems": [
+                {
+                    "path": "potion",
+                    "type": "potion"
+                },
+                {
+                    "path": "armoire",
+                    "type": "armoire"
+                },
+                {
+                    "path": "gear.flat.armor_wizard_1",
+                    "type": "marketGear"
+                },
+                {
+                    "path": "gear.flat.weapon_rogue_1",
+                    "type": "marketGear"
+                },
+                {
+                    "path": "gear.flat.armor_rogue_2",
+                    "type": "marketGear"
+                },
+                {
+                    "path": "gear.flat.head_rogue_2",
+                    "type": "marketGear"
+                },
+                {
+                    "path": "gear.flat.shield_rogue_1",
+                    "type": "marketGear"
+                }
+            ],
+            "unpinnedItems": [],
+            "migration": "2025birthday",
+            "id": "2a61fddc-654f-4ded-b906-bb8a6da680d5"
+        },
+        "tasks": [
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
+                "up": true,
+                "down": false,
+                "counterUp": 0,
+                "counterDown": 0,
+                "frequency": "daily",
+                "history": [
+                    {
+                        "date": 1728328787306,
+                        "value": 1,
+                        "scoredUp": 1,
+                        "scoredDown": 0
+                    },
+                    {
+                        "date": 1729109951168,
+                        "value": 8.184193475367,
+                        "scoredUp": 9,
+                        "scoredDown": 0
+                    }
+                ],
+                "type": "habit",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 0,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "reminders": [],
+                "createdAt": "2024-09-22T16:41:39.555Z",
+                "updatedAt": "2024-10-26T16:48:08.742Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "alias": "counter_test",
+                "id": "7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "5e1bf953-af75-492c-ba02-c18789758d26",
+                "up": true,
+                "down": true,
+                "counterUp": 0,
+                "counterDown": 0,
+                "frequency": "daily",
+                "history": [
+                    {
+                        "date": 1729109945151,
+                        "value": 3.853133245658556,
+                        "scoredUp": 4,
+                        "scoredDown": 0
+                    }
+                ],
+                "type": "habit",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 3.853133245658556,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "reminders": [],
+                "createdAt": "2024-09-22T16:41:39.555Z",
+                "updatedAt": "2024-12-14T01:34:39.602Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "5e1bf953-af75-492c-ba02-c18789758d26"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "e8be3a26-6d3b-43bc-9aac-8246a8bedaed",
+                "completed": false,
+                "collapseChecklist": true,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -68.61448963773076,
+                "priority": 0.1,
+                "attribute": "str",
+                "byHabitica": true,
+                "checklist": [
+                    {
+                        "completed": true,
+                        "text": "item 0",
+                        "id": "fde91e22-fc27-40e6-a861-d2da47b5e7fd"
+                    },
+                    {
+                        "completed": false,
+                        "text": "item 1",
+                        "id": "532ba006-1115-4db4-b19d-bb255e3dc3de"
+                    },
+                    {
+                        "completed": false,
+                        "text": "item 2",
+                        "id": "08da262f-c4f6-4a59-9c33-340e87a7ef27"
+                    }
+                ],
+                "reminders": [
+                    {
+                        "id": "3e636b09-4a8c-4b2b-a525-29361b510d5b",
+                        "time": "2024-10-13T20:51:49.391Z"
+                    }
+                ],
+                "createdAt": "2024-09-22T16:41:39.555Z",
+                "updatedAt": "2025-02-01T15:06:43.570Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "alias": "task-alias",
+                "date": null,
+                "id": "e8be3a26-6d3b-43bc-9aac-8246a8bedaed"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "93eb1e9c-4d14-4a94-b699-279963ecf410",
+                "type": "reward",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": ["50021cf7-b9f2-4f94-b80d-0263ce7cf3ec"],
+                "value": 1,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "reminders": [],
+                "createdAt": "2024-09-22T16:41:39.555Z",
+                "updatedAt": "2024-10-17T22:25:27.043Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "93eb1e9c-4d14-4a94-b699-279963ecf410"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "67894647-f6e6-4f1a-824c-62a7fffff752",
+                "up": true,
+                "down": false,
+                "counterUp": 0,
+                "counterDown": 0,
+                "frequency": "monthly",
+                "history": [
+                    {
+                        "date": 1729109943714,
+                        "value": 7.355994112832055,
+                        "scoredUp": 8,
+                        "scoredDown": 0
+                    }
+                ],
+                "type": "habit",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 0,
+                "priority": 2,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2024-10-07T19:08:12.325Z",
+                "updatedAt": "2025-02-01T15:06:43.571Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "alias": "test_habit",
+                "id": "67894647-f6e6-4f1a-824c-62a7fffff752"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "75a4ac64-e8ac-44b8-b300-2086af8d2845",
+                "date": null,
+                "completed": false,
+                "collapseChecklist": false,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -10.065628947026687,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "checklist": [],
+                "reminders": [],
+                "createdAt": "2025-01-06T18:23:10.551Z",
+                "updatedAt": "2025-02-01T15:06:43.560Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "75a4ac64-e8ac-44b8-b300-2086af8d2845"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "2cae3698-0ca3-441d-ac4e-980323956f42",
+                "date": null,
+                "completed": false,
+                "collapseChecklist": false,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -10.065632848406528,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "checklist": [],
+                "reminders": [],
+                "createdAt": "2025-01-06T20:22:27.696Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "2cae3698-0ca3-441d-ac4e-980323956f42"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "a029cb52-1012-4d36-91af-b45c0bdbda69",
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -4.16134259811365,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-06T20:24:32.936Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "a029cb52-1012-4d36-91af-b45c0bdbda69"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "203048ee-4020-48ef-99ef-3a20c7c9a8b3",
+                "date": null,
+                "completed": false,
+                "collapseChecklist": false,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -4.16134259811365,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "checklist": [],
+                "reminders": [],
+                "createdAt": "2025-01-06T20:29:00.542Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "203048ee-4020-48ef-99ef-3a20c7c9a8b3"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "9983f4c9-04be-446c-99d2-fca07e9e2dcd",
+                "date": null,
+                "completed": false,
+                "collapseChecklist": false,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -10.065631750759767,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "checklist": [],
+                "reminders": [],
+                "createdAt": "2025-01-06T20:30:16.745Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "9983f4c9-04be-446c-99d2-fca07e9e2dcd"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "8b54b538-7fe5-4132-91e1-4eebac0073f5",
+                "frequency": "weekly",
+                "everyX": 1,
+                "startDate": "2025-01-05T23:00:00.000Z",
+                "streak": 0,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-02-02T23:00:00.000Z",
+                    "2025-02-03T23:00:00.000Z",
+                    "2025-02-04T23:00:00.000Z",
+                    "2025-02-05T23:00:00.000Z",
+                    "2025-02-06T23:00:00.000Z",
+                    "2025-02-07T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736204409684,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736471566313,
+                        "value": 1.9747,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736550128864,
+                        "value": 1.024043774264157,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1736790523163,
+                        "value": 1.998143412564751,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736809247611,
+                        "value": 2.9482287028135716,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301493,
+                        "value": 2.020995311995297,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1737224541871,
+                        "value": 2.9705244023522885,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622983,
+                        "value": 3.8972281794078136,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403541,
+                        "value": 2.992271863689143,
+                        "isDue": true,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 2.992271863689143,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-06T22:42:49.719Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": true,
+                "id": "8b54b538-7fe5-4132-91e1-4eebac0073f5"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "c65a4932-f81d-4e83-a1f5-b94bc1b5a505",
+                "frequency": "weekly",
+                "everyX": 1,
+                "startDate": "2025-01-05T23:00:00.000Z",
+                "streak": 0,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-02-02T23:00:00.000Z",
+                    "2025-02-03T23:00:00.000Z",
+                    "2025-02-04T23:00:00.000Z",
+                    "2025-02-05T23:00:00.000Z",
+                    "2025-02-06T23:00:00.000Z",
+                    "2025-02-07T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736204409696,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736471566316,
+                        "value": 1.9747,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736550128865,
+                        "value": 1.024043774264157,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1736790523166,
+                        "value": 1.998143412564751,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736809247613,
+                        "value": 2.9482287028135716,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301305,
+                        "value": 3.8754620936318465,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737224541876,
+                        "value": 4.780923305699728,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622987,
+                        "value": 5.665617021312497,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403542,
+                        "value": 4.800754343722116,
+                        "isDue": true,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 4.800754343722116,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-06T22:42:52.877Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": true,
+                "id": "c65a4932-f81d-4e83-a1f5-b94bc1b5a505"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "1b21023c-b1e6-4b11-bcfa-9d48473033a1",
+                "frequency": "weekly",
+                "everyX": 1,
+                "startDate": "2025-01-05T23:00:00.000Z",
+                "streak": 0,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-02-02T23:00:00.000Z",
+                    "2025-02-03T23:00:00.000Z",
+                    "2025-02-04T23:00:00.000Z",
+                    "2025-02-05T23:00:00.000Z",
+                    "2025-02-06T23:00:00.000Z",
+                    "2025-02-07T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736204409693,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736471566314,
+                        "value": 1.9747,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736550128866,
+                        "value": 1.024043774264157,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1736790523165,
+                        "value": 1.998143412564751,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736809247612,
+                        "value": 2.9482287028135716,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301494,
+                        "value": 2.020995311995297,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1737224541873,
+                        "value": 2.9705244023522885,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622985,
+                        "value": 3.8972281794078136,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403543,
+                        "value": 2.992271863689143,
+                        "isDue": true,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 2.992271863689143,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-06T22:42:56.440Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": true,
+                "id": "1b21023c-b1e6-4b11-bcfa-9d48473033a1"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "dad786c2-d333-4a24-b81e-4714537b0fec",
+                "frequency": "weekly",
+                "everyX": 1,
+                "startDate": "2025-01-12T23:00:00.000Z",
+                "streak": 0,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-02-02T23:00:00.000Z",
+                    "2025-02-03T23:00:00.000Z",
+                    "2025-02-04T23:00:00.000Z",
+                    "2025-02-05T23:00:00.000Z",
+                    "2025-02-06T23:00:00.000Z",
+                    "2025-02-07T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736809247609,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301495,
+                        "value": 0.02529999999999999,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1737224541868,
+                        "value": 1.0246518837628547,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622982,
+                        "value": 1.9987363426517264,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403543,
+                        "value": 1.048665488039431,
+                        "isDue": true,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 1.048665488039431,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-13T18:36:13.598Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": true,
+                "id": "dad786c2-d333-4a24-b81e-4714537b0fec"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "a41c65d3-f97b-4fac-8bd8-1e9c43be99d1",
+                "frequency": "weekly",
+                "everyX": 1,
+                "startDate": "2025-01-12T23:00:00.000Z",
+                "streak": 0,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-02-02T23:00:00.000Z",
+                    "2025-02-03T23:00:00.000Z",
+                    "2025-02-04T23:00:00.000Z",
+                    "2025-02-05T23:00:00.000Z",
+                    "2025-02-06T23:00:00.000Z",
+                    "2025-02-07T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736809247608,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301496,
+                        "value": 0.02529999999999999,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1737224541864,
+                        "value": 1.0246518837628547,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622980,
+                        "value": 1.9987363426517264,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403546,
+                        "value": 1.048665488039431,
+                        "isDue": true,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 1.048665488039431,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-13T18:36:15.291Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": true,
+                "id": "a41c65d3-f97b-4fac-8bd8-1e9c43be99d1"
+            },
+            {
+                "repeat": {
+                    "m": true,
+                    "t": true,
+                    "w": true,
+                    "th": true,
+                    "f": true,
+                    "s": true,
+                    "su": true
+                },
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "d9247fff-37ec-4c7e-9b15-de79b99a830f",
+                "frequency": "weekly",
+                "everyX": 0,
+                "startDate": "2025-01-12T23:00:00.000Z",
+                "streak": 2,
+                "daysOfMonth": [],
+                "weeksOfMonth": [],
+                "nextDue": [
+                    "2025-01-20T23:00:00.000Z",
+                    "2025-01-21T23:00:00.000Z",
+                    "2025-01-22T23:00:00.000Z",
+                    "2025-01-23T23:00:00.000Z",
+                    "2025-01-24T23:00:00.000Z",
+                    "2025-01-26T23:00:00.000Z"
+                ],
+                "yesterDaily": true,
+                "history": [
+                    {
+                        "date": 1736809247605,
+                        "value": 1,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1736962301496,
+                        "value": 0.02529999999999999,
+                        "isDue": true,
+                        "completed": false
+                    },
+                    {
+                        "date": 1737224541862,
+                        "value": 1.0246518837628547,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1737373622978,
+                        "value": 1.9987363426517264,
+                        "isDue": true,
+                        "completed": true
+                    },
+                    {
+                        "date": 1738422403547,
+                        "value": 1.9987363426517264,
+                        "isDue": false,
+                        "completed": false
+                    }
+                ],
+                "completed": false,
+                "collapseChecklist": false,
+                "checklist": [],
+                "type": "daily",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": 1.9987363426517264,
+                "priority": 1,
+                "attribute": "str",
+                "reminders": [],
+                "byHabitica": false,
+                "createdAt": "2025-01-13T18:36:17.152Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "isDue": false,
+                "id": "d9247fff-37ec-4c7e-9b15-de79b99a830f"
+            },
+            {
+                "challenge": {},
+                "group": {
+                    "completedBy": {},
+                    "assignedUsers": []
+                },
+                "_id": "cfd7c79b-ac4d-4133-923f-36f169308b0d",
+                "date": null,
+                "completed": false,
+                "collapseChecklist": false,
+                "type": "todo",
+                "text": "task text",
+                "notes": "task notes",
+                "tags": [],
+                "value": -2.025956256651074,
+                "priority": 1,
+                "attribute": "str",
+                "byHabitica": false,
+                "checklist": [],
+                "reminders": [],
+                "createdAt": "2025-01-18T18:45:04.942Z",
+                "updatedAt": "2025-02-01T15:06:43.561Z",
+                "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+                "id": "cfd7c79b-ac4d-4133-923f-36f169308b0d"
+            }
+        ]
+    },
+    "notifications": [
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "icon": "notif_habitoween_base_pet",
+                "title": "Happy Habitoween!",
+                "text": "For this spooky celebration, you've received a Jack-O-Lantern Pet and an assortment of candy for your Pets!",
+                "destination": "/inventory/stable"
+            },
+            "seen": true,
+            "id": "5af98f52-f72a-4540-bdeb-3ffc39b34196"
+        },
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "icon": "notif_harvestfeast_base_pet",
+                "title": "Happy Harvest Feast!",
+                "text": "Gobble gobble, you've received the Turkey Pet!",
+                "destination": "/inventory/stable"
+            },
+            "seen": true,
+            "id": "1e4a1481-e7ca-42d1-9b3f-3f442bef9435"
+        },
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "title": "Happy New Year!",
+                "destination": "/inventory/equipment",
+                "icon": "notif_2013hat_nye",
+                "text": "Take on your resolutions with style in this Absurd Party Hat!"
+            },
+            "seen": true,
+            "id": "61fe229b-feee-48b9-bb4d-9e4b9c088ab1"
+        },
+        {
+            "id": "5b43534c-281a-470f-9f1d-d7c188afea14",
+            "type": "NEW_CHAT_MESSAGE",
+            "data": {
+                "group": {
+                    "id": "a8289328-c2ae-4007-9ef4-833b9ac90d37",
+                    "name": "tr4nt0r_2's Party"
+                }
+            },
+            "seen": true
+        },
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "icon": "notif_armor_special_birthday",
+                "title": "It’s Habitica’s Birthday!",
+                "text": "Celebrate with us and enjoy these Absurd Party Robes, delicious cake, and 20 Gems!",
+                "destination": "inventory/equipment"
+            },
+            "seen": false,
+            "id": "8dbee4fe-4b5a-468e-b831-922432924109"
+        },
+        {
+            "type": "NEW_STUFF",
+            "data": {
+                "title": "HAPPY BIRTHDAY, HABITICA!"
+            },
+            "seen": true,
+            "id": "37ca7a01-298e-40dd-9929-d07034b388b3"
+        },
+        {
+            "type": "UNALLOCATED_STATS_POINTS",
+            "data": {
+                "points": 22
+            },
+            "seen": false,
+            "id": "3cff5994-05dd-4f40-b776-b168eb1c1b61"
+        }
+    ],
+    "userV": 916,
+    "appVersion": "5.33.0"
+}
