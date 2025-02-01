@@ -2,14 +2,14 @@
     "items": {
         "gear": {
             "equipped": {
-                "weapon": "weapon_special_ks2019",
-                "armor": "armor_special_ks2019",
-                "head": "head_special_ks2019",
-                "shield": "shield_special_ks2019",
-                "back": "back_mystery_201402",
-                "headAccessory": "headAccessory_special_pinkHeadband",
-                "eyewear": "eyewear_special_ks2019",
-                "body": "body_mystery_202003"
+                "weapon": "weapon_special_0",
+                "armor": "armor_special_0",
+                "head": "head_special_0",
+                "shield": "shield_special_0",
+                "back": null,
+                "headAccessory": null,
+                "eyewear": null,
+                "body": null
             },
             "costume": {
                 "weapon": null,
