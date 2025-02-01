@@ -22,8 +22,8 @@
                 "body": null
             }
         },
-        "currentMount": null,
-        "currentPet": null
+        "currentMount": "Gryphon-Gryphatrice",
+        "currentPet": "Gryphatrice-Jubilant"
     },
     "preferences": {
         "hair": {
@@ -38,7 +38,7 @@
         "skin": "915533",
         "shirt": "blue",
         "chair": "none",
-        "costume": false,
+        "costume": true,
         "sleep": false,
         "background": "violet"
     },

@@ -22,8 +22,8 @@
                 "body": null
             }
         },
-        "currentMount": "Velociraptor-Base",
-        "currentPet": "Rat-Shade"
+        "currentMount": null,
+        "currentPet": null
     },
     "preferences": {
         "hair": {

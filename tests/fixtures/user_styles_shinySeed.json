@@ -22,8 +22,8 @@
                 "body": null
             }
         },
-        "currentMount": "Velociraptor-Base",
-        "currentPet": "Rat-Shade"
+        "currentMount": null,
+        "currentPet": null
     },
     "preferences": {
         "hair": {
@@ -32,13 +32,13 @@
             "bangs": 1,
             "beard": 0,
             "mustache": 0,
-            "flower": 1
+            "flower": 0
         },
         "size": "slim",
         "skin": "915533",
         "shirt": "blue",
         "chair": "none",
-        "costume": false,
+        "costume": true,
         "sleep": false,
         "background": "violet"
     },

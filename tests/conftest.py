@@ -6,6 +6,8 @@ import pathlib
 
 from aioresponses import CallbackResult, aioresponses
 import pytest
+from syrupy.assertion import SnapshotAssertion
+from syrupy.extensions.image import PNGImageSnapshotExtension
 from yarl import URL
 
 from habiticalib.const import ASSETS_URL, DEFAULT_URL
@@ -47,3 +49,9 @@ def load_bytes_fixture(filename: str) -> bytes:
     """Load a fixture."""
 
     return pathlib.Path(__file__).parent.joinpath("fixtures", filename).read_bytes()
+
+
+@pytest.fixture
+def snapshot_png(snapshot: SnapshotAssertion) -> SnapshotAssertion:
+    """Snapshot PNG."""
+    return snapshot.use_extension(PNGImageSnapshotExtension)

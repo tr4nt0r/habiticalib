@@ -6,6 +6,7 @@ import asyncio
 from http import HTTPStatus
 from io import BytesIO
 import logging
+from operator import add
 from typing import IO, TYPE_CHECKING, Any, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
@@ -13,7 +14,13 @@ from habitipy.aio import HabitipyAsync  # type: ignore[import-untyped]
 from PIL import Image
 from yarl import URL
 
-from .const import ASSETS_URL, BACKER_ONLY_GEAR, DEFAULT_URL, PAGE_LIMIT
+from .const import (
+    ASSETS_URL,
+    DEFAULT_URL,
+    PAGE_LIMIT,
+    SPECIAL_ASSETS,
+    SPECIAL_ASSETS_OFFSET,
+)
 from .exceptions import (
     BadRequestError,
     NotAuthorizedError,
@@ -1808,9 +1815,9 @@ class Habitica:
         -------
         None
         """
-        url = URL(ASSETS_URL) / f"{asset}"
-        if not url.suffix:
-            url = url.with_suffix(".png")
+
+        url = URL(ASSETS_URL) / SPECIAL_ASSETS.get(asset, f"{asset}.png")
+
         try:
             if not (asset_data := self._assets_cache.get(asset)):
                 async with self._session.get(url) as r:
@@ -1819,18 +1826,20 @@ class Habitica:
                     self._cache_asset(asset, asset_data)
         except ClientResponseError as e:
             _LOGGER.exception(
-                "Failed to load %s.png due to error [%s]: %s",
+                "Failed to load %s due to error [%s]: %s",
                 asset,
                 e.status,
                 e.message,
             )
         except ClientError:
             _LOGGER.exception(
-                "Failed to load %s.png due to a request error",
+                "Failed to load %s due to a request error",
                 asset,
             )
         else:
             fetched_image = Image.open(asset_data).convert("RGBA")
+            if offset := SPECIAL_ASSETS_OFFSET.get(asset):
+                position = tuple(map(add, position, offset))
             image.paste(fetched_image, position, fetched_image)
 
     async def generate_avatar(  # noqa: PLR0912, PLR0915
@@ -1895,11 +1904,8 @@ class Habitica:
             )
             gear = getattr(gear_set, gear_type)
             if gear and gear != f"{gear_type}_base_0":
-                # 2019 Kickstarter gear doesn't follow name conventions
-                if special_ks2019 := BACKER_ONLY_GEAR.get(gear):
-                    gear = special_ks2019
                 # armor has slim and broad size options
-                elif gear_type == "armor":
+                if gear_type == "armor":
                     gear = f"{preferences.size}_{gear}"
                 await self.paste_image(image, gear, (24, mount_offset_y))
 

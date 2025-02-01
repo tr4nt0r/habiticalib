@@ -2,28 +2,28 @@
     "items": {
         "gear": {
             "equipped": {
-                "weapon": "weapon_special_fall2024Warrior",
-                "armor": "armor_special_fall2024Warrior",
-                "head": "head_special_fall2024Warrior",
-                "shield": "shield_special_fall2024Warrior",
-                "back": "back_mystery_201402",
-                "headAccessory": "headAccessory_special_pinkHeadband",
-                "eyewear": "eyewear_special_pinkHalfMoon",
-                "body": "body_mystery_202003"
+                "weapon": null,
+                "armor": null,
+                "head": null,
+                "shield": null,
+                "back": null,
+                "headAccessory": null,
+                "eyewear": null,
+                "body": null
             },
             "costume": {
                 "weapon": null,
-                "armor": "armor_base_0",
-                "head": "head_base_0",
-                "shield": "shield_base_0",
+                "armor": null,
+                "head": null,
+                "shield": null,
                 "back": null,
                 "headAccessory": null,
                 "eyewear": null,
                 "body": null
             }
         },
-        "currentMount": "Velociraptor-Base",
-        "currentPet": "Rat-Shade"
+        "currentMount": null,
+        "currentPet": null
     },
     "preferences": {
         "hair": {
@@ -38,7 +38,7 @@
         "skin": "915533",
         "shirt": "blue",
         "chair": "handleless_pink",
-        "costume": false,
+        "costume": true,
         "sleep": false,
         "background": "violet"
     },
