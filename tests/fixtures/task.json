@@ -1,0 +1,67 @@
+{
+    "success": true,
+    "data": {
+        "challenge": {},
+        "group": {
+            "completedBy": {},
+            "assignedUsers": []
+        },
+        "_id": "7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
+        "up": true,
+        "down": false,
+        "counterUp": 0,
+        "counterDown": 0,
+        "frequency": "daily",
+        "history": [
+            {
+                "date": 1728328787306,
+                "value": 1,
+                "scoredUp": 1,
+                "scoredDown": 0
+            },
+            {
+                "date": 1729109951168,
+                "value": 8.184193475367,
+                "scoredUp": 9,
+                "scoredDown": 0
+            }
+        ],
+        "type": "habit",
+        "text": "task text",
+        "notes": "task notes",
+        "tags": [],
+        "value": 0,
+        "priority": 1,
+        "attribute": "str",
+        "byHabitica": false,
+        "reminders": [],
+        "createdAt": "2024-09-22T16:41:39.555Z",
+        "updatedAt": "2024-10-26T16:48:08.742Z",
+        "userId": "2a61fddc-654f-4ded-b906-bb8a6da680d5",
+        "alias": "counter_test",
+        "id": "7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"
+    },
+    "notifications": [
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "icon": "notif_orca_mount",
+                "title": "Orcas for Summer Splash!",
+                "text": "To celebrate Summer Splash, we've given you an Orca Mount!",
+                "destination": "stable"
+            },
+            "seen": true,
+            "id": "b7a85df1-06ed-4ab1-b56d-43418fc6a5e5"
+        },
+        {
+            "type": "UNALLOCATED_STATS_POINTS",
+            "data": {
+                "points": 2
+            },
+            "seen": true,
+            "id": "bc3f8a69-231f-4eb1-ba48-a00b6c0e0f37"
+        }
+    ],
+    "userV": 589,
+    "appVersion": "5.28.6"
+}

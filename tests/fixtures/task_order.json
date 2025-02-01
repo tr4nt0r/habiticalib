@@ -1,0 +1,35 @@
+{
+    "success": true,
+    "data": [
+        "ac13c62c-9375-4809-a357-0e42b01a1b43",
+        "2388ccad-0387-4ea6-9968-2d10d994e903",
+        "5c6efb91-6ae3-4cad-8b19-2dd2fc52a965",
+        "80afe0b9-e367-4473-8117-b8bc7115f54a",
+        "4cc21c36-886c-4a43-b580-877e958a37fd",
+        "10a45996-7133-4ca1-84d8-abf1093d9dcc",
+        "fb867459-ae50-4cee-9017-c13206c6dfa2"
+    ],
+    "notifications": [
+        {
+            "type": "ITEM_RECEIVED",
+            "data": {
+                "icon": "notif_orca_mount",
+                "title": "Orcas for Summer Splash!",
+                "text": "To celebrate Summer Splash, we've given you an Orca Mount!",
+                "destination": "stable"
+            },
+            "seen": true,
+            "id": "b7a85df1-06ed-4ab1-b56d-43418fc6a5e5"
+        },
+        {
+            "type": "UNALLOCATED_STATS_POINTS",
+            "data": {
+                "points": 2
+            },
+            "seen": true,
+            "id": "bc3f8a69-231f-4eb1-ba48-a00b6c0e0f37"
+        }
+    ],
+    "userV": 589,
+    "appVersion": "5.28.6"
+}

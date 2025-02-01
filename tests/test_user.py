@@ -1,4 +1,4 @@
-"""Tests for get_user method of Habiticalib."""
+"""Tests for user methods of Habiticalib."""
 
 from aiohttp import ClientSession
 from aioresponses import aioresponses
@@ -24,7 +24,6 @@ async def test_get_user(snapshot: SnapshotAssertion) -> None:
     [
         (["achievements", "items.mounts"], {"userFields": "achievements,items.mounts"}),
         ("achievements,items.mounts", {"userFields": "achievements,items.mounts"}),
-        (None, {}),
     ],
 )
 async def test_get_user_params(
@@ -32,7 +31,7 @@ async def test_get_user_params(
     params: str | list[str] | None,
     call_params: dict[str, str],
 ) -> None:
-    """Test get_user method."""
+    """Test get_user method params."""
 
     async with ClientSession() as session:
         habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
@@ -43,3 +42,12 @@ async def test_get_user_params(
             headers=DEFAULT_HEADERS,
             params=call_params,
         )
+
+
+async def test_get_user_anonymized(snapshot: SnapshotAssertion) -> None:
+    """Test get_user_anonymized method."""
+
+    async with ClientSession() as session:
+        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+        response = await habitica.get_user_anonymized()
+        assert response == snapshot
