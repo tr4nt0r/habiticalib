@@ -32,6 +32,7 @@ testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "--cov=src/habiticalib --cov-report=term-missing"
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.pylint.DESIGN]
 max-attributes = 8
@@ -86,7 +87,20 @@ dependencies = [
     "pre-commit==4.0.1",
     "syrupy==4.8.0"
 ]
-installer = "uv"
+
+[tool.hatch.envs.hatch-test]
+parallel = true
+extra-dependencies = [
+  "aioresponses==0.7.8",
+  "pytest-asyncio==0.25.3",
+  "syrupy==4.8.1",
+  "pytest-cov==6.0.0",
+]
+extra-args = ["--cov-report=xml", "-vv"]
+type = "virtual"
+
+[[tool.hatch.envs.hatch-test.matrix]]
+python = ["3.13", "3.12"]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest"
