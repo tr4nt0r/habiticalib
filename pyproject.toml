@@ -4,7 +4,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001"]
+ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001", "A005"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
@@ -74,18 +74,18 @@ python = "3.12"
 dependencies = [
     "aiohttp==3.11.11",
     "mashumaro==3.15",
-    "orjson==3.10.12",
-    "Pillow==11.0.0",
-    "mypy==1.14.0",
-    "ruff==0.8.4",
+    "orjson==3.10.15",
+    "Pillow==11.1.0",
+    "mypy==1.14.1",
+    "ruff==0.9.4",
     "pytest==8.3.4",
     "pytest-cov==6.0.0",
-    "mkdocs-material==9.5.49",
+    "mkdocs-material==9.6.1",
     "mkdocstrings[python]==0.27.0",
-    "pytest-asyncio==0.25.0",
-    "aioresponses==0.7.7",
-    "pre-commit==4.0.1",
-    "syrupy==4.8.0"
+    "pytest-asyncio==0.25.3",
+    "aioresponses==0.7.8",
+    "pre-commit==4.1.0",
+    "syrupy==4.8.1"
 ]
 
 [tool.hatch.envs.hatch-test]
