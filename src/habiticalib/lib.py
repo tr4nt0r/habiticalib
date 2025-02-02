@@ -1976,7 +1976,7 @@ class Habitica:
             # Fetch and paste the skin
             await self.paste_image(
                 image,
-                f"skin_{preferences.skin}{"_sleep" if preferences.sleep else ""}",
+                f"skin_{preferences.skin}{'_sleep' if preferences.sleep else ''}",
                 (24, mount_offset_y),
             )
 
