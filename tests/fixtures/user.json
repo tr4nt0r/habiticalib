@@ -428,7 +428,45 @@
         ],
         "extra": {},
         "pushDevices": [],
-        "webhooks": [],
+        "webhooks": [
+            {
+                "id": "43a67e37-1bae-4b11-8d3d-6c4b1b480231",
+                "type": "taskActivity",
+                "label": "My Webhook",
+                "url": "https://some-webhook-url.com",
+                "enabled": true,
+                "failures": 0,
+                "options": {
+                    "created": false,
+                    "updated": false,
+                    "deleted": false,
+                    "checklistScored": false,
+                    "scored": true
+                },
+                "createdAt": "2025-02-08T22:06:08.894Z",
+                "updatedAt": "2025-02-08T22:06:17.195Z"
+            },
+            {
+                "enabled": true,
+                "url": "https://some-webhook-url.com",
+                "label": "My Chat Webhook",
+                "type": "groupChatReceived",
+                "options": {
+                    "groupId": "89ee933e-79e5-43ed-8722-3ca5a58be79f"
+                }
+            },
+            {
+                "enabled": true,
+                "url": "https://some-webhook-url.com",
+                "label": "My Activity Webhook",
+                "type": "userActivity",
+                "options": {
+                    "petHatched": false,
+                    "mountRaised": false,
+                    "leveledUp": false
+                }
+            }
+        ],
         "pinnedItems": [
             {
                 "path": "gear.flat.weapon_warrior_0",
