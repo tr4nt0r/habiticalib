@@ -3,6 +3,7 @@
 import asyncio
 from io import BytesIO
 import pathlib
+import sys
 
 from aiohttp import ClientSession
 from aioresponses import aioresponses
@@ -16,6 +17,8 @@ from habiticalib.types import UserStyles
 from .conftest import load_fixture
 
 
+@pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
+@pytest.mark.slow
 async def test_generate_avatar(
     mock_aiohttp: aioresponses,
     snapshot: SnapshotAssertion,
@@ -36,6 +39,8 @@ async def test_generate_avatar(
         assert avatar.getvalue() == snapshot_png
 
 
+@pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
+@pytest.mark.slow
 async def test_generate_avatar_to_file(
     mock_aiohttp: aioresponses,
     api_url: URL,
@@ -93,6 +98,8 @@ async def test_generate_avatar_to_file(
     ],
 )
 @pytest.mark.usefixtures("mock_aiohttp")
+@pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
+@pytest.mark.slow
 async def test_generate_avatar_from_styles(
     snapshot_png: SnapshotAssertion,
     style_variations: str,

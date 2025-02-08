@@ -11,6 +11,7 @@ from typing import Any, NotRequired, TypedDict
 from uuid import UUID
 
 from mashumaro import field_options
+from mashumaro.config import BaseConfig
 from mashumaro.mixins.orjson import DataClassORJSONMixin
 
 
@@ -907,8 +908,13 @@ class Task(TypedDict("Task", {"type": NotRequired[TaskType]}), total=True):
 
 
 @dataclass(kw_only=True)
-class TaskData:
+class TaskData(DataClassORJSONMixin):
     """Task data."""
+
+    class Config(BaseConfig):
+        """Configuration for TaskData."""
+
+        serialize_by_alias = True
 
     challenge: Challenge = field(default_factory=Challenge)
     group: GroupTask = field(default_factory=GroupTask)
