@@ -703,17 +703,48 @@ class PushDevicesUser:
     updatedAt: datetime
 
 
+class WebhooksType(StrEnum):
+    """Webhook types."""
+
+    TASK_ACTIVITY = "taskActivity"
+    USER_ACTIVITY = "userActivity"
+    QUEST_ACTIVITY = "questActivity"
+    GROUP_CHAT_RECEIVED = "groupChatReceived"
+
+
+@dataclass(kw_only=True)
+class WebhooksOptions:
+    """Webhooks options data."""
+
+    created: bool | None = None
+    updated: bool | None = None
+    deleted: bool | None = None
+    scored: bool | None = None
+    questStarted: bool | None = None
+    questFinished: bool | None = None
+    questInvited: bool | None = None
+    petHatched: bool | None = None
+    mountRaised: bool | None = None
+    leveledUp: bool | None = None
+    groupId: UUID | None = None
+
+
 @dataclass(kw_only=True)
 class WebhooksUser:
     """Webhooks user data."""
 
-    id: UUID
-    Type: str = field(metadata=field_options(alias="type"))
-    label: str
-    url: str
-    enabled: bool
-    failures: int
-    lastFailureAt: datetime | None
+    id: UUID | None = None
+    Type: WebhooksType = field(
+        metadata=field_options(alias="type"), default=WebhooksType.TASK_ACTIVITY
+    )
+    url: str | None = None
+    enabled: bool = True
+    failures: int = 0
+    label: str = ""
+    options = WebhooksOptions
+    lastFailureAt: datetime | None = None
+    createdAt: datetime | None = None
+    updatedAt: datetime | None = None
 
 
 @dataclass(kw_only=True)
