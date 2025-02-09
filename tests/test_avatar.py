@@ -11,7 +11,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
-from habiticalib import Habitica, UserStyles
+from habiticalib import Avatar, Habitica
 
 from .conftest import load_fixture
 
@@ -103,14 +103,14 @@ async def test_generate_avatar_from_styles(
     snapshot_png: SnapshotAssertion,
     style_variations: str,
 ) -> None:
-    """Test generation of avatar from user styles."""
+    """Test generation of avatar from avatar object."""
 
-    user_styles = UserStyles.from_json(load_fixture(style_variations))
+    avatar = Avatar.from_json(load_fixture(style_variations))
     async with ClientSession() as session:
         habitica = Habitica(session, "test", "test")
-        avatar = BytesIO()
+        avatar_png = BytesIO()
 
-        response = await habitica.generate_avatar(avatar, user_styles, fmt="png")
+        response = await habitica.generate_avatar(avatar_png, avatar, fmt="png")
 
-        assert response == user_styles
-        assert avatar.getvalue() == snapshot_png
+        assert response == avatar
+        assert avatar_png.getvalue() == snapshot_png
