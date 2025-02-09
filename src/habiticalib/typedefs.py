@@ -11,7 +11,7 @@ from typing import Any, NotRequired, TypedDict
 from uuid import UUID
 
 from mashumaro import field_options
-from mashumaro.config import BaseConfig
+from mashumaro.config import TO_DICT_ADD_OMIT_NONE_FLAG
 from mashumaro.mixins.orjson import DataClassORJSONMixin
 
 
@@ -37,7 +37,7 @@ def serialize_datetime(date: str | int | None) -> datetime | None:
 class BaseModel(DataClassORJSONMixin):
     """Base config for dataclasses."""
 
-    class Config(BaseConfig):
+    class Config:
         """Configuration for TaskData."""
 
         aliases = {  # noqa: RUF012
@@ -51,6 +51,7 @@ class BaseModel(DataClassORJSONMixin):
         }
         serialize_by_alias = True
         omit_none = True
+        code_generation_options = [TO_DICT_ADD_OMIT_NONE_FLAG]  # noqa: RUF012
 
     def __eq__(self, value: object) -> bool:
         """Check if two instances are equal."""
