@@ -19,21 +19,21 @@ categories:
   - title: '📃 Documentation'
     labels:
       - 'documentation'
+    collapse-after: 5
+  - title: '🧰 Maintenance'
+    labels:
+      - 'ci'
+      - 'build'
+  - title: '🔬 Other improvements'
+    labels:
+      - 'style'
+      - 'testing'
+      - 'perfomance'
+      - 'code quality'
   - title: '🧩 Dependency Updates'
     labels:
       - 'dependencies'
       - 'github_actions'
-    collapse-after: 5
-  - title: '🧰 Maintenance'
-    labels:
-      - 'perfomance'
-      - 'refactor'
-      - 'ci'
-      - 'build'
-  - title: '🔬 Other updates'
-    labels:
-      - 'style'
-      - 'testing'
 
 autolabeler:
   - label: 'feature'
