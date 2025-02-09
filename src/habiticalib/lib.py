@@ -29,13 +29,14 @@ from .exceptions import (
 )
 from .helpers import (
     deserialize_task,
-    extract_user_styles,
+    extract_avatar,
     get_user_agent,
     get_x_client,
     join_fields,
 )
 from .typedefs import (
     Attributes,
+    Avatar,
     Direction,
     HabiticaCastSkillResponse,
     HabiticaClass,
@@ -61,7 +62,6 @@ from .typedefs import (
     Skill,
     Task,
     TaskFilter,
-    UserStyles,
 )
 
 if TYPE_CHECKING:
@@ -1845,12 +1845,12 @@ class Habitica:
     async def generate_avatar(  # noqa: PLR0912, PLR0915
         self,
         fp: str | IO[bytes],
-        user_styles: UserStyles | None = None,
+        avatar: Avatar | None = None,
         fmt: str | None = None,
-    ) -> UserStyles:
-        """Generate an avatar image based on the provided user styles or fetched user data.
+    ) -> Avatar:
+        """Generate an avatar image based on the provided avatar object or fetched user data.
 
-        If no `user_styles` object is provided, the method retrieves user preferences, items, and stats
+        If no `Avatar` object is provided, the method retrieves user preferences, items, and stats
         for the authenticated user and builds the avatar accordingly. The base image is initialized
         as a transparent RGBA image of size (141, 147). A mount offset is applied based on the user's
         current mount status.
@@ -1864,8 +1864,8 @@ class Habitica:
         ----------
         fp : str or IO[bytes]
             The file path or a bytes buffer to store or modify the avatar image.
-        user_styles : UserStyles, optional
-            The user style preferences, items, and stats. If not provided, the method will fetch
+        avatar : Avatar, optional
+            The user avatar preferences, items, and stats. If not provided, the method will fetch
             this data.
         fmt : str
             If a file object is used instead of a filename, the format
@@ -1873,8 +1873,8 @@ class Habitica:
 
         Returns
         -------
-        UserStyles
-            The user styles used to generate the avatar.
+        Avatar
+            The user avatar definitions used to generate the avatar.
 
         Examples
         --------
@@ -1885,13 +1885,15 @@ class Habitica:
         Using a file path:
         >>> await habitica.generate_avatar("/path/to/image/avatar.png")
         """
-        if not user_styles:
-            user_styles = extract_user_styles(
-                await self.get_user(user_fields=["preferences", "items", "stats"]),
+        if not avatar:
+            avatar = extract_avatar(
+                (
+                    await self.get_user(user_fields=["preferences", "items", "stats"])
+                ).data,
             )
-        preferences = user_styles.preferences
-        items = user_styles.items
-        stats = user_styles.stats
+        preferences = avatar.preferences
+        items = avatar.items
+        stats = avatar.stats
         mount_offset_y = 0 if items.currentMount else 24
 
         # Initializing the base image
@@ -2040,7 +2042,7 @@ class Habitica:
         else:
             image.save(fp, fmt)
 
-        return user_styles
+        return avatar
 
     async def habitipy(self) -> HabitipyAsync:
         """Create a Habitipy instance."""

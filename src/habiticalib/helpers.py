@@ -10,7 +10,7 @@ import uuid
 import aiohttp
 
 from .const import DEVELOPER_ID, __version__
-from .typedefs import HabiticaUserResponse, UserData, UserStyles
+from .typedefs import Avatar, UserData
 
 
 def join_fields(user_fields: list[str] | str) -> str:
@@ -111,10 +111,10 @@ def get_x_client(x_client: str | None = None) -> str:
     return f"{DEVELOPER_ID} - Habiticalib/{__version__}"
 
 
-def extract_user_styles(user_data: HabiticaUserResponse) -> UserStyles:
-    """Extract user styles from a user data object."""
-    data: UserData = user_data.data
-    return UserStyles.from_dict(asdict(data))
+def extract_avatar(user_data: UserData) -> Avatar:
+    """Extract avatar defs from a user data object."""
+
+    return Avatar.from_dict(user_data.to_dict())
 
 
 def deserialize_task(value: Any) -> Any:  # noqa: PLR0911

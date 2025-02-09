@@ -33,6 +33,7 @@ def serialize_datetime(date: str | int | None) -> datetime | None:
     return None
 
 
+@dataclass
 class BaseModel(DataClassORJSONMixin):
     """Base config for dataclasses."""
 
@@ -50,6 +51,108 @@ class BaseModel(DataClassORJSONMixin):
         }
         serialize_by_alias = True
         omit_none = True
+
+    def __eq__(self, value: object) -> bool:
+        """Check if two instances are equal."""
+        if issubclass(type(value), type(self)):
+            return all(
+                getattr(self, field) == getattr(value, field)
+                for field in self.__dataclass_fields__
+            )
+        return super().__eq__(value)
+
+
+@dataclass(kw_only=True)
+class EquippedGear(BaseModel):
+    """Gear equipped data."""
+
+    weapon: str | None = None
+    armor: str | None = None
+    head: str | None = None
+    shield: str | None = None
+    back: str | None = None
+    headAccessory: str | None = None
+    eyewear: str | None = None
+    body: str | None = None
+
+
+@dataclass(kw_only=True, eq=False)
+class GearItemsAvatar(BaseModel):
+    """Items gear avatar data."""
+
+    equipped: EquippedGear = field(default_factory=EquippedGear)
+    costume: EquippedGear = field(default_factory=EquippedGear)
+
+
+@dataclass(kw_only=True, eq=False)
+class ItemsAvatar(BaseModel):
+    """Items avatar data."""
+
+    gear: GearItemsAvatar = field(default_factory=GearItemsAvatar)
+    currentMount: str | None = None
+    currentPet: str | None = None
+
+
+class HabiticaClass(StrEnum):
+    """Habitica's player classes."""
+
+    WARRIOR = "warrior"
+    ROGUE = "rogue"
+    MAGE = "wizard"
+    HEALER = "healer"
+
+
+@dataclass(kw_only=True)
+class HairPreferences(BaseModel):
+    """Hair preferences data."""
+
+    color: str | None = None
+    base: int | None = None
+    bangs: int | None = None
+    beard: int | None = None
+    mustache: int | None = None
+    flower: int | None = None
+
+
+@dataclass(kw_only=True, eq=False)
+class PreferencesAvatar(BaseModel):
+    """Preferences avatar data."""
+
+    hair: HairPreferences = field(default_factory=HairPreferences)
+    size: str | None = None
+    skin: str | None = None
+    shirt: str | None = None
+    chair: str | None = None
+    costume: bool | None = None
+    sleep: bool | None = None
+    background: str | None = None
+
+
+@dataclass(kw_only=True, eq=False)
+class BuffsStatsavatar(BaseModel):
+    """Buffs stats avatar data."""
+
+    seafoam: bool | None = None
+    shinySeed: bool | None = None
+    snowball: bool | None = None
+    spookySparkles: bool | None = None
+
+
+@dataclass(kw_only=True, eq=False)
+class StatsAvatar(BaseModel):
+    """Stats avatar data."""
+
+    buffs: BuffsStatsavatar = field(default_factory=BuffsStatsavatar)
+    Class: HabiticaClass = HabiticaClass.WARRIOR
+
+
+@dataclass(kw_only=True, eq=False)
+class Avatar(BaseModel):
+    """Represents data for avatar visuals."""
+
+    items: ItemsAvatar = field(default_factory=ItemsAvatar)
+    preferences: PreferencesAvatar = field(default_factory=PreferencesAvatar)
+    stats: StatsAvatar = field(default_factory=StatsAvatar)
 
 
 @dataclass(kw_only=True)
@@ -372,25 +475,9 @@ class HistoryUser(BaseModel):
 
 
 @dataclass(kw_only=True)
-class EquippedGear(BaseModel):
-    """Gear equipped data."""
-
-    weapon: str | None = None
-    armor: str | None = None
-    head: str | None = None
-    shield: str | None = None
-    back: str | None = None
-    headAccessory: str | None = None
-    eyewear: str | None = None
-    body: str | None = None
-
-
-@dataclass(kw_only=True)
-class GearItems(BaseModel):
+class GearItems(GearItemsAvatar, BaseModel):
     """Items gear data."""
 
-    equipped: EquippedGear = field(default_factory=EquippedGear)
-    costume: EquippedGear = field(default_factory=EquippedGear)
     owned: dict[str, bool] = field(default_factory=dict)
 
 
@@ -429,14 +516,12 @@ class LastDropItems(BaseModel):
 
 
 @dataclass(kw_only=True)
-class ItemsUser(BaseModel):
+class ItemsUser(ItemsAvatar, BaseModel):
     """User items data."""
 
     gear: GearItems = field(default_factory=GearItems)
     special: SpecialItems = field(default_factory=SpecialItems)
     lastDrop: LastDropItems = field(default_factory=LastDropItems)
-    currentMount: str | None = None
-    currentPet: str | None = None
     quests: dict[str, int] = field(default_factory=dict)
     mounts: dict[str, bool] = field(default_factory=dict)
     food: dict[str, int] = field(default_factory=dict)
@@ -482,18 +567,6 @@ class PartyUser(BaseModel):
     order: str | None = None
     orderAscending: str | None = None
     _id: UUID | None = None
-
-
-@dataclass(kw_only=True)
-class HairPreferences(BaseModel):
-    """Hair preferences data."""
-
-    color: str | None = None
-    base: int | None = None
-    bangs: int | None = None
-    beard: int | None = None
-    mustache: int | None = None
-    flower: int | None = None
 
 
 @dataclass(kw_only=True)
@@ -570,10 +643,9 @@ class TasksPreferences(BaseModel):
 
 
 @dataclass(kw_only=True)
-class PreferencesUser(BaseModel):
+class PreferencesUser(PreferencesAvatar, BaseModel):
     """Preferences user data."""
 
-    hair: HairPreferences = field(default_factory=HairPreferences)
     emailNotifications: EmailNotificationsPreferences = field(
         default_factory=EmailNotificationsPreferences
     )
@@ -585,18 +657,12 @@ class PreferencesUser(BaseModel):
     )
     tasks: TasksPreferences = field(default_factory=TasksPreferences)
     dayStart: int | None = None
-    size: str | None = None
     hideHeader: bool | None = None
-    skin: str | None = None
-    shirt: str | None = None
     timezoneOffset: int | None = None
     sound: str | None = None
-    chair: str | None = None
     allocationMode: str | None = None
     autoEquip: bool | None = None
-    costume: bool | None = None
     dateFormat: str | None = None
-    sleep: bool | None = None
     stickyHeader: bool | None = None
     disableClasses: bool | None = None
     newTaskEdit: bool | None = None
@@ -606,7 +672,6 @@ class PreferencesUser(BaseModel):
     reverseChatOrder: bool | None = None
     developerMode: bool | None = None
     displayInviteToPartyWhenPartyIs1: bool | None = None
-    background: str | None = None
     automaticAllocation: bool | None = None
     webhooks: dict = field(default_factory=dict)
     improvementCategories: list[str] = field(default_factory=list)
@@ -624,7 +689,7 @@ class ProfileUser(BaseModel):
 
 
 @dataclass(kw_only=True)
-class BuffsStats(BaseModel):
+class BuffsStats(BuffsStatsavatar, BaseModel):
     """Buffs stats data."""
 
     Str: int | None = None
@@ -649,17 +714,8 @@ class TrainingStats(BaseModel):
     Int: int | None = None
 
 
-class HabiticaClass(StrEnum):
-    """Habitica's player classes."""
-
-    WARRIOR = "warrior"
-    ROGUE = "rogue"
-    MAGE = "wizard"
-    HEALER = "healer"
-
-
 @dataclass(kw_only=True)
-class StatsUser(BaseModel):
+class StatsUser(StatsAvatar, BaseModel):
     """Stats user data."""
 
     buffs: BuffsStats = field(default_factory=BuffsStats)
@@ -669,7 +725,6 @@ class StatsUser(BaseModel):
     exp: int | None = None
     gp: float | None = None
     lvl: int | None = None
-    Class: HabiticaClass | None = None
     points: int | None = None
     Str: int | None = None
     con: int | None = None
@@ -771,7 +826,7 @@ class PinnedItemsUser(BaseModel):
 
 
 @dataclass(kw_only=True)
-class UserData(BaseModel):
+class UserData(Avatar, BaseModel):
     """User data."""
 
     id: UUID | None = None
@@ -810,7 +865,6 @@ class UserData(BaseModel):
     newMessages: dict[str, bool] = field(default_factory=dict)
 
 
-@dataclass(kw_only=True)
 class HabiticaUserResponse(HabiticaResponse):
     """Representation of a user data response."""
 
@@ -1028,67 +1082,6 @@ class TasksUserExport(BaseModel):
     dailys: list[TaskData] = field(default_factory=list)
     habits: list[TaskData] = field(default_factory=list)
     rewards: list[TaskData] = field(default_factory=list)
-
-
-@dataclass(kw_only=True)
-class BuffsUserStyles(BaseModel):
-    """Buffs UserStyles data."""
-
-    per: int | None = None
-    con: int | None = None
-    stealth: int | None = None
-    seafoam: bool | None = None
-    shinySeed: bool | None = None
-    snowball: bool | None = None
-    spookySparkles: bool | None = None
-
-
-@dataclass(kw_only=True)
-class StatsUserStyles(BaseModel):
-    """Stats user styles data."""
-
-    buffs: BuffsUserStyles = field(default_factory=BuffsUserStyles)
-    Class: HabiticaClass = field(default=HabiticaClass.WARRIOR)
-
-
-@dataclass(kw_only=True)
-class GearItemsUserStyles(BaseModel):
-    """Items gear data."""
-
-    equipped: EquippedGear = field(default_factory=EquippedGear)
-    costume: EquippedGear = field(default_factory=EquippedGear)
-
-
-@dataclass(kw_only=True)
-class ItemsUserStyles(BaseModel):
-    """Items user styles data."""
-
-    gear: GearItemsUserStyles = field(default_factory=GearItemsUserStyles)
-    currentMount: str | None = None
-    currentPet: str | None = None
-
-
-@dataclass(kw_only=True)
-class PreferencesUserStyles(BaseModel):
-    """Preferences user styles data."""
-
-    hair: HairPreferences = field(default_factory=HairPreferences)
-    size: str | None = None
-    skin: str | None = None
-    shirt: str | None = None
-    chair: str | None = None
-    costume: bool | None = None
-    sleep: bool | None = None
-    background: str | None = None
-
-
-@dataclass(kw_only=True)
-class UserStyles(BaseModel):
-    """Represents minimalistic data only containing user styles."""
-
-    items: ItemsUserStyles = field(default_factory=ItemsUserStyles)
-    preferences: PreferencesUserStyles = field(default_factory=PreferencesUserStyles)
-    stats: StatsUserStyles = field(default_factory=StatsUserStyles)
 
 
 @dataclass(kw_only=True)
