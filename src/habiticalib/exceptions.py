@@ -5,7 +5,7 @@ from typing import Self
 
 from multidict import CIMultiDictProxy
 
-from habiticalib.types import HabiticaErrorResponse
+from .typedefs import HabiticaErrorResponse
 
 
 class HabiticaException(Exception):  # noqa: N818

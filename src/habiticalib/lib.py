@@ -34,7 +34,7 @@ from .helpers import (
     get_x_client,
     join_fields,
 )
-from .types import (
+from .typedefs import (
     Attributes,
     Direction,
     HabiticaCastSkillResponse,

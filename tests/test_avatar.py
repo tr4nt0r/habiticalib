@@ -11,8 +11,7 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
-from habiticalib import Habitica
-from habiticalib.types import UserStyles
+from habiticalib import Habitica, UserStyles
 
 from .conftest import load_fixture
 
