@@ -33,18 +33,37 @@ def serialize_datetime(date: str | int | None) -> datetime | None:
     return None
 
 
+class BaseModel(DataClassORJSONMixin):
+    """Base config for dataclasses."""
+
+    class Config(BaseConfig):
+        """Configuration for TaskData."""
+
+        aliases = {  # noqa: RUF012
+            "Type": "type",
+            "Str": "str",
+            "Int": "int",
+            "Class": "class",
+            "tmp": "_tmp",
+            "Def": "def",
+            "Set": "set",
+        }
+        serialize_by_alias = True
+        omit_none = True
+
+
 @dataclass(kw_only=True)
-class NotificationsUser:
+class NotificationsUser(BaseModel):
     """Notifications User data."""
 
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
     data: dict[str, Any]
     seen: bool
     id: UUID
 
 
 @dataclass(kw_only=True)
-class HabiticaResponse(DataClassORJSONMixin):
+class HabiticaResponse(BaseModel):
     """Representation of a base Habitica API response."""
 
     data: Any
@@ -55,7 +74,7 @@ class HabiticaResponse(DataClassORJSONMixin):
 
 
 @dataclass(kw_only=True)
-class LoginData:
+class LoginData(BaseModel):
     """Login data."""
 
     id: UUID
@@ -73,7 +92,7 @@ class HabiticaLoginResponse(HabiticaResponse):
 
 
 @dataclass(kw_only=True)
-class LocalAuth:
+class LocalAuth(BaseModel):
     """Auth local data."""
 
     email: str | None = None
@@ -83,7 +102,7 @@ class LocalAuth:
 
 
 @dataclass(kw_only=True)
-class LocalTimestamps:
+class LocalTimestamps(BaseModel):
     """Timestamps local data."""
 
     created: datetime | None = None
@@ -92,7 +111,7 @@ class LocalTimestamps:
 
 
 @dataclass(kw_only=True)
-class AuthUser:
+class AuthUser(BaseModel):
     """User auth data."""
 
     local: LocalAuth = field(default_factory=LocalAuth)
@@ -103,7 +122,7 @@ class AuthUser:
 
 
 @dataclass(kw_only=True)
-class UltimateGearSetsAchievments:
+class UltimateGearSetsAchievments(BaseModel):
     """Achievments ultimateGearSets data."""
 
     healer: bool | None = None
@@ -113,7 +132,7 @@ class UltimateGearSetsAchievments:
 
 
 @dataclass(kw_only=True)
-class QuestsAchievments:
+class QuestsAchievments(BaseModel):
     """Achievments quests."""
 
     bewilder: int | None = None
@@ -134,7 +153,7 @@ class QuestsAchievments:
 
 
 @dataclass(kw_only=True)
-class AchievementsUser:
+class AchievementsUser(BaseModel):
     """User achievments data."""
 
     ultimateGearSets: UltimateGearSetsAchievments = field(
@@ -164,7 +183,7 @@ class AchievementsUser:
 
 
 @dataclass(kw_only=True)
-class BackerUser:
+class BackerUser(BaseModel):
     """User backer data."""
 
     tier: int | None = None
@@ -173,7 +192,7 @@ class BackerUser:
 
 
 @dataclass(kw_only=True)
-class PermissionsUser:
+class PermissionsUser(BaseModel):
     """User permissions data."""
 
     fullAccess: bool | None = None
@@ -185,7 +204,7 @@ class PermissionsUser:
 
 
 @dataclass(kw_only=True)
-class ContributorUser:
+class ContributorUser(BaseModel):
     """User contributer data."""
 
     contributions: str | None = None
@@ -194,7 +213,7 @@ class ContributorUser:
 
 
 @dataclass(kw_only=True)
-class ConsecutivePlan:
+class ConsecutivePlan(BaseModel):
     """Plan consecutive data."""
 
     trinkets: int | None = None
@@ -204,7 +223,7 @@ class ConsecutivePlan:
 
 
 @dataclass(kw_only=True)
-class PlanPurchased:
+class PlanPurchased(BaseModel):
     """Purchased background data."""
 
     consecutive: ConsecutivePlan = field(default_factory=ConsecutivePlan)
@@ -217,7 +236,7 @@ class PlanPurchased:
 
 
 @dataclass(kw_only=True)
-class PurchasedUser:
+class PurchasedUser(BaseModel):
     """User purchased data."""
 
     plan: PlanPurchased = field(default_factory=PlanPurchased)
@@ -231,7 +250,7 @@ class PurchasedUser:
 
 
 @dataclass(kw_only=True)
-class TourFlags:
+class TourFlags(BaseModel):
     """Flags tour data."""
 
     intro: int | None = None
@@ -250,7 +269,7 @@ class TourFlags:
 
 
 @dataclass(kw_only=True)
-class CommonTutorial:
+class CommonTutorial(BaseModel):
     """Tutorial common data."""
 
     habits: bool
@@ -271,7 +290,7 @@ class CommonTutorial:
 
 
 @dataclass(kw_only=True)
-class IosTutorial:
+class IosTutorial(BaseModel):
     """Tutorial ios data."""
 
     addTask: bool
@@ -284,7 +303,7 @@ class IosTutorial:
 
 
 @dataclass(kw_only=True)
-class TutorialFlags:
+class TutorialFlags(BaseModel):
     """Flags tutorial data."""
 
     common: CommonTutorial | None = None
@@ -292,7 +311,7 @@ class TutorialFlags:
 
 
 @dataclass(kw_only=True)
-class FlagsUser:
+class FlagsUser(BaseModel):
     """User flags data."""
 
     customizationsNotification: bool | None = None
@@ -329,7 +348,7 @@ class FlagsUser:
 
 
 @dataclass(kw_only=True)
-class EntryHistory:
+class EntryHistory(BaseModel):
     """History entry data."""
 
     date: datetime = field(
@@ -345,7 +364,7 @@ class EntryHistory:
 
 
 @dataclass(kw_only=True)
-class HistoryUser:
+class HistoryUser(BaseModel):
     """User history data."""
 
     todos: list[EntryHistory] = field(default_factory=list)
@@ -353,7 +372,7 @@ class HistoryUser:
 
 
 @dataclass(kw_only=True)
-class EquippedGear:
+class EquippedGear(BaseModel):
     """Gear equipped data."""
 
     weapon: str | None = None
@@ -367,7 +386,7 @@ class EquippedGear:
 
 
 @dataclass(kw_only=True)
-class GearItems:
+class GearItems(BaseModel):
     """Items gear data."""
 
     equipped: EquippedGear = field(default_factory=EquippedGear)
@@ -376,7 +395,7 @@ class GearItems:
 
 
 @dataclass(kw_only=True)
-class SpecialItems:
+class SpecialItems(BaseModel):
     """Items special data."""
 
     birthdayReceived: list = field(default_factory=list)
@@ -402,7 +421,7 @@ class SpecialItems:
 
 
 @dataclass(kw_only=True)
-class LastDropItems:
+class LastDropItems(BaseModel):
     """LastDrop items data."""
 
     count: int | None = None
@@ -410,7 +429,7 @@ class LastDropItems:
 
 
 @dataclass(kw_only=True)
-class ItemsUser:
+class ItemsUser(BaseModel):
     """User items data."""
 
     gear: GearItems = field(default_factory=GearItems)
@@ -427,7 +446,7 @@ class ItemsUser:
 
 
 @dataclass(kw_only=True)
-class InvitationsUser:
+class InvitationsUser(BaseModel):
     """Invitations user data."""
 
     party: dict = field(default_factory=dict)
@@ -436,7 +455,7 @@ class InvitationsUser:
 
 
 @dataclass(kw_only=True)
-class ProgressQuest:
+class ProgressQuest(BaseModel):
     """Quest progress data."""
 
     up: float | None = None
@@ -446,7 +465,7 @@ class ProgressQuest:
 
 
 @dataclass(kw_only=True)
-class QuestParty:
+class QuestParty(BaseModel):
     """Party quest data."""
 
     progress: ProgressQuest = field(default_factory=ProgressQuest)
@@ -456,7 +475,7 @@ class QuestParty:
 
 
 @dataclass(kw_only=True)
-class PartyUser:
+class PartyUser(BaseModel):
     """Party user data."""
 
     quest: QuestParty = field(default_factory=QuestParty)
@@ -466,7 +485,7 @@ class PartyUser:
 
 
 @dataclass(kw_only=True)
-class HairPreferences:
+class HairPreferences(BaseModel):
     """Hair preferences data."""
 
     color: str | None = None
@@ -478,7 +497,7 @@ class HairPreferences:
 
 
 @dataclass(kw_only=True)
-class EmailNotificationsPreferences:
+class EmailNotificationsPreferences(BaseModel):
     """EmailNotifications preferences data."""
 
     unsubscribeFromAll: bool | None = None
@@ -500,7 +519,7 @@ class EmailNotificationsPreferences:
 
 
 @dataclass(kw_only=True)
-class PushNotificationsPreferences:
+class PushNotificationsPreferences(BaseModel):
     """PushNotifications preferences data."""
 
     unsubscribeFromAll: bool | None = None
@@ -521,7 +540,7 @@ class PushNotificationsPreferences:
 
 
 @dataclass(kw_only=True)
-class SuppressModalsPreferences:
+class SuppressModalsPreferences(BaseModel):
     """SupressModals preferences data."""
 
     levelUp: bool | None = None
@@ -531,7 +550,7 @@ class SuppressModalsPreferences:
 
 
 @dataclass(kw_only=True)
-class ActiveFilterTask:
+class ActiveFilterTask(BaseModel):
     """ActiveFilter task data."""
 
     habit: str | None = None
@@ -541,7 +560,7 @@ class ActiveFilterTask:
 
 
 @dataclass(kw_only=True)
-class TasksPreferences:
+class TasksPreferences(BaseModel):
     """Tasks preferences data."""
 
     activeFilter: ActiveFilterTask = field(default_factory=ActiveFilterTask)
@@ -551,7 +570,7 @@ class TasksPreferences:
 
 
 @dataclass(kw_only=True)
-class PreferencesUser:
+class PreferencesUser(BaseModel):
     """Preferences user data."""
 
     hair: HairPreferences = field(default_factory=HairPreferences)
@@ -596,7 +615,7 @@ class PreferencesUser:
 
 
 @dataclass(kw_only=True)
-class ProfileUser:
+class ProfileUser(BaseModel):
     """Profile user data."""
 
     blurb: str | None = None
@@ -605,10 +624,10 @@ class ProfileUser:
 
 
 @dataclass(kw_only=True)
-class BuffsStats:
+class BuffsStats(BaseModel):
     """Buffs stats data."""
 
-    Str: int | None = field(default=None, metadata=field_options(alias="str"))
+    Str: int | None = None
     per: int | None = None
     con: int | None = None
     stealth: int | None = None
@@ -617,17 +636,17 @@ class BuffsStats:
     shinySeed: bool | None = None
     snowball: bool | None = None
     spookySparkles: bool | None = None
-    Int: int | None = field(default=None, metadata=field_options(alias="int"))
+    Int: int | None = None
 
 
 @dataclass(kw_only=True)
-class TrainingStats:
+class TrainingStats(BaseModel):
     """Training stats data."""
 
-    Str: float | None = field(default=None, metadata=field_options(alias="str"))
+    Str: float | None = None
     per: int | None = None
     con: int | None = None
-    Int: int | None = field(default=None, metadata=field_options(alias="int"))
+    Int: int | None = None
 
 
 class HabiticaClass(StrEnum):
@@ -640,7 +659,7 @@ class HabiticaClass(StrEnum):
 
 
 @dataclass(kw_only=True)
-class StatsUser:
+class StatsUser(BaseModel):
     """Stats user data."""
 
     buffs: BuffsStats = field(default_factory=BuffsStats)
@@ -650,21 +669,19 @@ class StatsUser:
     exp: int | None = None
     gp: float | None = None
     lvl: int | None = None
-    Class: HabiticaClass | None = field(
-        default=None, metadata=field_options(alias="class")
-    )
+    Class: HabiticaClass | None = None
     points: int | None = None
-    Str: int | None = field(default=None, metadata=field_options(alias="str"))
+    Str: int | None = None
     con: int | None = None
     per: int | None = None
     toNextLevel: int | None = None
     maxHealth: int | None = None
     maxMP: int | None = None
-    Int: int | None = field(default=None, metadata=field_options(alias="int"))
+    Int: int | None = None
 
 
 @dataclass(kw_only=True)
-class TagsUser:
+class TagsUser(BaseModel):
     """Tags user data."""
 
     id: UUID | None = None
@@ -674,7 +691,7 @@ class TagsUser:
 
 
 @dataclass(kw_only=True)
-class InboxUser:
+class InboxUser(BaseModel):
     """Inbox user data."""
 
     newMessages: int | None = None
@@ -684,7 +701,7 @@ class InboxUser:
 
 
 @dataclass(kw_only=True)
-class TasksOrderUser:
+class TasksOrderUser(BaseModel):
     """TasksOrder user data."""
 
     habits: list[UUID] = field(default_factory=list)
@@ -694,11 +711,11 @@ class TasksOrderUser:
 
 
 @dataclass(kw_only=True)
-class PushDevicesUser:
+class PushDevicesUser(BaseModel):
     """PushDevices user data."""
 
     regId: str
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
     createdAt: datetime
     updatedAt: datetime
 
@@ -713,7 +730,7 @@ class WebhooksType(StrEnum):
 
 
 @dataclass(kw_only=True)
-class WebhooksOptions:
+class WebhooksOptions(BaseModel):
     """Webhooks options data."""
 
     created: bool | None = None
@@ -730,13 +747,11 @@ class WebhooksOptions:
 
 
 @dataclass(kw_only=True)
-class WebhooksUser:
+class WebhooksUser(BaseModel):
     """Webhooks user data."""
 
     id: UUID | None = None
-    Type: WebhooksType = field(
-        metadata=field_options(alias="type"), default=WebhooksType.TASK_ACTIVITY
-    )
+    Type: WebhooksType = WebhooksType.TASK_ACTIVITY
     url: str | None = None
     enabled: bool = True
     failures: int = 0
@@ -748,15 +763,15 @@ class WebhooksUser:
 
 
 @dataclass(kw_only=True)
-class PinnedItemsUser:
+class PinnedItemsUser(BaseModel):
     """PinnedItems user data."""
 
     path: str
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
 
 
 @dataclass(kw_only=True)
-class UserData:
+class UserData(BaseModel):
     """User data."""
 
     id: UUID | None = None
@@ -810,7 +825,7 @@ class HabiticaGroupMembersResponse(HabiticaResponse):
 
 
 @dataclass(kw_only=True)
-class CompletedBy:
+class CompletedBy(BaseModel):
     """Task group completedby data."""
 
     userId: UUID | None = None
@@ -818,7 +833,7 @@ class CompletedBy:
 
 
 @dataclass(kw_only=True)
-class GroupTask:
+class GroupTask(BaseModel):
     """Task group data."""
 
     assignedUsers: list[UUID] | None = None
@@ -832,7 +847,7 @@ class GroupTask:
 
 
 @dataclass(kw_only=True)
-class Repeat:
+class Repeat(BaseModel):
     """Task repeat data."""
 
     m: bool = True
@@ -855,7 +870,7 @@ class ChallengeAbortedReason(StrEnum):
 
 
 @dataclass(kw_only=True)
-class Challenge:
+class Challenge(BaseModel):
     """Challenge task data."""
 
     id: UUID | None = None
@@ -866,7 +881,7 @@ class Challenge:
 
 
 @dataclass(kw_only=True)
-class Reminders:
+class Reminders(BaseModel):
     """Task reminders data."""
 
     id: UUID
@@ -875,7 +890,7 @@ class Reminders:
 
 
 @dataclass(kw_only=True)
-class Checklist:
+class Checklist(BaseModel):
     """Task checklist data."""
 
     id: UUID
@@ -939,17 +954,12 @@ class Task(TypedDict("Task", {"type": NotRequired[TaskType]}), total=True):
 
 
 @dataclass(kw_only=True)
-class TaskData(DataClassORJSONMixin):
+class TaskData(BaseModel):
     """Task data."""
-
-    class Config(BaseConfig):
-        """Configuration for TaskData."""
-
-        serialize_by_alias = True
 
     challenge: Challenge = field(default_factory=Challenge)
     group: GroupTask = field(default_factory=GroupTask)
-    Type: TaskType | None = field(default=None, metadata=field_options(alias="type"))
+    Type: TaskType | None = None
     text: str | None = None
     notes: str | None = None
     tags: list[UUID] = field(default_factory=list)
@@ -1002,7 +1012,7 @@ class HabiticaTaskResponse(HabiticaResponse):
 
 
 @dataclass(kw_only=True)
-class HabiticaErrorResponse(DataClassORJSONMixin):
+class HabiticaErrorResponse(BaseModel):
     """Base class for Habitica errors."""
 
     success: bool
@@ -1011,7 +1021,7 @@ class HabiticaErrorResponse(DataClassORJSONMixin):
 
 
 @dataclass(kw_only=True)
-class TasksUserExport:
+class TasksUserExport(BaseModel):
     """Tasks user export data."""
 
     todos: list[TaskData] = field(default_factory=list)
@@ -1021,7 +1031,7 @@ class TasksUserExport:
 
 
 @dataclass(kw_only=True)
-class BuffsUserStyles:
+class BuffsUserStyles(BaseModel):
     """Buffs UserStyles data."""
 
     per: int | None = None
@@ -1034,7 +1044,7 @@ class BuffsUserStyles:
 
 
 @dataclass(kw_only=True)
-class StatsUserStyles:
+class StatsUserStyles(BaseModel):
     """Stats user styles data."""
 
     buffs: BuffsUserStyles = field(default_factory=BuffsUserStyles)
@@ -1042,7 +1052,7 @@ class StatsUserStyles:
 
 
 @dataclass(kw_only=True)
-class GearItemsUserStyles:
+class GearItemsUserStyles(BaseModel):
     """Items gear data."""
 
     equipped: EquippedGear = field(default_factory=EquippedGear)
@@ -1050,7 +1060,7 @@ class GearItemsUserStyles:
 
 
 @dataclass(kw_only=True)
-class ItemsUserStyles:
+class ItemsUserStyles(BaseModel):
     """Items user styles data."""
 
     gear: GearItemsUserStyles = field(default_factory=GearItemsUserStyles)
@@ -1059,7 +1069,7 @@ class ItemsUserStyles:
 
 
 @dataclass(kw_only=True)
-class PreferencesUserStyles:
+class PreferencesUserStyles(BaseModel):
     """Preferences user styles data."""
 
     hair: HairPreferences = field(default_factory=HairPreferences)
@@ -1073,7 +1083,7 @@ class PreferencesUserStyles:
 
 
 @dataclass(kw_only=True)
-class UserStyles(DataClassORJSONMixin):
+class UserStyles(BaseModel):
     """Represents minimalistic data only containing user styles."""
 
     items: ItemsUserStyles = field(default_factory=ItemsUserStyles)
@@ -1082,7 +1092,7 @@ class UserStyles(DataClassORJSONMixin):
 
 
 @dataclass(kw_only=True)
-class HabiticaUserExport(UserData, DataClassORJSONMixin):
+class HabiticaUserExport(UserData, BaseModel):
     """Representation of a user data export."""
 
     tasks: TasksUserExport = field(default_factory=TasksUserExport)
@@ -1097,7 +1107,7 @@ class UserAnonymizedData:
 
 
 @dataclass(kw_only=True)
-class HabiticaUserAnonymizedResponse(DataClassORJSONMixin):
+class HabiticaUserAnonymizedResponse(BaseModel):
     """Representation of a anonymized user data export."""
 
     data: UserAnonymizedData
@@ -1111,7 +1121,7 @@ class HabiticaStatsResponse(HabiticaResponse):
 
 
 @dataclass(kw_only=True)
-class QuestTmpScore:
+class QuestTmpScore(BaseModel):
     """Represents the quest progress details."""
 
     progressDelta: float | None = None
@@ -1119,19 +1129,19 @@ class QuestTmpScore:
 
 
 @dataclass(kw_only=True)
-class DropTmpScore:
+class DropTmpScore(BaseModel):
     """Represents the details of an item drop."""
 
     target: str | None = None
     canDrop: bool | None = None
     value: int | None = None
     key: str | None = None
-    Type: str | None = field(default=None, metadata=field_options(alias="type"))
+    Type: str | None = None
     dialog: str | None = None
 
 
 @dataclass(kw_only=True)
-class TmpScore:
+class TmpScore(BaseModel):
     """Temporary quest and drop data."""
 
     quest: QuestTmpScore = field(default_factory=QuestTmpScore)
@@ -1143,34 +1153,32 @@ class ScoreData(StatsUser):
     """Scora data."""
 
     delta: float | None = None
-    tmp: TmpScore = field(
-        default_factory=TmpScore, metadata=field_options(alias="_tmp")
-    )
+    tmp: TmpScore = field(default_factory=TmpScore)
 
 
 @dataclass(kw_only=True)
-class HabiticaScoreResponse(HabiticaResponse, DataClassORJSONMixin):
+class HabiticaScoreResponse(HabiticaResponse):
     """Representation of a score response."""
 
     data: ScoreData
 
 
 @dataclass(kw_only=True)
-class HabiticaTagsResponse(HabiticaResponse, DataClassORJSONMixin):
+class HabiticaTagsResponse(HabiticaResponse):
     """Representation of a score response."""
 
     data: list[TagsUser]
 
 
 @dataclass(kw_only=True)
-class HabiticaTagResponse(HabiticaResponse, DataClassORJSONMixin):
+class HabiticaTagResponse(HabiticaResponse):
     """Representation of a score response."""
 
     data: TagsUser
 
 
 @dataclass(kw_only=True)
-class QuestData:
+class QuestData(BaseModel):
     """Quest data."""
 
     progress: ProgressQuest = field(default_factory=ProgressQuest)
@@ -1182,14 +1190,14 @@ class QuestData:
 
 
 @dataclass(kw_only=True)
-class HabiticaQuestResponse(HabiticaResponse, DataClassORJSONMixin):
+class HabiticaQuestResponse(HabiticaResponse):
     """Representation of a quest response."""
 
     data: QuestData
 
 
 @dataclass
-class ChangeClassData:
+class ChangeClassData(BaseModel):
     """Change class data."""
 
     preferences: PreferencesUser = field(default_factory=PreferencesUser)
@@ -1199,7 +1207,7 @@ class ChangeClassData:
 
 
 @dataclass(kw_only=True)
-class HabiticaClassSystemResponse(HabiticaResponse, DataClassORJSONMixin):
+class HabiticaClassSystemResponse(HabiticaResponse):
     """Representation of a change-class response."""
 
     data: ChangeClassData
@@ -1313,7 +1321,7 @@ class TaskPriority(Enum):
 
 
 @dataclass
-class AchievmentContent:
+class AchievmentContent(BaseModel):
     """Achievment content data."""
 
     icon: str
@@ -1327,7 +1335,7 @@ class AchievmentContent:
 
 
 @dataclass
-class AnimalColorAchievementContent:
+class AnimalColorAchievementContent(BaseModel):
     """animalColorAchievement content data."""
 
     color: str
@@ -1338,17 +1346,17 @@ class AnimalColorAchievementContent:
 
 
 @dataclass
-class AnimalSetAchievementContent:
+class AnimalSetAchievementContent(BaseModel):
     """animalSetAchievements content data."""
 
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
     species: list[str]
     achievementKey: str
     notificationType: str
 
 
 @dataclass
-class StableAchievementContent:
+class StableAchievementContent(BaseModel):
     """stableAchievements content data."""
 
     masterAchievement: str
@@ -1356,7 +1364,7 @@ class StableAchievementContent:
 
 
 @dataclass
-class PetSetCompleteAchievsContent:
+class PetSetCompleteAchievsContent(BaseModel):
     """petSetCompleteAchievs content data."""
 
     color: str
@@ -1365,7 +1373,7 @@ class PetSetCompleteAchievsContent:
 
 
 @dataclass
-class QuestBossRage:
+class QuestBossRage(BaseModel):
     """QuestBossRage content data."""
 
     title: str
@@ -1376,36 +1384,36 @@ class QuestBossRage:
 
 
 @dataclass
-class QuestBoss:
+class QuestBoss(BaseModel):
     """QuestBoss content data."""
 
     name: str
     hp: float
-    Str: float = field(metadata=field_options(alias="str"))
-    Def: float = field(metadata=field_options(alias="def"))
+    Str: float
+    Def: float
     rage: QuestBossRage | None = None
 
 
 @dataclass
-class QuestItem:
+class QuestItem(BaseModel):
     """QuestItem content data."""
 
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
     key: str
     text: str
 
 
 @dataclass
-class QuestDrop:
+class QuestDrop(BaseModel):
     """QuestDrop content data."""
 
     gp: float
     exp: float
-    items: list[QuestItem] | None = None
+    items: list[QuestItem] = field(default_factory=list)
 
 
 @dataclass
-class QuestCollect:
+class QuestCollect(BaseModel):
     """QuestCollect content data."""
 
     text: str
@@ -1413,7 +1421,7 @@ class QuestCollect:
 
 
 @dataclass
-class QuestUnlockCondition:
+class QuestUnlockCondition(BaseModel):
     """QuestUnlockCondition content data."""
 
     condition: str
@@ -1421,7 +1429,7 @@ class QuestUnlockCondition:
 
 
 @dataclass
-class QuestsContent:
+class QuestsContent(BaseModel):
     """petSetCompleteAchievs content data."""
 
     text: str
@@ -1443,7 +1451,7 @@ class QuestsContent:
 
 
 @dataclass
-class ItemListEntry:
+class ItemListEntry(BaseModel):
     """ItemListEntry content data."""
 
     localeKey: str
@@ -1451,7 +1459,7 @@ class ItemListEntry:
 
 
 @dataclass
-class ItemListContent:
+class ItemListContent(BaseModel):
     """ItemListContent content data."""
 
     weapon: ItemListEntry
@@ -1472,25 +1480,25 @@ class ItemListContent:
 
 
 @dataclass
-class GearEntry:
+class GearEntry(BaseModel):
     """GearEntry content data."""
 
     text: str
     notes: str
-    Int: int = field(metadata=field_options(alias="int"))
+    Int: int
     value: int
-    Type: str = field(metadata=field_options(alias="type"))
+    Type: str
     key: str
-    Set: str = field(metadata=field_options(alias="set"))
+    Set: str
     klass: str
     index: str
-    Str: int = field(metadata=field_options(alias="str"))
+    Str: int
     per: int
     con: int
 
 
 @dataclass
-class GearClass:
+class GearClass(BaseModel):
     """GearClass content data."""
 
     base: dict[str, GearEntry] | None = None
@@ -1504,7 +1512,7 @@ class GearClass:
 
 
 @dataclass
-class GearType:
+class GearType(BaseModel):
     """GearType content data."""
 
     weapon: GearClass
@@ -1518,7 +1526,7 @@ class GearType:
 
 
 @dataclass
-class GearContent:
+class GearContent(BaseModel):
     """GearContent content data."""
 
     tree: GearType
@@ -1526,7 +1534,7 @@ class GearContent:
 
 
 @dataclass
-class SpellEntry:
+class SpellEntry(BaseModel):
     """SpellEntry content data."""
 
     text: str
@@ -1544,7 +1552,7 @@ class SpellEntry:
 
 
 @dataclass
-class SpellsClass:
+class SpellsClass(BaseModel):
     """SpellsClass content data."""
 
     wizard: dict[str, SpellEntry]
@@ -1555,7 +1563,7 @@ class SpellsClass:
 
 
 @dataclass
-class CardTypes:
+class CardTypes(BaseModel):
     """CardTypes content data."""
 
     key: str
@@ -1564,7 +1572,7 @@ class CardTypes:
 
 
 @dataclass
-class SpecialItemEntry:
+class SpecialItemEntry(BaseModel):
     """Item content data."""
 
     key: str | None = None
@@ -1581,7 +1589,7 @@ class SpecialItemEntry:
 
 
 @dataclass
-class EggEntry:
+class EggEntry(BaseModel):
     """Egg content data."""
 
     text: str | None = None
@@ -1593,7 +1601,7 @@ class EggEntry:
 
 
 @dataclass
-class HatchingPotionEntry:
+class HatchingPotionEntry(BaseModel):
     """Hatching potion content data."""
 
     value: int | None = None
@@ -1607,18 +1615,18 @@ class HatchingPotionEntry:
 
 
 @dataclass
-class PetEntry:
+class PetEntry(BaseModel):
     """Pet content data."""
 
     key: str | None = None
-    Type: str | None = field(default=None, metadata=field_options(alias="type"))
+    Type: str | None = None
     potion: str | None = None
     egg: str | None = None
     text: str | None = None
 
 
 @dataclass
-class InventoryItemEntry:
+class InventoryItemEntry(BaseModel):
     """Inventory item content data."""
 
     text: str | None = None
@@ -1632,7 +1640,7 @@ class InventoryItemEntry:
 
 
 @dataclass
-class ContentData:
+class ContentData(BaseModel):
     """Content data."""
 
     achievements: dict[str, AchievmentContent]
@@ -1697,7 +1705,7 @@ class HabiticaContentResponse(HabiticaResponse):
 
 
 @dataclass
-class PartyMember:
+class PartyMember(BaseModel):
     """Party member data."""
 
     stats: StatsUser
@@ -1707,7 +1715,7 @@ class PartyMember:
 
 
 @dataclass
-class UserTasks:
+class UserTasks(BaseModel):
     """User and tasks data."""
 
     user: UserData
