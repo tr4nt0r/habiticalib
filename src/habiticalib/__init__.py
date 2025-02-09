@@ -10,7 +10,7 @@ from .exceptions import (
 )
 from .helpers import deserialize_task
 from .lib import Habitica
-from .types import (
+from .typedefs import (
     Attributes,
     ChangeClassData,
     ContentData,

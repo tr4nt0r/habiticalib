@@ -10,8 +10,17 @@ import pytest
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
-from habiticalib import Attributes, Habitica, Task, TaskFilter
-from habiticalib.types import Checklist, Frequency, Repeat, TaskPriority, TaskType
+from habiticalib import (
+    Attributes,
+    Frequency,
+    Habitica,
+    Repeat,
+    Task,
+    TaskFilter,
+    TaskPriority,
+    TaskType,
+)
+from habiticalib.typedefs import Checklist
 
 from .conftest import DEFAULT_HEADERS, TEST_API_KEY, TEST_API_USER
 

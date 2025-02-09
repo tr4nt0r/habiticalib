@@ -10,7 +10,7 @@ import uuid
 import aiohttp
 
 from .const import DEVELOPER_ID, __version__
-from .types import HabiticaUserResponse, UserData, UserStyles
+from .typedefs import HabiticaUserResponse, UserData, UserStyles
 
 
 def join_fields(user_fields: list[str] | str) -> str:
