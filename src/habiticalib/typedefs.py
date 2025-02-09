@@ -1555,8 +1555,8 @@ class SpellsClass:
 
 
 @dataclass
-class CarTypes:
-    """CarTypes content data."""
+class CardTypes:
+    """CardTypes content data."""
 
     key: str
     messageOptions: int
@@ -1657,7 +1657,7 @@ class ContentData:
     # repeatingEvents
     classes: list[str]
     gearTypes: list[str]
-    cardTypes: dict[str, CarTypes]
+    cardTypes: dict[str, CardTypes]
     special: dict[str, SpecialItemEntry]
     dropEggs: dict[str, EggEntry]
     questEggs: dict[str, EggEntry]
