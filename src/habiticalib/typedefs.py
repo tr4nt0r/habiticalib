@@ -1473,7 +1473,7 @@ class ItemListContent(BaseModel):
     bundles: ItemListEntry
 
 
-@dataclass
+@dataclass(kw_only=True)
 class GearEntry(BaseModel):
     """GearEntry content data."""
 
@@ -1619,7 +1619,7 @@ class PetEntry(BaseModel):
     text: str | None = None
 
 
-@dataclass
+@dataclass(kw_only=True)
 class InventoryItemEntry(BaseModel):
     """Inventory item content data."""
 
@@ -1631,6 +1631,36 @@ class InventoryItemEntry(BaseModel):
     key: str | None = None
     notes: str | None = None
     canDrop: bool | None = None
+    sellWarningNote: str | None = None
+
+
+@dataclass(kw_only=True)
+class Achievment(BaseModel):
+    """An achievment."""
+
+    icon: str
+    titleKey: str
+    textKey: str
+    key: str
+    text2Key: str | None = None
+    notificationText: str | None = None
+    singularTitleKey: str | None = None
+    singularTextKey: str | None = None
+    pluralTitleKey: str | None = None
+    pluralTextKey: str | None = None
+    modalTextKey: str | None = None
+
+
+@dataclass(kw_only=True)
+class Incentive(BaseModel):
+    """A login incentive."""
+
+    rewardKey: list[str] = field(default_factory=list)
+    nextRewardAt: int = 500
+    prevRewardKey: int = 0
+    reward: list[QuestsContent | GearEntry | InventoryItemEntry | Achievment] = field(
+        default_factory=list
+    )
 
 
 @dataclass
@@ -1688,7 +1718,7 @@ class ContentData(BaseModel):
     # tasksByCategory
     # userDefaultsMobile
     # faq
-    # loginIncentives
+    loginIncentives: dict[str, Incentive]
 
 
 @dataclass
