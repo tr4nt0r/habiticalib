@@ -7,12 +7,13 @@ from dataclasses import dataclass, field
 import datetime as dt
 from datetime import UTC, datetime
 from enum import Enum, StrEnum
-from typing import Any, NotRequired, TypedDict
+from typing import Annotated, Any, NotRequired, TypedDict
 from uuid import UUID
 
 from mashumaro import field_options
 from mashumaro.config import TO_DICT_ADD_OMIT_NONE_FLAG
 from mashumaro.mixins.orjson import DataClassORJSONMixin
+from mashumaro.types import Discriminator
 
 
 def serialize_datetime(date: str | int | None) -> datetime | None:
@@ -776,46 +777,185 @@ class PushDevicesUser(BaseModel):
     updatedAt: datetime
 
 
-class WebhooksType(StrEnum):
+class WebhookType(StrEnum):
     """Webhook types."""
 
     TASK_ACTIVITY = "taskActivity"
     USER_ACTIVITY = "userActivity"
     QUEST_ACTIVITY = "questActivity"
     GROUP_CHAT_RECEIVED = "groupChatReceived"
+    GLOBAL_ACTIVITY = "globalActivity"
 
 
 @dataclass(kw_only=True)
-class WebhooksOptions(BaseModel):
-    """Webhooks options data."""
+class QuestActivityOptions(BaseModel):
+    """Quest activity options."""
 
-    created: bool | None = None
-    updated: bool | None = None
-    deleted: bool | None = None
-    scored: bool | None = None
-    questStarted: bool | None = None
-    questFinished: bool | None = None
-    questInvited: bool | None = None
-    petHatched: bool | None = None
-    mountRaised: bool | None = None
-    leveledUp: bool | None = None
-    groupId: UUID | None = None
+    questStarted: bool = False
+    questFinished: bool = False
+    questInvited: bool = False
 
 
 @dataclass(kw_only=True)
-class WebhooksUser(BaseModel):
+class UserActivityOptions(BaseModel):
+    """User activity options."""
+
+    petHatched: bool = False
+    mountRaised: bool = False
+    leveledUp: bool = False
+
+
+@dataclass
+class GroupChatReceivedOptions(BaseModel):
+    """Group chat received options."""
+
+    groupId: UUID
+
+
+@dataclass(kw_only=True)
+class TaskActivityOptions(BaseModel):
+    """Task activity options."""
+
+    created: bool = False
+    updated: bool = False
+    deleted: bool = False
+    checklistScored: bool = False
+    scored: bool = True
+
+
+@dataclass(kw_only=True)
+class Webhook(BaseModel):
+    """Webhook base class."""
+
+    url: str | None = field(default=None, kw_only=False)
+    enabled: bool | None = None
+    label: str | None = None
+    id: UUID | None = None
+
+
+@dataclass(kw_only=True)
+class TaskActivity(Webhook):
+    """Task activity."""
+
+    Type: WebhookType = field(default=WebhookType.TASK_ACTIVITY, init=False)
+    options: TaskActivityOptions = field(default_factory=TaskActivityOptions)
+
+
+@dataclass(kw_only=True)
+class GroupChatReceived(Webhook):
+    """Group chat received."""
+
+    def __post_init__(self) -> None:
+        """Initialize the GroupChatReceived class."""
+        if self.groupId:
+            if not isinstance(self.groupId, UUID):
+                self.groupId = UUID(self.groupId)
+
+            self.options = GroupChatReceivedOptions(groupId=self.groupId)
+            self.groupId = None
+
+    groupId: UUID | str | None = field(default=None, kw_only=False)
+    Type: WebhookType = field(default=WebhookType.GROUP_CHAT_RECEIVED, init=False)
+    options: GroupChatReceivedOptions = field(init=False)
+
+
+@dataclass(kw_only=True)
+class UserActivity(Webhook):
+    """User activity."""
+
+    Type: WebhookType = field(default=WebhookType.USER_ACTIVITY, init=False)
+    options: UserActivityOptions = field(default_factory=UserActivityOptions)
+
+
+@dataclass(kw_only=True)
+class QuestActivity(Webhook):
+    """Quest activity."""
+
+    Type: WebhookType = field(default=WebhookType.QUEST_ACTIVITY, init=False)
+    options: QuestActivityOptions = field(default_factory=QuestActivityOptions)
+
+
+@dataclass(kw_only=True)
+class GlobalActivity(Webhook):
+    """Global  activity.
+
+    Note: global webhooks send a request for every type of event
+    """
+
+    Type: WebhookType = field(default=WebhookType.GLOBAL_ACTIVITY, init=False)
+
+
+class HabiticaWebhookResponse(HabiticaResponse):
+    """Representation of a webhook data response."""
+
+    data: Annotated[
+        Webhook,
+        Discriminator(
+            field="type",
+            include_subtypes=True,
+        ),
+    ]
+
+
+class HabiticaDeleteWebhookResponse(HabiticaResponse):
+    """Representation of a delete webhook response."""
+
+    data: list[
+        Annotated[
+            Webhook,
+            Discriminator(
+                field="type",
+                include_subtypes=True,
+            ),
+        ]
+    ]
+
+
+@dataclass(kw_only=True)
+class WebhookUser(BaseModel):
     """Webhooks user data."""
 
-    id: UUID | None = None
-    Type: WebhooksType = WebhooksType.TASK_ACTIVITY
-    url: str | None = None
-    enabled: bool = True
     failures: int = 0
-    label: str = ""
-    options = WebhooksOptions
     lastFailureAt: datetime | None = None
     createdAt: datetime | None = None
     updatedAt: datetime | None = None
+
+
+@dataclass(kw_only=True)
+class TaskActivityWebhook(WebhookUser, TaskActivity):
+    """Task activity webhook."""
+
+    type = "taskActivity"
+
+
+@dataclass(kw_only=True)
+class QuestActivityWebhook(WebhookUser, QuestActivity):
+    """Quest activity webhook."""
+
+    type = "questActivity"
+
+
+@dataclass(kw_only=True)
+class GlobalActivityWebhook(WebhookUser, GlobalActivity):
+    """Global activity webhook."""
+
+    type = "globalActivity"
+
+
+@dataclass(kw_only=True)
+class GroupChatReceivedWebhook(WebhookUser, GroupChatReceived):
+    """Group chat received webhook."""
+
+    type = "groupChatReceived"
+    groupId: None = None
+    options: GroupChatReceivedOptions = field(init=True)
+
+
+@dataclass(kw_only=True)
+class UserActivityWebhook(WebhookUser, UserActivity):
+    """User activity webhook."""
+
+    type = "userActivity"
 
 
 @dataclass(kw_only=True)
@@ -851,7 +991,15 @@ class UserData(Avatar, BaseModel):
     tasksOrder: TasksOrderUser = field(default_factory=TasksOrderUser)
     extra: dict = field(default_factory=dict)
     pushDevices: list[PushDevicesUser] = field(default_factory=list)
-    webhooks: list[WebhooksUser] = field(default_factory=list)
+    webhooks: list[
+        Annotated[
+            Webhook,
+            Discriminator(
+                field="type",
+                include_subtypes=True,
+            ),
+        ]
+    ] = field(default_factory=list)
     loginIncentives: int | None = None
     invitesSent: int | None = None
     pinnedItems: list[PinnedItemsUser] = field(default_factory=list)

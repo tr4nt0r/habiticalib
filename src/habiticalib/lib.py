@@ -38,10 +38,13 @@ from .typedefs import (
     Attributes,
     Avatar,
     Direction,
+    GlobalActivity,
+    GroupChatReceived,
     HabiticaCastSkillResponse,
     HabiticaClass,
     HabiticaClassSystemResponse,
     HabiticaContentResponse,
+    HabiticaDeleteWebhookResponse,
     HabiticaErrorResponse,
     HabiticaGroupMembersResponse,
     HabiticaLoginResponse,
@@ -58,10 +61,14 @@ from .typedefs import (
     HabiticaUserAnonymizedResponse,
     HabiticaUserExport,
     HabiticaUserResponse,
+    HabiticaWebhookResponse,
     Language,
+    QuestActivity,
     Skill,
     Task,
+    TaskActivity,
     TaskFilter,
+    UserActivity,
 )
 
 if TYPE_CHECKING:
@@ -2072,4 +2079,107 @@ class Habitica:
                 "login": self._headers.get("X-API-USER"),
                 "password": self._headers.get("X-API-KEY"),
             },  # type: ignore[var-annotated]
+        )
+
+    async def create_webhook(
+        self,
+        webhook: TaskActivity
+        | GroupChatReceived
+        | UserActivity
+        | QuestActivity
+        | GlobalActivity,
+    ) -> HabiticaWebhookResponse:
+        """Create a new webhook.
+
+        Parameters
+        ----------
+        webhook : TaskActivity or GroupChatReceived or UserActivity or QuestActivity or GlobalActivity
+            The webhook object to be created. It should be an instance of one of the following types:
+            - TaskActivity
+            - GroupChatReceived
+            - UserActivity
+            - QuestActivity
+            - GlobalActivity
+
+        Returns
+        -------
+        HabiticaWebhookResponse
+            A response object containing the created webhook.
+
+        Raises
+        ------
+        BadRequestError
+            A parameter did not pass validation.
+
+        """
+
+        url = self.url / "api/v3/user/webhook"
+
+        return HabiticaWebhookResponse.from_json(
+            await self._request("post", url=url, json=webhook.to_dict(omit_none=True))
+        )
+
+    async def delete_webhook(
+        self, webhook_id: str | UUID
+    ) -> HabiticaDeleteWebhookResponse:
+        """Delete a webhook by its UUID.
+
+        Parameters
+        ----------
+        webhook_id : str or UUID
+            The UUID identifier of the webhook to delete.
+
+        Returns
+        -------
+        HabiticaDeleteWebhookResponse
+            A response object containing a list of the remaining webhooks.
+
+        Raises
+        ------
+        NotFoundError
+            The specified webhook could not be found.
+        """
+        url = self.url / "api/v3/user/webhook" / str(webhook_id)
+
+        return HabiticaDeleteWebhookResponse.from_json(
+            await self._request("delete", url)
+        )
+
+    async def update_webhook(
+        self,
+        webhook: TaskActivity
+        | GroupChatReceived
+        | UserActivity
+        | QuestActivity
+        | GlobalActivity,
+    ) -> HabiticaWebhookResponse:
+        """Update a webhook by its UUID with the provided data.
+
+        Parameters
+        ----------
+        webhook : TaskActivity or GroupChatReceived or UserActivity or QuestActivity or GlobalActivity
+            The webhook data to be updated. It must be an instance of one of the specified types.
+
+        Returns
+        -------
+        HabiticaWebhookResponse
+            The response object containing the updated webhook.
+
+
+        Raises
+        ------
+        ValueError
+            If the identifier was not provided.
+        BadRequestError
+            A parameter did not pass validation.
+
+        """
+        if not webhook.id:
+            msg = "You must provide the identifier of the webhook to update."
+            raise ValueError(msg)
+
+        url = self.url / "api/v3/user/webhook" / str(webhook.id)
+
+        return HabiticaWebhookResponse.from_json(
+            await self._request("put", url, json=webhook.to_dict(omit_none=True))
         )
