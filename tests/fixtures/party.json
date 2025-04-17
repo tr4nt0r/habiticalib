@@ -1,0 +1,132 @@
+{
+    "success": true,
+    "data": {
+      "leaderOnly": {
+        "challenges": false,
+        "getGems": false
+      },
+      "quest": {
+        "progress": {
+          "collect": {}
+        },
+        "active": false,
+        "members": {
+          "c18e1853-bded-47a9-82e2-adfdad08894d": true,
+          "c5dece22-3b0c-4e30-a6e7-34c2524224db": null
+        },
+        "extra": {},
+        "key": "atom1",
+        "leader": "c18e1853-bded-47a9-82e2-adfdad08894d"
+      },
+      "tasksOrder": {
+        "habits": [],
+        "dailys": [],
+        "todos": [],
+        "rewards": []
+      },
+      "purchased": {
+        "plan": {
+          "consecutive": {
+            "count": 0,
+            "offset": 0,
+            "gemCapExtra": 0,
+            "trinkets": 0
+          },
+          "quantity": 1,
+          "extraMonths": 0,
+          "gemsBought": 0,
+          "cumulativeCount": 0,
+          "mysteryItems": []
+        }
+      },
+      "cron": {},
+      "_id": "d27c2e74-a65a-42cc-9ac4-46966242cb1f",
+      "name": "test's Party",
+      "type": "party",
+      "privacy": "private",
+      "chat": [
+        {
+          "_id": "bb436446-6e91-49ea-9607-11f955105224",
+          "flagCount": 0,
+          "flags": {},
+          "id": "bb436446-6e91-49ea-9607-11f955105224",
+          "text": "hallo",
+          "unformattedText": "hallo",
+          "info": {},
+          "timestamp": 1744892356769,
+          "likes": {},
+          "client": "web",
+          "uuid": "c18e1853-bded-47a9-82e2-adfdad08894d",
+          "contributor": {},
+          "backer": {},
+          "user": "test",
+          "username": "test",
+          "groupId": "d27c2e74-a65a-42cc-9ac4-46966242cb1f",
+          "userStyles": {
+            "items": {
+              "gear": {
+                "equipped": {
+                  "armor": "armor_base_0",
+                  "head": "head_base_0",
+                  "shield": "shield_special_piDay",
+                  "headAccessory": "headAccessory_base_0"
+                }
+              },
+              "currentMount": "",
+              "currentPet": ""
+            },
+            "preferences": {
+              "hair": {
+                "color": "red",
+                "base": 3,
+                "bangs": 0,
+                "beard": 0,
+                "mustache": 0,
+                "flower": 1
+              },
+              "skin": "915533",
+              "shirt": "pink",
+              "chair": "none",
+              "size": "slim",
+              "background": "violet",
+              "costume": false
+            },
+            "stats": {
+              "class": "rogue",
+              "buffs": {
+                "seafoam": false,
+                "shinySeed": false,
+                "spookySparkles": false,
+                "snowball": false
+              }
+            }
+          }
+        }
+      ],
+      "memberCount": 2,
+      "challengeCount": 0,
+      "balance": 0,
+      "managers": {},
+      "categories": [],
+      "leader": {
+        "auth": {
+          "local": {
+            "username": "test"
+          }
+        },
+        "flags": {
+          "verifiedUsername": true
+        },
+        "profile": {
+          "name": "test"
+        },
+        "_id": "c5dece22-3b0c-4e30-a6e7-34c2524224db",
+        "id": "c5dece22-3b0c-4e30-a6e7-34c2524224db"
+      },
+      "summary": "test's Party",
+      "id": "d27c2e74-a65a-42cc-9ac4-46966242cb1f"
+    },
+    "notifications": [],
+    "userV": 797,
+    "appVersion": "5.35.3"
+  }

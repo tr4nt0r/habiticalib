@@ -121,6 +121,10 @@ def aioclient_mock() -> Generator[aioresponses]:
             "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f/move/to/2",
             body=load_fixture("task_order.json"),
         )
+        m.get(
+            "https://habitica.com/api/v3/groups/party",
+            body=load_fixture("party.json"),
+        )
 
         yield m
 
