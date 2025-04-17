@@ -559,6 +559,9 @@ class QuestParty(BaseModel):
     RSVPNeeded: bool | None = None
     key: str | None = None
     completed: str | None = None
+    active: bool | None = None
+    leader: UUID | None = None
+    members: dict[UUID, bool] = field(default_factory=dict)
 
 
 @dataclass(kw_only=True)
@@ -1900,3 +1903,95 @@ class HabiticaCastSkillResponse(HabiticaResponse):
     """Representation of a cast skill response."""
 
     data: UserTasks
+
+
+class GroupPrivacy(StrEnum):
+    """Group privacy."""
+
+    PRIVATE = "private"
+    PUBLIC = "public"
+
+
+class GroupType(StrEnum):
+    """Group type."""
+
+    GUILD = "guild"
+    PARTY = "party"
+
+
+@dataclass(kw_only=True)
+class LeaderOnly(BaseModel):
+    """Group leaderOnly  data."""
+
+    challenges: bool
+    getGems: bool
+
+
+@dataclass(kw_only=True)
+class GroupLeader(BaseModel):
+    """Group leader data."""
+
+    id: UUID
+    auth: AuthUser
+    profile: ProfileUser
+
+
+@dataclass(kw_only=True)
+class ChatMsgInfo(BaseModel):
+    """Chat message info."""
+
+    type: str | None = None
+    user: str | None = None
+    quest: str | None = None
+    items: dict[str, int] | None = None
+
+
+@dataclass(kw_only=True)
+class ChatMsg(BaseModel):
+    """Chat message."""
+
+    id: UUID
+    flagCount: int
+    text: str
+    unformattedText: str
+    info: ChatMsgInfo
+    timestamp: datetime = field(
+        metadata=field_options(
+            deserialize=serialize_datetime,
+        )
+    )
+    likes: dict[UUID, bool]
+    client: str | None = None
+    uuid: UUID | str
+    groupId: UUID
+    user: str | None = None
+    username: str | None = None
+    userStyles: Avatar | None = None
+
+
+@dataclass(kw_only=True)
+class GroupData(BaseModel):
+    """Groups data."""
+
+    name: str
+    summary: str = ""
+    description: str = ""
+    leader: GroupLeader
+    type: GroupType
+    privacy: GroupPrivacy
+    chat: list[ChatMsg]
+    leaderOnly: LeaderOnly
+    memberCount: int = 1
+    ChallengeCount: int = 0
+    chatLimitCount: int | None = None
+    balance: float
+    logo: str | None = None
+    leaderMessage: str | None = None
+    quest: QuestParty
+
+
+@dataclass
+class HabiticaGroupsResponse(HabiticaResponse):
+    """Representation of a groups response."""
+
+    data: GroupData

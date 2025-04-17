@@ -46,6 +46,7 @@ from .typedefs import (
     HabiticaDeleteWebhookResponse,
     HabiticaErrorResponse,
     HabiticaGroupMembersResponse,
+    HabiticaGroupsResponse,
     HabiticaLoginResponse,
     HabiticaQuestResponse,
     HabiticaResponse,
@@ -2152,3 +2153,23 @@ class Habitica:
         return HabiticaWebhookResponse.from_json(
             await self._request("put", url, json=webhook.to_dict(omit_none=True))
         )
+
+    async def get_group(self, group_id: UUID | None = None) -> HabiticaGroupsResponse:
+        """
+        Retrieve a user's group or party information.
+
+        Parameters
+        ----------
+        group_id : UUID or None, optional
+            The unique identifier of the group to retrieve. If not provided,
+            the user's party information will be retrieved instead.
+
+        Returns
+        -------
+        HabiticaGroupsResponse
+            An object representing the response containing the group or party details.
+        """
+
+        url = self.url / "api/v3/groups" / (str(group_id) if group_id else "party")
+
+        return HabiticaGroupsResponse.from_json(await self._request("get", url))

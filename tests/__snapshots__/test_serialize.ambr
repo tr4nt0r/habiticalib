@@ -1642,6 +1642,8 @@
         'orderAscending': 'ascending',
         'quest': dict({
           'RSVPNeeded': False,
+          'members': dict({
+          }),
           'progress': dict({
             'collect': dict({
             }),
@@ -3754,6 +3756,8 @@
           'orderAscending': 'ascending',
           'quest': dict({
             'RSVPNeeded': False,
+            'members': dict({
+            }),
             'progress': dict({
               'collect': dict({
               }),
