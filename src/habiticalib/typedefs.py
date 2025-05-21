@@ -1963,10 +1963,13 @@ class ChatMsg(BaseModel):
     likes: dict[UUID, bool]
     client: str | None = None
     uuid: UUID | str
-    groupId: UUID
+    groupId: UUID | None = None
     user: str | None = None
     username: str | None = None
     userStyles: Avatar | None = None
+    sent: bool | None = None
+    ownerId: UUID | None = None
+    uniqueMessageId: UUID | None = None
 
 
 @dataclass(kw_only=True)
@@ -1995,3 +1998,17 @@ class HabiticaGroupsResponse(HabiticaResponse):
     """Representation of a groups response."""
 
     data: GroupData
+
+
+@dataclass(kw_only=True)
+class MessageData(BaseModel):
+    """Message data."""
+
+    message: ChatMsg
+
+
+@dataclass(kw_only=True)
+class HabiticaMessageResponse(HabiticaResponse):
+    """Representation of a group response."""
+
+    data: MessageData

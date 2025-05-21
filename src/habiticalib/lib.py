@@ -48,6 +48,7 @@ from .typedefs import (
     HabiticaGroupMembersResponse,
     HabiticaGroupsResponse,
     HabiticaLoginResponse,
+    HabiticaMessageResponse,
     HabiticaQuestResponse,
     HabiticaResponse,
     HabiticaScoreResponse,
@@ -2173,3 +2174,69 @@ class Habitica:
         url = self.url / "api/v3/groups" / (str(group_id) if group_id else "party")
 
         return HabiticaGroupsResponse.from_json(await self._request("get", url))
+
+    async def send_group_message(
+        self, message: str, group_id: UUID | None = None
+    ) -> HabiticaMessageResponse:
+        """Send a message to a specific group.
+
+        Parameters
+        ----------
+        message : str
+            The content of the message to be sent.
+        group_id : UUID
+            The unique identifier of the group to send the message to.
+            If not provided, the user's party will be used.
+
+        Returns
+        -------
+        HabiticaMessageResponse
+            An object representing the response containing the sent message details.
+
+        Raises
+        ------
+        NotAuthorizedError
+            If the user is not authorized to send messages to the specified group
+            because the chat privileges have been revoked.
+        NotFoundError
+            If the specified group could not be found.
+        """
+        url = (
+            self.url
+            / "api/v3/groups"
+            / (str(group_id) if group_id else "party")
+            / "chat"
+        )
+        return HabiticaMessageResponse.from_json(
+            await self._request("post", url, json={"message": message})
+        )
+
+    async def send_private_message(
+        self, message: str, to_user_id: UUID
+    ) -> HabiticaMessageResponse:
+        """Send a private message to a specific user.
+
+        Parameters
+        ----------
+        message : str
+            The content of the private message to be sent.
+        to_user_id : UUID
+            The unique identifier of the user to send the message to.
+
+        Returns
+        -------
+        HabiticaMessageResponse
+            An object representing the response containing the sent message details.
+
+        Raises
+        ------
+        NotFoundError
+            If the specified user could not be found.
+        """
+        url = self.url / "api/v3/members/send-private-message"
+
+        return HabiticaMessageResponse.from_json(
+            await self._request(
+                "post", url, json={"message": message, "toUserId": str(to_user_id)}
+            )
+        )
