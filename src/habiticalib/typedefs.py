@@ -1976,6 +1976,7 @@ class ChatMsg(BaseModel):
 class GroupData(BaseModel):
     """Groups data."""
 
+    id: UUID
     name: str
     summary: str = ""
     description: str = ""
