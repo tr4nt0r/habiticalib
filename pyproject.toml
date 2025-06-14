@@ -79,7 +79,7 @@ dependencies = [
     "mashumaro==3.16",
     "orjson==3.10.18",
     "Pillow==11.1.0",
-    "mypy==1.15.0",
+    "mypy==1.16.0",
     "ruff==0.9.6",
     "pytest==8.3.4",
     "pytest-cov==6.0.0",
