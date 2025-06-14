@@ -78,7 +78,7 @@ dependencies = [
     "aiohttp==3.12.13",
     "mashumaro==3.16",
     "orjson==3.10.18",
-    "Pillow==11.1.0",
+    "Pillow==11.2.1",
     "mypy==1.16.0",
     "ruff==0.9.6",
     "pytest==8.3.4",
