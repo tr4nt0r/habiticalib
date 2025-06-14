@@ -82,7 +82,7 @@ dependencies = [
     "mypy==1.16.0",
     "ruff==0.9.6",
     "pytest==8.4.0",
-    "pytest-cov==6.0.0",
+    "pytest-cov==6.2.1",
     "mkdocs-material==9.6.14",
     "mkdocstrings[python]==0.29.1",
     "pytest-asyncio==0.25.3",
@@ -97,7 +97,7 @@ extra-dependencies = [
   "aioresponses==0.7.8",
   "pytest-asyncio==0.25.3",
   "syrupy==4.8.1",
-  "pytest-cov==6.0.0",
+  "pytest-cov==6.2.1",
 ]
 extra-args = ["--cov-report=xml", "-vv"]
 type = "virtual"
