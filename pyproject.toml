@@ -4,7 +4,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001"]
+ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001", "PLW1641"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
