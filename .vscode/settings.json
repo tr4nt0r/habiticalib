@@ -18,5 +18,6 @@
       },
       "editor.defaultFormatter": "charliermarsh.ruff"
     },
-    "pylint.enabled": false
+    "pylint.enabled": false,
+    "markdown.validate.enabled": true
   }
