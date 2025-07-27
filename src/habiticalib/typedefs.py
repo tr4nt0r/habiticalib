@@ -456,7 +456,7 @@ class FlagsUser(BaseModel):
 class EntryHistory(BaseModel):
     """History entry data."""
 
-    date: datetime = field(
+    date: datetime | None = field(
         metadata=field_options(
             deserialize=serialize_datetime,
         )
