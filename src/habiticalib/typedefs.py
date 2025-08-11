@@ -573,6 +573,7 @@ class PartyUser(BaseModel):
     order: str | None = None
     orderAscending: str | None = None
     _id: UUID | None = None
+    id: UUID | None = field(default=None, metadata=field_options(alias="_id"))
 
 
 @dataclass(kw_only=True)
