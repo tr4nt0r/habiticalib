@@ -77,7 +77,7 @@ python = "3.12"
 dependencies = [
     "aiohttp==3.12.15",
     "mashumaro==3.16",
-    "orjson==3.11.1",
+    "orjson==3.11.2",
     "Pillow==11.3.0",
     "mypy==1.17.1",
     "ruff==0.12.8",
