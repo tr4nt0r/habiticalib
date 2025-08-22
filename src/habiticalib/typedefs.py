@@ -551,6 +551,7 @@ class ProgressQuest(BaseModel):
     collect: dict[str, int] = field(default_factory=dict)
     collectedItems: int | None = None
     hp: float | None = None
+    rage: float | None = None
 
 
 @dataclass(kw_only=True)
