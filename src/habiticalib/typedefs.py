@@ -457,9 +457,10 @@ class EntryHistory(BaseModel):
     """History entry data."""
 
     date: datetime | None = field(
+        default=None,
         metadata=field_options(
             deserialize=serialize_datetime,
-        )
+        ),
     )
     value: float
     scoredUp: int | None = None
