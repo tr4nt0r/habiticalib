@@ -1957,8 +1957,8 @@ class ChatMsg(BaseModel):
     id: UUID
     flagCount: int
     text: str
-    unformattedText: str
-    info: ChatMsgInfo
+    unformattedText: str | None = None
+    info: ChatMsgInfo = field(default_factory=ChatMsgInfo)
     timestamp: datetime = field(
         metadata=field_options(
             deserialize=serialize_datetime,
