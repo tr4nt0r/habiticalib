@@ -81,7 +81,7 @@ dependencies = [
     "Pillow==11.3.0",
     "mypy==1.18.2",
     "ruff==0.14.0",
-    "pytest==8.4.1",
+    "pytest==8.4.2",
     "pytest-cov==6.2.1",
     "mkdocs-material==9.6.17",
     "mkdocstrings[python]==0.30.0",
@@ -94,6 +94,7 @@ dependencies = [
 [tool.hatch.envs.hatch-test]
 parallel = true
 extra-dependencies = [
+  "pytest==8.4.2",
   "aioresponses==0.7.8",
   "pytest-asyncio==1.1.0",
   "syrupy==5.0.0",
