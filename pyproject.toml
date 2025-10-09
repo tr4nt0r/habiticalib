@@ -85,7 +85,7 @@ dependencies = [
     "pytest-cov==6.2.1",
     "mkdocs-material==9.6.17",
     "mkdocstrings[python]==0.30.0",
-    "pytest-asyncio==1.1.0",
+    "pytest-asyncio==1.2.0",
     "aioresponses==0.7.8",
     "pre-commit==4.3.0",
     "syrupy==5.0.0"
@@ -96,7 +96,7 @@ parallel = true
 extra-dependencies = [
   "pytest==8.4.2",
   "aioresponses==0.7.8",
-  "pytest-asyncio==1.1.0",
+  "pytest-asyncio==1.2.0",
   "syrupy==5.0.0",
   "pytest-cov==6.2.1",
 ]
