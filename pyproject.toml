@@ -104,7 +104,7 @@ extra-args = ["--cov-report=xml", "-vv"]
 type = "virtual"
 
 [[tool.hatch.envs.hatch-test.matrix]]
-python = ["3.13", "3.12"]
+python = ["3.14", "3.13", "3.12"]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest"
