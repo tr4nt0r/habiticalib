@@ -80,7 +80,7 @@ dependencies = [
     "orjson==3.11.3",
     "Pillow==11.3.0",
     "mypy==1.17.1",
-    "ruff==0.12.9",
+    "ruff==0.14.0",
     "pytest==8.4.1",
     "pytest-cov==6.2.1",
     "mkdocs-material==9.6.17",
