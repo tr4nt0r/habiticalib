@@ -76,7 +76,7 @@ path = "src/habiticalib/const.py"
 python = "3.12"
 dependencies = [
     "aiohttp==3.13.0",
-    "mashumaro==3.16",
+    "mashumaro==3.17",
     "orjson==3.11.3",
     "Pillow==11.3.0",
     "mypy==1.17.1",
