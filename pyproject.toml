@@ -94,7 +94,6 @@ dependencies = [
 [tool.hatch.envs.hatch-test]
 parallel = true
 extra-dependencies = [
-  "pytest==9.0.1",
   "aioresponses==0.7.8",
   "pytest-asyncio==1.2.0",
   "syrupy==5.0.0",
