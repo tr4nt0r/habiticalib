@@ -75,7 +75,7 @@ path = "src/habiticalib/const.py"
 [tool.hatch.envs.default]
 python = "3.14"
 dependencies = [
-    "aiohttp==3.13.2",
+    "aiohttp==3.13.3",
     "mashumaro==3.17",
     "orjson==3.11.5",
     "Pillow==12.1.0",
