@@ -6,7 +6,6 @@ import asyncio
 from http import HTTPStatus
 from io import BytesIO
 import logging
-from operator import add
 from typing import IO, TYPE_CHECKING, Self
 
 from aiohttp import ClientError, ClientResponseError, ClientSession
@@ -120,7 +119,7 @@ class Habitica:
             msg = "Both 'api_user' and 'api_key' must be provided together."
             raise ValueError(msg)
 
-        self.url = URL(url if url else DEFAULT_URL)
+        self.url = URL(url or DEFAULT_URL)
 
         self._assets_cache: dict[str, IO[bytes]] = {}
         self._cache_order: list[str] = []
@@ -1847,7 +1846,7 @@ class Habitica:
         else:
             fetched_image = Image.open(asset_data).convert("RGBA")
             if offset := SPECIAL_ASSETS_OFFSET.get(asset):
-                position = tuple(map(add, position, offset))
+                position = (position[0] + offset[0], position[1] + offset[1])
             image.paste(fetched_image, position, fetched_image)
 
     async def generate_avatar(  # noqa: PLR0912, PLR0915
