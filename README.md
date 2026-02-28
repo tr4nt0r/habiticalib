@@ -6,7 +6,6 @@ Modern asynchronous Python client library for the Habitica API
 [![codecov](https://codecov.io/gh/tr4nt0r/habiticalib/graph/badge.svg?token=iEsZ1Ktj7d)](https://codecov.io/gh/tr4nt0r/habiticalib)
 [![PyPI version](https://badge.fury.io/py/habiticalib.svg)](https://badge.fury.io/py/habiticalib)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/habiticalib?style=flat&label=pypi%20downloads)
-[!["Buy Me A Coffee"](https://img.shields.io/badge/-buy_me_a%C2%A0coffee-gray?logo=buy-me-a-coffee)](https://www.buymeacoffee.com/tr4nt0r)
 [![GitHub Sponsor](https://img.shields.io/badge/GitHub-Sponsor-blue?logo=github)](https://github.com/sponsors/tr4nt0r)
 
 ---
