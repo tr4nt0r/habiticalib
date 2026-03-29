@@ -146,7 +146,7 @@ requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.9",
     "mashumaro>=3.13",
-    "orjson>=3.10",
+    "orjson>=3.11.5",
     "Pillow>=11.0"
 ]
 
