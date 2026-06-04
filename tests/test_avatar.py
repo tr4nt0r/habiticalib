@@ -4,14 +4,13 @@ import asyncio
 from io import BytesIO
 import pathlib
 import sys
+from unittest.mock import patch
 
 from aiohttp import ClientSession
-from aioresponses import aioresponses
 import pytest
 from syrupy.assertion import SnapshotAssertion
-from yarl import URL
 
-from habiticalib import Avatar, Habitica
+from habiticalib import Avatar, Habitica, HabiticaUserResponse
 
 from .conftest import load_fixture
 
@@ -19,44 +18,42 @@ from .conftest import load_fixture
 @pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
 @pytest.mark.slow
 async def test_generate_avatar(
-    mock_aiohttp: aioresponses,
     snapshot: SnapshotAssertion,
     snapshot_png: SnapshotAssertion,
-    api_url: URL,
 ) -> None:
     """Test generation of avatar from user response."""
-    # workaround due to qs double-encoding by aioresponses
-    url = str(api_url / "api/v3/user") + "?userFields=preferences%2Citems%2Cstats"
-    mock_aiohttp.get(url, body=load_fixture("user.json"))
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, "test", "test")
-        avatar = BytesIO()
+    avatar = BytesIO()
 
-        response = await habitica.generate_avatar(avatar, fmt="png")
-        assert response == snapshot
-        assert avatar.getvalue() == snapshot_png
+    with patch(
+        "habiticalib.Habitica.get_user",
+        return_value=HabiticaUserResponse.from_json(load_fixture("user.json")),
+    ):
+        async with ClientSession() as session:
+            habitica = Habitica(session, "test", "test")
+            response = await habitica.generate_avatar(avatar, fmt="png")
+
+    assert response == snapshot
+    assert avatar.getvalue() == snapshot_png
 
 
 @pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
 @pytest.mark.slow
 async def test_generate_avatar_to_file(
-    mock_aiohttp: aioresponses,
-    api_url: URL,
     tmp_path: pathlib.Path,
     snapshot_png: SnapshotAssertion,
 ) -> None:
     """Test saving avatar to file."""
-    # workaround due to qs double-encoding by aioresponses
-    url = str(api_url / "api/v3/user") + "?userFields=preferences%2Citems%2Cstats"
-    mock_aiohttp.get(url, body=load_fixture("user.json"))
+    avatar = tmp_path / "avatar.png"
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, "test", "test")
+    with patch(
+        "habiticalib.Habitica.get_user",
+        return_value=HabiticaUserResponse.from_json(load_fixture("user.json")),
+    ):
+        async with ClientSession() as session:
+            habitica = Habitica(session, "test", "test")
+            await habitica.generate_avatar(str(avatar), fmt="png")
 
-        avatar = tmp_path / "avatar.png"
-
-        await habitica.generate_avatar(str(avatar), fmt="png")
         await asyncio.sleep(0.1)  # wait a bit till saving avatar task settles
         loop = asyncio.get_running_loop()
         result = await loop.run_in_executor(None, avatar.read_bytes)
@@ -96,7 +93,6 @@ async def test_generate_avatar_to_file(
         "animated_background",
     ],
 )
-@pytest.mark.usefixtures("mock_aiohttp")
 @pytest.mark.skipif(sys.platform != "linux", reason="needs linux")
 @pytest.mark.slow
 async def test_generate_avatar_from_styles(

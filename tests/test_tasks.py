@@ -2,10 +2,9 @@
 
 from datetime import UTC, datetime
 from typing import Any
+from unittest.mock import AsyncMock
 from uuid import UUID
 
-from aiohttp import ClientSession
-from aioresponses import aioresponses
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
@@ -22,16 +21,19 @@ from habiticalib import (
 )
 from habiticalib.typedefs import Checklist
 
-from .conftest import DEFAULT_HEADERS, TEST_API_KEY, TEST_API_USER
+from .conftest import DEFAULT_HEADERS, TEST_API_KEY, TEST_API_USER, load_fixture
 
 
-async def test_get_tasks(snapshot: SnapshotAssertion) -> None:
+async def test_get_tasks(snapshot: SnapshotAssertion, session: AsyncMock) -> None:
     """Test get_tasks method."""
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.get_tasks()
-        assert response == snapshot
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("tasks.json")
+    )
+
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.get_tasks()
+    assert response == snapshot
 
 
 @pytest.mark.parametrize(
@@ -49,30 +51,33 @@ async def test_get_tasks(snapshot: SnapshotAssertion) -> None:
     ],
 )
 async def test_get_tasks_params(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     params: dict[str, Any],
     call_params: dict[str, str],
 ) -> None:
     """Test get_tasks method parameters."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("tasks.json")
+    )
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    await habitica.get_tasks(**params)
+    session.request.assert_called_once_with(
+        "GET",
+        URL("https://habitica.com/api/v3/tasks/user"),
+        headers=DEFAULT_HEADERS,
+        params=call_params,
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        await habitica.get_tasks(**params)
-        mock_aiohttp.assert_called_with(
-            URL("https://habitica.com/api/v3/tasks/user"),
-            method="get",
-            headers=DEFAULT_HEADERS,
-            params=call_params,
-        )
 
-
-async def test_get_task(snapshot: SnapshotAssertion) -> None:
+async def test_get_task(snapshot: SnapshotAssertion, session: AsyncMock) -> None:
     """Test get_task method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("task.json")
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.get_task(UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"))
-        assert response == snapshot
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.get_task(UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"))
+    assert response == snapshot
 
 
 @pytest.mark.parametrize(
@@ -242,97 +247,100 @@ async def test_get_task(snapshot: SnapshotAssertion) -> None:
     ids=["daily", "todo", "habit", "reward"],
 )
 async def test_create_task(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     task: Task,
     call_params: dict[str, Any],
 ) -> None:
     """Test create_task method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("task.json")
+    )
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    await habitica.create_task(task)
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        await habitica.create_task(task)
-
-        mock_aiohttp.assert_called_with(
-            URL("https://habitica.com/api/v3/tasks/user"),
-            method="post",
-            headers=DEFAULT_HEADERS,
-            json=call_params,
-        )
+    session.request.assert_called_once_with(
+        "POST",
+        URL("https://habitica.com/api/v3/tasks/user"),
+        headers=DEFAULT_HEADERS,
+        json=call_params,
+    )
 
 
 async def test_create_task_response(
     snapshot: SnapshotAssertion,
+    session: AsyncMock,
 ) -> None:
     """Test create_task method response."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("task.json")
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.create_task(Task(type=TaskType.TODO))
-        assert response == snapshot
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.create_task(Task(type=TaskType.TODO))
+    assert response == snapshot
 
 
 async def test_update_task(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test update_task method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("task.json")
+    )
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.update_task(
+        UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"), Task(type=TaskType.TODO)
+    )
+    assert response == snapshot
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.update_task(
-            UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"), Task(type=TaskType.TODO)
-        )
-        assert response == snapshot
-
-        mock_aiohttp.assert_called_with(
-            URL(
-                "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"
-            ),
-            method="put",
-            headers=DEFAULT_HEADERS,
-            json={"type": "todo"},
-        )
+    session.request.assert_called_once_with(
+        "PUT",
+        URL("https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"),
+        headers=DEFAULT_HEADERS,
+        json={"type": "todo"},
+    )
 
 
 async def test_delete_task(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test delete_task method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("empty_data.json")
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.delete_task(
-            UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f")
-        )
-        assert response == snapshot
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.delete_task(UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"))
+    assert response == snapshot
 
-        mock_aiohttp.assert_called_with(
-            URL(
-                "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"
-            ),
-            method="delete",
-            headers=DEFAULT_HEADERS,
-        )
+    session.request.assert_called_once_with(
+        "DELETE",
+        URL("https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"),
+        headers=DEFAULT_HEADERS,
+    )
 
 
 async def test_reorder_task(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test reorder_task method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("task_order.json")
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.reorder_task(
-            UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"), 2
-        )
-        assert response == snapshot
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.reorder_task(
+        UUID("7bc0d924-f5e5-48a6-af7f-8075f8c94e0f"), 2
+    )
+    assert response == snapshot
 
-        mock_aiohttp.assert_called_with(
-            URL(
-                "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f/move/to/2"
-            ),
-            method="post",
-            headers=DEFAULT_HEADERS,
-        )
+    session.request.assert_called_once_with(
+        "POST",
+        URL(
+            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f/move/to/2"
+        ),
+        headers=DEFAULT_HEADERS,
+    )
