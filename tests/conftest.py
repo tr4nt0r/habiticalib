@@ -3,16 +3,15 @@
 from collections.abc import Generator
 from functools import lru_cache
 import pathlib
-import re
-from unittest.mock import MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
-from aioresponses import CallbackResult, aioresponses
+from aiohttp import ClientResponse, ClientSession
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from syrupy.extensions.image import PNGImageSnapshotExtension
 from yarl import URL
 
-from habiticalib.const import ASSETS_URL, DEFAULT_URL
+from habiticalib.const import DEFAULT_URL
 
 TEST_API_USER = "a380546a-94be-4b8e-8a0b-23e0d5c03303"
 TEST_API_KEY = "cd0e5985-17de-4b4f-849e-5d506c5e4382"
@@ -54,12 +53,6 @@ def api_url() -> URL:
     return URL(DEFAULT_URL)
 
 
-def load_assets_fixture(url: URL, **kwargs) -> CallbackResult:
-    """Load assets callback."""
-    asset = pathlib.Path(url.path).name
-    return CallbackResult(body=load_bytes_fixture(asset))
-
-
 @pytest.fixture(autouse=True)
 def mock_platform() -> Generator[MagicMock]:
     """Mock platform."""
@@ -75,58 +68,6 @@ def mock_platform() -> Generator[MagicMock]:
         client.architecture.return_value = ("ARCH", "")
         client.python_version.return_value = "PYTHON_VER"
         yield client
-
-
-@pytest.fixture(name="mock_aiohttp", autouse=True)
-def aioclient_mock() -> Generator[aioresponses]:
-    """Mock Aiohttp client requests."""
-    with aioresponses(passthrough=[ASSETS_URL]) as m:
-        m.post(
-            "https://habitica.com/api/v3/user/auth/local/login",
-            body=load_fixture("login.json"),
-        )
-        m.get(
-            re.compile(r"^https://habitica\.com/api/v3/user.*$"),
-            body=load_fixture("user.json"),
-        )
-        m.get(
-            "https://habitica.com/api/v3/user/anonymized",
-            body=load_fixture("user_anonymized.json"),
-        )
-        m.get(
-            re.compile(r"^https://habitica\.com/api/v3/tasks/user\?.*$"),
-            body=load_fixture("tasks.json"),
-        )
-        m.get(
-            "https://habitica.com/api/v3/tasks/user",
-            body=load_fixture("tasks.json"),
-        )
-        m.post(
-            "https://habitica.com/api/v3/tasks/user",
-            body=load_fixture("task.json"),
-        )
-        m.get(
-            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
-            body=load_fixture("task.json"),
-        )
-        m.put(
-            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
-            body=load_fixture("task.json"),
-        )
-        m.delete(
-            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f",
-            body=load_fixture("empty_data.json"),
-        )
-        m.post(
-            "https://habitica.com/api/v3/tasks/7bc0d924-f5e5-48a6-af7f-8075f8c94e0f/move/to/2",
-            body=load_fixture("task_order.json"),
-        )
-        m.get(
-            "https://habitica.com/api/v3/groups/party",
-            body=load_fixture("party.json"),
-        )
-
-        yield m
 
 
 @lru_cache
@@ -151,3 +92,14 @@ def load_bytes_fixture(filename: str) -> bytes:
 def snapshot_png(snapshot: SnapshotAssertion) -> SnapshotAssertion:
     """Snapshot PNG."""
     return snapshot.use_extension(PNGImageSnapshotExtension)
+
+
+@pytest.fixture(name="session")
+def mock_session() -> Generator[AsyncMock]:
+    """Mock aiohttp ClientSession."""
+    mock_session = AsyncMock(spec=ClientSession)
+    mock_response = AsyncMock(spec=ClientResponse, status=200)
+
+    mock_session.request.return_value.__aenter__.return_value = mock_response
+
+    return mock_session

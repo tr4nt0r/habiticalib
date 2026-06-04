@@ -1,22 +1,25 @@
 """Tests for user methods of Habiticalib."""
 
-from aiohttp import ClientSession
-from aioresponses import aioresponses
+from unittest.mock import AsyncMock
+
 import pytest
 from syrupy.assertion import SnapshotAssertion
 from yarl import URL
 
 from habiticalib import Habitica
-from tests.conftest import DEFAULT_HEADERS, TEST_API_KEY, TEST_API_USER
+
+from .conftest import DEFAULT_HEADERS, TEST_API_KEY, TEST_API_USER, load_fixture
 
 
-async def test_get_user(snapshot: SnapshotAssertion) -> None:
+async def test_get_user(snapshot: SnapshotAssertion, session: AsyncMock) -> None:
     """Test get_user method."""
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("user.json")
+    )
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.get_user()
-        assert response == snapshot
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.get_user()
+    assert response == snapshot
 
 
 @pytest.mark.parametrize(
@@ -27,27 +30,35 @@ async def test_get_user(snapshot: SnapshotAssertion) -> None:
     ],
 )
 async def test_get_user_params(
-    mock_aiohttp: aioresponses,
+    session: AsyncMock,
     params: str | list[str] | None,
     call_params: dict[str, str],
 ) -> None:
     """Test get_user method params."""
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        await habitica.get_user(params)
-        mock_aiohttp.assert_called_with(
-            URL("https://habitica.com/api/v3/user"),
-            method="get",
-            headers=DEFAULT_HEADERS,
-            params=call_params,
-        )
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("user.json")
+    )
+
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    await habitica.get_user(params)
+    session.request.assert_called_once_with(
+        "GET",
+        URL("https://habitica.com/api/v3/user"),
+        headers=DEFAULT_HEADERS,
+        params=call_params,
+    )
 
 
-async def test_get_user_anonymized(snapshot: SnapshotAssertion) -> None:
+async def test_get_user_anonymized(
+    snapshot: SnapshotAssertion, session: AsyncMock
+) -> None:
     """Test get_user_anonymized method."""
 
-    async with ClientSession() as session:
-        habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
-        response = await habitica.get_user_anonymized()
-        assert response == snapshot
+    session.request.return_value.__aenter__.return_value.text.return_value = (
+        load_fixture("user_anonymized.json")
+    )
+
+    habitica = Habitica(session, TEST_API_USER, TEST_API_KEY)
+    response = await habitica.get_user_anonymized()
+    assert response == snapshot
