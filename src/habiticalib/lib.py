@@ -124,32 +124,70 @@ class Habitica:
         self._assets_cache: dict[str, IO[bytes]] = {}
         self._cache_order: list[str] = []
 
-    async def _request(self, method: str, url: URL, **kwargs) -> str:
-        """Handle API request."""
-        async with self._session.request(
-            method.upper(),
-            url,
-            headers=self._headers,
-            **kwargs,
-        ) as r:
-            if r.status == HTTPStatus.UNAUTHORIZED:
-                raise NotAuthorizedError(
-                    HabiticaErrorResponse.from_json(await r.text()), r.headers
-                )
-            if r.status == HTTPStatus.NOT_FOUND:
-                raise NotFoundError(
-                    HabiticaErrorResponse.from_json(await r.text()), r.headers
-                )
-            if r.status == HTTPStatus.BAD_REQUEST:
-                raise BadRequestError(
-                    HabiticaErrorResponse.from_json(await r.text()), r.headers
-                )
-            if r.status == HTTPStatus.TOO_MANY_REQUESTS:
-                raise TooManyRequestsError(
-                    HabiticaErrorResponse.from_json(await r.text()), r.headers
-                )
-            r.raise_for_status()
-            return await r.text()
+    async def _request(
+        self, method: str, url: URL, retries: int = 0, **kwargs
+    ) -> str:
+        """Handle API request.
+
+        Parameters
+        ----------
+        retries : int, optional
+            Number of additional attempts on transient 404 responses.
+            A short delay is applied between retries. Default 0 (no retry).
+        """
+        delay = 1.5  # seconds between retry attempts
+        last_exc: Exception | None = None
+
+        for attempt in range(retries + 1):
+            try:
+                async with self._session.request(
+                    method.upper(),
+                    url,
+                    headers=self._headers,
+                    **kwargs,
+                ) as r:
+                    if r.status == HTTPStatus.UNAUTHORIZED:
+                        raise NotAuthorizedError(
+                            HabiticaErrorResponse.from_json(await r.text()),
+                            r.headers,
+                        )
+                    if r.status == HTTPStatus.NOT_FOUND:
+                        raise NotFoundError(
+                            HabiticaErrorResponse.from_json(await r.text()),
+                            r.headers,
+                        )
+                    if r.status == HTTPStatus.BAD_REQUEST:
+                        raise BadRequestError(
+                            HabiticaErrorResponse.from_json(await r.text()),
+                            r.headers,
+                        )
+                    if r.status == HTTPStatus.TOO_MANY_REQUESTS:
+                        raise TooManyRequestsError(
+                            HabiticaErrorResponse.from_json(await r.text()),
+                            r.headers,
+                        )
+                    r.raise_for_status()
+                    return await r.text()
+            except NotFoundError:
+                last_exc = None  # cleared so we can re-raise below
+                if attempt < retries:
+                    _LOGGER.debug(
+                        "Transient 404 on %s %s, retry %d/%d in %.1fs",
+                        method.upper(),
+                        url,
+                        attempt + 1,
+                        retries,
+                        delay,
+                    )
+                    await asyncio.sleep(delay)
+                else:
+                    raise
+
+        # Should be unreachable; safety fallback
+        if last_exc is not None:
+            raise last_exc
+        msg = f"Unexpected: retry loop exhausted for {method} {url}"
+        raise RuntimeError(msg)
 
     async def __aenter__(self) -> Self:
         """Async enter."""
@@ -493,7 +531,7 @@ class Habitica:
         json = deserialize_task(task)
 
         return HabiticaTaskResponse.from_json(
-            await self._request("put", url=url, json=json),
+            await self._request("put", url=url, json=json, retries=2),
         )
 
     async def delete_task(self, task_id: UUID) -> HabiticaResponse:
@@ -1101,7 +1139,7 @@ class Habitica:
         url = self.url / "api/v3/tasks" / str(task_id) / "score" / direction.value
 
         return HabiticaScoreResponse.from_json(
-            await self._request("post", url=url),
+            await self._request("post", url=url, retries=2),
         )
 
     async def get_tags(self) -> HabiticaTagsResponse:
