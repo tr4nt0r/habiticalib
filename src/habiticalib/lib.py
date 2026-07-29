@@ -19,6 +19,13 @@ from .const import (
     SPECIAL_ASSETS,
     SPECIAL_ASSETS_OFFSET,
 )
+
+# Retry configuration for transient 404s on task-write operations.
+# Habitica's API occasionally returns 404 for valid task IDs due to
+# replica lag or mid-write reads during daily cron resets.
+_TRANSIENT_404_RETRIES = 2
+_TRANSIENT_404_DELAY = 1.5  # seconds between retries
+
 from .exceptions import (
     BadRequestError,
     NotAuthorizedError,
@@ -124,8 +131,35 @@ class Habitica:
         self._assets_cache: dict[str, IO[bytes]] = {}
         self._cache_order: list[str] = []
 
-    async def _request(self, method: str, url: URL, **kwargs) -> str:
-        """Handle API request."""
+    async def _request(
+        self, method: str, url: URL, *, _retry_not_found: bool = False, **kwargs
+    ) -> str:
+        """Handle API request.
+
+        Parameters
+        ----------
+        _retry_not_found : bool
+            If True, retry up to _TRANSIENT_404_RETRIES times on 404 responses
+            with a short delay. Used by task-write methods to absorb transient
+            API inconsistencies (replica lag, mid-write reads).
+        """
+        retries = _TRANSIENT_404_RETRIES if _retry_not_found else 0
+        attempt = 0
+        while True:
+            try:
+                return await self._do_request(method, url, **kwargs)
+            except NotFoundError:
+                if attempt >= retries:
+                    raise
+                attempt += 1
+                _LOGGER.debug(
+                    "Transient 404 on %s %s (attempt %d/%d), retrying in %.1fs",
+                    method.upper(), url, attempt, retries, _TRANSIENT_404_DELAY,
+                )
+                await asyncio.sleep(_TRANSIENT_404_DELAY)
+
+    async def _do_request(self, method: str, url: URL, **kwargs) -> str:
+        """Execute a single HTTP request (no retry logic)."""
         async with self._session.request(
             method.upper(),
             url,
@@ -493,7 +527,7 @@ class Habitica:
         json = deserialize_task(task)
 
         return HabiticaTaskResponse.from_json(
-            await self._request("put", url=url, json=json),
+            await self._request("put", url=url, _retry_not_found=True, json=json),
         )
 
     async def delete_task(self, task_id: UUID) -> HabiticaResponse:
@@ -532,7 +566,7 @@ class Habitica:
         url = self.url / "api/v3/tasks" / str(task_id)
 
         return HabiticaResponse.from_json(
-            await self._request("delete", url=url),
+            await self._request("delete", url=url, _retry_not_found=True),
         )
 
     async def reorder_task(self, task_id: UUID, to: int) -> HabiticaTaskOrderResponse:
@@ -1101,7 +1135,7 @@ class Habitica:
         url = self.url / "api/v3/tasks" / str(task_id) / "score" / direction.value
 
         return HabiticaScoreResponse.from_json(
-            await self._request("post", url=url),
+            await self._request("post", url=url, _retry_not_found=True),
         )
 
     async def get_tags(self) -> HabiticaTagsResponse:
