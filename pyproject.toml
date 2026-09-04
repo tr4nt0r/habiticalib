@@ -87,14 +87,14 @@ dependencies = [
     "mkdocstrings[python]==1.0.6",
     "pytest-asyncio==1.4.0",
     "pre-commit==4.6.2",
-    "syrupy==5.5.3"
+    "syrupy==6.0.0"
 ]
 
 [tool.hatch.envs.hatch-test]
 parallel = true
 extra-dependencies = [
   "pytest-asyncio==1.4.0",
-  "syrupy==5.5.3",
+  "syrupy==6.0.0",
   "pytest-cov==7.1.0",
 ]
 extra-args = ["--cov-report=xml", "-vv"]
