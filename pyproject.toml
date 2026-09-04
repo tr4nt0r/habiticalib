@@ -4,7 +4,7 @@ line-length = 88
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001", "PLW1641", "TC001", "TC002"]
+ignore = ["TRY003", "D202", "D213", "D417", "ANN003", "ANN401", "E501", "COM812", "ISC001", "PLW1641", "TC001", "TC002", "CPY"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
@@ -80,7 +80,7 @@ dependencies = [
     "orjson==3.12.0",
     "Pillow==12.3.0",
     "mypy==2.3.1",
-    "ruff==0.15.22",
+    "ruff==0.16.6",
     "pytest==9.1.1",
     "pytest-cov==7.1.0",
     "mkdocs-material==9.7.7",
