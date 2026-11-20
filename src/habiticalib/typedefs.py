@@ -1195,7 +1195,7 @@ class TaskData(BaseModel):
     reminders: list[Reminders] = field(default_factory=list)
     daysOfMonth: list[int] = field(default_factory=list)
     weeksOfMonth: list[int] = field(default_factory=list)
-    nextDue: list[datetime] = field(
+    nextDue: list[datetime | None] = field(
         default_factory=list,
         metadata=field_options(deserialize=lambda x: list(map(serialize_datetime, x))),
     )
